@@ -18,9 +18,6 @@ public class PlanetSelectionSpawner : MonoBehaviour
     public AstronomicalObject rocket;
     public GameObject target;
 
-    private int gameScreen;
-    private int tabScreen;
-
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
@@ -29,10 +26,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     void Awake()
     {
-        gameScreen = (Screen.width / 8) * 6;
-        tabScreen = (Screen.width / 8) * 2;
-
-        screenWidth = (Screen.width / 8) * 6;
+        screenWidth = Screen.width;
         screenHeight = Screen.height;
 
         screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);

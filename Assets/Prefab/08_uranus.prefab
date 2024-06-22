@@ -93,8 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 212452712560443824}
   - component: {fileID: 3786570605405322768}
-  - component: {fileID: 6357993258774941144}
   - component: {fileID: -7558401501948290285}
+  - component: {fileID: 6028675651569560764}
   m_Layer: 0
   m_Name: 08_uranus
   m_TagString: 08_uranus
@@ -132,41 +132,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiltAngle: 15
   rotationSpeed: 0.03
---- !u!58 &6357993258774941144
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8097865400403079997}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -2.5926983, y: 0}
-  serializedVersion: 2
-  m_Radius: 503.47095
 --- !u!114 &-7558401501948290285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,3 +147,24 @@ MonoBehaviour:
   Name: Uranus
   Mass: 8.68e+25
   scaleFactor: 1
+--- !u!135 &6028675651569560764
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8097865400403079997}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 506.88
+  m_Center: {x: 0, y: 0, z: 0}

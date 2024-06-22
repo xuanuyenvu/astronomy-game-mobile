@@ -106,8 +106,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7891553913520705219}
   - component: {fileID: 6558775755449138718}
-  - component: {fileID: 8558027720685496339}
   - component: {fileID: 3849274529535236460}
+  - component: {fileID: 6259588233664375914}
   m_Layer: 0
   m_Name: 01_mercury
   m_TagString: 01_mercury
@@ -145,41 +145,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiltAngle: 15
   rotationSpeed: 0.03
---- !u!58 &8558027720685496339
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8261461451667301807}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.000019868216}
-  serializedVersion: 2
-  m_Radius: 100.81782
 --- !u!114 &3849274529535236460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,6 +160,27 @@ MonoBehaviour:
   Name: Mercury
   Mass: 3.3e+23
   scaleFactor: 1
+--- !u!135 &6259588233664375914
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8261461451667301807}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 101.02
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8399520190544641416
 GameObject:
   m_ObjectHideFlags: 0

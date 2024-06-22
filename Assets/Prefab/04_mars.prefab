@@ -157,8 +157,8 @@ GameObject:
   m_Component:
   - component: {fileID: 326296900900728525}
   - component: {fileID: 2585372032021671580}
-  - component: {fileID: 8156475327614307893}
   - component: {fileID: 1544809103529127491}
+  - component: {fileID: 3849851269452241570}
   m_Layer: 0
   m_Name: 04_mars
   m_TagString: 04_mars
@@ -196,41 +196,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tiltAngle: 15
   rotationSpeed: 0.03
---- !u!58 &8156475327614307893
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1781681862544399129}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.52250427, y: 0}
-  serializedVersion: 2
-  m_Radius: 100.81781
 --- !u!114 &1544809103529127491
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +211,27 @@ MonoBehaviour:
   Name: Mars
   Mass: 6.42e+23
   scaleFactor: 1
+--- !u!135 &3849851269452241570
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781681862544399129}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 101.23
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2155382764787919051
 GameObject:
   m_ObjectHideFlags: 0
