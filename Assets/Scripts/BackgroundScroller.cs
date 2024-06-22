@@ -6,7 +6,7 @@ public class BackgroundRotation : MonoBehaviour
 {
     void Update()
     {
-        transform.position += new Vector3(-0.09f * Time.deltaTime, 0);
+        transform.position += new Vector3(-0.06f * Time.deltaTime, 0);
 
         if(transform.position.x < -20.18)
         {

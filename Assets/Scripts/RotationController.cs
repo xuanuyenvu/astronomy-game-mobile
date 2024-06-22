@@ -5,7 +5,7 @@ using UnityEngine;
 public class RotationController : MonoBehaviour
 {
     public float tiltAngle = 15f; 
-    public float rotationSpeed = 0.03f; 
+    public float rotationSpeed = 12f; 
     
     void Start()
     {

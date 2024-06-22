@@ -39,7 +39,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     public void RandomizePosition()
     {
-        var id = UnityEngine.Random.Range(0, allPlanets.Count);
+        // var id = UnityEngine.Random.Range(0, allPlanets.Count);
+        var id = 5;
         planet1 = allPlanets[id];
 
         if (id < 4)
@@ -87,10 +88,10 @@ public class PlanetSelectionSpawner : MonoBehaviour
         float padding = screenWidth / 6;
 
         if (isLeftPart) {
-            spawnX = Random.Range(0 + padding, screenWidth / 2 - padding * 1.5f);
+            spawnX = Random.Range(0 + padding * 1.2f, screenWidth / 2 - padding * 1.5f);
         }
         else {
-            spawnX = Random.Range(screenWidth / 2 + padding * 2, screenWidth - padding);
+            spawnX = Random.Range(screenWidth / 2 + padding * 2, screenWidth - padding * 1.2f);
         }
 
         return spawnX;

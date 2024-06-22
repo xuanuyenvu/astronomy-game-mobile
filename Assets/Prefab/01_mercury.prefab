@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltAngle: 15
-  rotationSpeed: 0.03
+  rotationSpeed: 12
 --- !u!114 &3849274529535236460
 MonoBehaviour:
   m_ObjectHideFlags: 0
