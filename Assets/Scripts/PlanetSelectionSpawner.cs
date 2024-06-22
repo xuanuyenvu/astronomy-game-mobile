@@ -39,8 +39,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     public void RandomizePosition()
     {
-        // var id = UnityEngine.Random.Range(0, allPlanets.Count);
-        var id = 5;
+        var id = UnityEngine.Random.Range(0, allPlanets.Count);
+        // var id = 0;
         planet1 = allPlanets[id];
 
         if (id < 4)
