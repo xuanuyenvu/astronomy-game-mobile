@@ -18,9 +18,6 @@ public class PlanetSelectionSpawner : MonoBehaviour
     public AstronomicalObject rocket;
     public GameObject target;
 
-    private int gameScreen;
-    private int tabScreen;
-
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
@@ -29,10 +26,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     void Awake()
     {
-        gameScreen = (Screen.width / 8) * 6;
-        tabScreen = (Screen.width / 8) * 2;
-
-        screenWidth = (Screen.width / 8) * 6;
+        screenWidth = Screen.width;
         screenHeight = Screen.height;
 
         screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);
@@ -46,6 +40,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
     public void RandomizePosition()
     {
         var id = UnityEngine.Random.Range(0, allPlanets.Count);
+        // var id = 0;
         planet1 = allPlanets[id];
 
         if (id < 4)
@@ -93,10 +88,10 @@ public class PlanetSelectionSpawner : MonoBehaviour
         float padding = screenWidth / 6;
 
         if (isLeftPart) {
-            spawnX = Random.Range(0 + padding, screenWidth / 2 - padding * 1.5f);
+            spawnX = Random.Range(0 + padding * 1.2f, screenWidth / 2 - padding * 1.5f);
         }
         else {
-            spawnX = Random.Range(screenWidth / 2 + padding * 2, screenWidth - padding);
+            spawnX = Random.Range(screenWidth / 2 + padding * 2, screenWidth - padding * 1.2f);
         }
 
         return spawnX;

@@ -125,8 +125,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2171812894096042751}
   - component: {fileID: 7802990230180261075}
-  - component: {fileID: 4016435929239620072}
   - component: {fileID: -829848742734395296}
+  - component: {fileID: 8030909910844473982}
   m_Layer: 0
   m_Name: 03_earth
   m_TagString: 03_earth
@@ -144,7 +144,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 8.08, y: -3.88, z: -3}
-  m_LocalScale: {x: 0.009, y: 0.009, z: 0.009}
+  m_LocalScale: {x: 0.008, y: 0.008, z: 0.008}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3879899778019216848}
@@ -163,42 +163,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltAngle: 15
-  rotationSpeed: 0.03
---- !u!58 &4016435929239620072
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1940540352473777546}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.21852387, y: -0.26977062}
-  serializedVersion: 2
-  m_Radius: 100.65303
+  rotationSpeed: 12
 --- !u!114 &-829848742734395296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,6 +179,27 @@ MonoBehaviour:
   Name: Earth
   Mass: 5.97e+24
   scaleFactor: 1
+--- !u!135 &8030909910844473982
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940540352473777546}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 101.38
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4307802313642396351
 GameObject:
   m_ObjectHideFlags: 0

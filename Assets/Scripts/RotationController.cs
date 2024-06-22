@@ -5,7 +5,7 @@ using UnityEngine;
 public class RotationController : MonoBehaviour
 {
     public float tiltAngle = 15f; 
-    public float rotationSpeed = 0.03f; 
+    public float rotationSpeed = 12f; 
     
     void Start()
     {
@@ -17,7 +17,7 @@ public class RotationController : MonoBehaviour
     {
         Vector3 tiltedAxis = transform.up; 
         // Create a quaternion representing the new rotation around the tilted axis
-        Quaternion rotation = Quaternion.AngleAxis(rotationSpeed, tiltedAxis); 
+        Quaternion rotation = Quaternion.AngleAxis(rotationSpeed * Time.deltaTime, tiltedAxis); 
         transform.rotation = rotation * transform.rotation;
     }
 }
