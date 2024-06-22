@@ -74,8 +74,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7300343565702603417}
   - component: {fileID: 8402918017616896759}
-  - component: {fileID: 8774068681916359345}
   - component: {fileID: 806245802019345058}
+  - component: {fileID: 292316159459788884}
   m_Layer: 0
   m_Name: 02_venus
   m_TagString: 02_venus
@@ -93,7 +93,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.98, y: -0.61, z: -3}
-  m_LocalScale: {x: 0.009, y: 0.009, z: 0.009}
+  m_LocalScale: {x: 0.008, y: 0.008, z: 0.008}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1003689282442685875}
@@ -112,42 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltAngle: 15
-  rotationSpeed: 0.03
---- !u!58 &8774068681916359345
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4053271374897006710}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0.5225341, y: 0}
-  serializedVersion: 2
-  m_Radius: 100.81782
+  rotationSpeed: 12
 --- !u!114 &806245802019345058
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +128,27 @@ MonoBehaviour:
   Name: Venus
   Mass: 4.87e+24
   scaleFactor: 1
+--- !u!135 &292316159459788884
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4053271374897006710}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 100.9
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5229910528658816576
 GameObject:
   m_ObjectHideFlags: 0

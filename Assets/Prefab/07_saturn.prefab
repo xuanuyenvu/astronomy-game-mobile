@@ -93,8 +93,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8988047525112771194}
   - component: {fileID: 8201666659785764332}
-  - component: {fileID: 5550073588170348157}
   - component: {fileID: 4301846034760436145}
+  - component: {fileID: 1674437818826935600}
   m_Layer: 0
   m_Name: 07_saturn
   m_TagString: 07_saturn
@@ -112,7 +112,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -5.55, y: 0, z: -3}
-  m_LocalScale: {x: 0.0023, y: 0.0023, z: 0.0023}
+  m_LocalScale: {x: 0.0018, y: 0.0018, z: 0.0018}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 4518954626097888479}
@@ -133,42 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tiltAngle: 15
-  rotationSpeed: 0.03
---- !u!58 &5550073588170348157
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4104997909985063850}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1.3782429, y: -0.6597719}
-  serializedVersion: 2
-  m_Radius: 506.65833
+  rotationSpeed: 12
 --- !u!114 &4301846034760436145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +149,27 @@ MonoBehaviour:
   Name: Saturn
   Mass: 5.68e+26
   scaleFactor: 1
+--- !u!135 &1674437818826935600
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4104997909985063850}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 507.81
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4394292174389570957
 GameObject:
   m_ObjectHideFlags: 0
