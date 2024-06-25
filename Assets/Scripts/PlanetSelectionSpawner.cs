@@ -39,8 +39,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     public void RandomizePosition()
     {
-        var id = UnityEngine.Random.Range(0, allPlanets.Count);
-        // var id = 0;
+        // var id = UnityEngine.Random.Range(0, allPlanets.Count);
+        var id = 5;
         planet1 = allPlanets[id];
 
         if (id < 4)
@@ -75,7 +75,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
         if(clonedPlanet.tag == "07_saturn")
         {
             Vector3 newRotation = clonedPlanet.transform.rotation.eulerAngles;
-            newRotation.x = -36f;
+            newRotation.x = -10f;
+            // newRotation.y = -233f;
             clonedPlanet.transform.rotation = Quaternion.Euler(newRotation);
         }
         
