@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1985049083748603742}
   - component: {fileID: 2036467191496821322}
   - component: {fileID: 31123180884366122}
-  - component: {fileID: -1532460974035778250}
   - component: {fileID: 5686932271602513223}
   - component: {fileID: 176436530812238917}
+  - component: {fileID: 5729788283866150833}
   m_Layer: 5
   m_Name: mercuryUI
   m_TagString: Untagged
@@ -79,49 +79,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-1532460974035778250
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2958285139641707833}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b0736102f5516c4f8e746870276b867, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetRotation: 0
-  targetPosition: {x: 0, y: 0}
-  targetVerticalDisplacement: 0
-  uiLayer: 0
-  zoomConfig:
-    zoomOnHover: 0
-    multiplier: 1
-    overrideYPosition: -1
-    defaultSortOrder: 0
-    bringToFrontOnHover: 0
-    zoomedSortOrder: 0
-    resetRotationOnZoom: 0
-  animationSpeedConfig:
-    rotation: 60
-    position: 500
-    releasePosition: 2000
-    zoom: 0.3
-  container: {fileID: 0}
-  eventsConfig:
-    OnCardPlayed:
-      m_PersistentCalls:
-        m_Calls: []
-    OnCardHover:
-      m_PersistentCalls:
-        m_Calls: []
-    OnCardUnhover:
-      m_PersistentCalls:
-        m_Calls: []
-    OnCardDestroy:
-      m_PersistentCalls:
-        m_Calls: []
 --- !u!223 &5686932271602513223
 Canvas:
   m_ObjectHideFlags: 0
@@ -162,6 +119,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5729788283866150833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958285139641707833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24271d297c2f44549943050e7ed35a1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetPosition: {x: 0, y: 0}
+  targerVerticalDisplacement: 0
 --- !u!1 &4020934520252334989
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +145,7 @@ GameObject:
   - component: {fileID: 4761480174568991833}
   - component: {fileID: 8227368553961794418}
   m_Layer: 5
-  m_Name: Image
+  m_Name: shadowUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
