@@ -1,14 +1,30 @@
+using UnityEngine.UI;
 using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using config;
 
 public class CardController : MonoBehaviour
 {
     [Header("List of Cards")]
     public List<CardWrapper> allCards;
+
+    private List<CardWrapper> allCardInstances;
     private RectTransform rectTransform;
+
+    [SerializeField]
     private bool forceFitContainer;
+
+    [Header("Rotation")]
+    [SerializeField]
+    [Range(0f, 90f)]
+    private float maxCardRotation;
+    [SerializeField]
+    private float maxHeightDisplacement;
+
+    [SerializeField]
+    private AnimationSpeedConfig animationSpeedConfig;
 
     void Awake()
     {
@@ -21,16 +37,16 @@ public class CardController : MonoBehaviour
 
     private void InitCards()
     {
+        SetUpCards();
         ShuffleCards();
         DisplayCards();
     }
 
-    private void DisplayCards()
+    private void SetUpCards()
     {
-        Transform canvasTransform = this.transform;
         foreach (CardWrapper card in allCards)
         {
-            CardWrapper cardInstance = Instantiate(card, this.transform);
+            card.animationSpeedConfig = animationSpeedConfig;
         }
     }
 
@@ -45,6 +61,17 @@ public class CardController : MonoBehaviour
         }
     }
 
+    private void DisplayCards()
+    {
+        Transform canvasTransform = this.transform;
+        foreach (CardWrapper card in allCards)
+        {
+            CardWrapper cardInstance = Instantiate(card, this.transform);
+        }
+
+        allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
+    }
+
     void Update()
     {
         UpdateCards();
@@ -52,18 +79,18 @@ public class CardController : MonoBehaviour
 
     private void UpdateCards()
     {
-        if (transform.childCount != allCards.Count)
+        if (transform.childCount != allCardInstances.Count)
         {
             InitCards();
         }
 
-        if (allCards.Count == 0)
+        if (allCardInstances.Count == 0)
         {
             return;
         }
 
-        SetCardsPosition();
         SetCardsRotation();
+        SetCardsPosition();
         // SetCardsUILayers();
         // UpdateCardOrder();
     }
@@ -71,9 +98,15 @@ public class CardController : MonoBehaviour
     private void SetCardsPosition()
     {
         // Compute the total width of all the cards in global space
-        var cardsTotalWidth = allCards.Sum(card => card.width * card.transform.lossyScale.x);
+        float cardsTotalWidth = 0;
+        foreach (CardWrapper card in allCardInstances)
+        {
+            cardsTotalWidth += card.Width * card.transform.lossyScale.x;
+        }
+
         // Compute the width of the container in global space
-        var containerWidth = rectTransform.rect.width * transform.lossyScale.x;
+        var containerWidth = rectTransform.rect.width;
+        Debug.Log("container: " + containerWidth);
         if (forceFitContainer && cardsTotalWidth > containerWidth)
         {
             DistributeChildrenToFitContainer(cardsTotalWidth);
@@ -92,9 +125,9 @@ public class CardController : MonoBehaviour
         var distanceBetweenChildren = (width - childrenTotalWidth) / (allCards.Count - 1);
         // Set all children's positions to be evenly spaced out
         var currentX = transform.position.x - width / 2;
-        foreach (CardWrapper child in allCards)
+        foreach (CardWrapper child in allCardInstances)
         {
-            var adjustedChildWidth = child.width * child.transform.lossyScale.x;
+            var adjustedChildWidth = child.Width * child.transform.lossyScale.x;
             child.targetPosition = new Vector2(currentX + adjustedChildWidth / 2, transform.position.y);
             currentX += adjustedChildWidth + distanceBetweenChildren;
         }
@@ -103,9 +136,9 @@ public class CardController : MonoBehaviour
     private void DistributeChildrenWithoutOverlap(float childrenTotalWidth)
     {
         var currentPosition = GetAnchorPositionByAlignment(childrenTotalWidth);
-        foreach (CardWrapper child in allCards)
+        foreach (CardWrapper child in allCardInstances)
         {
-            var adjustedChildWidth = child.width * child.transform.lossyScale.x;
+            var adjustedChildWidth = child.Width * child.transform.lossyScale.x;
             child.targetPosition = new Vector2(currentPosition + adjustedChildWidth / 2, transform.position.y);
             currentPosition += adjustedChildWidth;
         }
@@ -119,7 +152,25 @@ public class CardController : MonoBehaviour
 
     private void SetCardsRotation()
     {
+        for (var i = 0; i < allCardInstances.Count; i++)
+        {
+            allCards[i].targetRotation = GetCardRotation(i);
+            allCards[i].targetVerticalDisplacement = GetCardVerticalDisplacement(i);
+        }
+    }
 
+    private float GetCardRotation(int index)
+    {
+        if (allCards.Count < 3) return 0;
+        else
+            return -maxCardRotation * (index - (allCardInstances.Count - 1) / 2f) / ((allCards.Count - 1) / 2f);
+    }
+
+    private float GetCardVerticalDisplacement(int index)
+    {
+        if (allCardInstances.Count < 3) return 0;
+        else
+            return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCards.Count - 1) / 2f, 2) / Mathf.Pow((allCards.Count - 1) / 2f, 2));
     }
 
 }

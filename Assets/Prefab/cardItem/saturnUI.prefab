@@ -32,10 +32,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1247871147705333926}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -16.7, y: 0}
-  m_SizeDelta: {x: 1273.89, y: 2048}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 600.3, y: 0}
+  m_SizeDelta: {x: 1273.89, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2582587069408677472
 CanvasRenderer:
@@ -105,7 +105,7 @@ RectTransform:
   m_GameObject: {fileID: 6571071242757299234}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.046, y: 0.046, z: 0.046}
+  m_LocalScale: {x: 0.11999999, y: 0.11999999, z: 0.11999999}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 233164540404874289}
@@ -206,5 +206,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24271d297c2f44549943050e7ed35a1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPosition: {x: 0, y: 0}
-  targerVerticalDisplacement: 0
+  targetPosition: {x: 358.06, y: 27.782288}
+  targetRotation: -10.714286
+  targetVerticalDisplacement: 19.591837
+  animationSpeedConfig:
+    rotation: 60
+    position: 500
+    releasePosition: 2000
+    zoom: 0.3
+  width: 10
