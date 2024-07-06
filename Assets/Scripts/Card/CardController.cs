@@ -59,6 +59,7 @@ public class CardController : MonoBehaviour
         foreach (CardWrapper card in allCards)
         {
             CardWrapper cardInstance = Instantiate(card, this.transform);
+            cardInstance.name = cardInstance.name.Replace("(Clone)", "");
         }
 
         allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
@@ -89,6 +90,13 @@ public class CardController : MonoBehaviour
     void Update()
     {
         UpdateCards();
+        SetCardsAnchor();
+    }
+
+    private void SetCardsAnchor() {
+        foreach (CardWrapper child in allCardInstances) {
+            child.SetAnchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f));
+        }
     }
 
     private void UpdateCards()
@@ -185,4 +193,10 @@ public class CardController : MonoBehaviour
             return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCards.Count - 1) / 2f, 2) / Mathf.Pow((allCards.Count - 1) / 2f, 2));
     }
 
+
+    public void OnCardDisplayPlanetSelection(CardWrapper card)
+    {
+        var planetSelectionName = card.name.Replace("UI", "Selection");
+        Debug.Log("name" + planetSelectionName);
+    }
 }

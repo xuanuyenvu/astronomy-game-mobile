@@ -35,6 +35,12 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         canvas = GetComponent<Canvas>();
     }
 
+    public void SetAnchor(Vector2 min, Vector2 max)
+    {
+        rectTransform.anchorMin = min;
+        rectTransform.anchorMax = max;
+    }
+
     void Update()
     {
         UpdateRotation();
@@ -95,11 +101,13 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerDown(PointerEventData eventData)
     {
-
+        isSelected = true;
+        // Gọi hiển thị prefab
+        cardContainer.OnCardDisplayPlanetSelection(this);
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-
+        
     }
 }
