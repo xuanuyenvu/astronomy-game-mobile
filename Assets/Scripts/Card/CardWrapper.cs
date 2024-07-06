@@ -101,11 +101,6 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             repositionSpeed / distance * Time.deltaTime);
     }
 
-    private void UpdateScale()
-    {
-
-    }
-
     public void OnPointerDown(PointerEventData eventData) { /*do nothing*/ }
 
     public void OnPointerUp(PointerEventData eventData)
@@ -114,22 +109,30 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             isSelected = true;
 
+            cardContainer.ChangeSelectedCard(this);
             // Xóa instance đang hiển thị (nếu có)
             cardContainer.DestroyPlanetSelection();
-
             // Gọi hiển thị instance theo hành tình trên thẻ
             cardContainer.OnCardDisplayPlanetSelection(this);
-
+            // Đặt độ ưu tiên = 100
             canvas.sortingOrder = zoomedSortOrder;
         }
         else
         {
             isSelected = false;
 
+            cardContainer.ChangeSelectedCard(null);
             // Xóa instance đang hiển thị (nếu có)
             cardContainer.DestroyPlanetSelection();
-
-            canvas.sortingOrder = uiLayer;
         }
     }
+
+    public void ResetAllValues()
+    {
+        isSelected = false;
+        UpdateRotation();
+        UpdatePosition();
+        UpdateUILayer();
+    }
 }
+
