@@ -12,12 +12,16 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public float targetRotation;
     [HideInInspector]
     public float targetVerticalDisplacement;
-    public AnimationSpeedConfig animationSpeedConfig;
     private const float EPS = 0.01f;
     private RectTransform rectTransform;
     private Canvas canvas;
     private bool isSelected = false;
     public CardController cardContainer;
+
+    public AnimationSpeedConfig animationSpeedConfig;
+    private float overrideYPosition = 46;
+    private int zoomedSortOrder = 100;
+    public int uiLayer;
 
     private float width;
 
@@ -31,7 +35,6 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     void Start()
     {
         Width = rectTransform.rect.width * rectTransform.localScale.x;
-        // Debug.Log("width: " + Width);
         canvas = GetComponent<Canvas>();
     }
 
@@ -45,6 +48,15 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         UpdateRotation();
         UpdatePosition();
+        UpdateUILayer();
+    }
+
+    private void UpdateUILayer()
+    {
+        if (!isSelected)
+        {
+            canvas.sortingOrder = uiLayer;
+        }
     }
 
     private void UpdateRotation()
@@ -53,10 +65,10 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         // If the angle is negative, add 360 to it to get the positive equivalent
         crtAngle = crtAngle < 0 ? crtAngle + 360 : crtAngle;
         // If the card is hovered and the rotation should be reset, set the target rotation to 0
-        // var tempTargetRotation = (isHovered || isDragged) && zoomConfig.resetRotationOnZoom
-        //     ? 0
-        //     : targetRotation;
-        var tempTargetRotation = targetRotation;
+        var tempTargetRotation = (isSelected)
+            ? 0
+            : targetRotation;
+        // var tempTargetRotation = targetRotation;
         tempTargetRotation = tempTargetRotation < 0 ? tempTargetRotation + 360 : tempTargetRotation;
         var deltaAngle = Mathf.Abs(crtAngle - tempTargetRotation);
         if (!(deltaAngle > EPS)) return;
@@ -78,7 +90,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         var target = new Vector2(targetPosition.x, targetPosition.y + targetVerticalDisplacement);
         if (isSelected)
         {
-            target = new Vector2(target.x, -1);
+            target = new Vector2(target.x, overrideYPosition);
         }
 
         var distance = Vector2.Distance(rectTransform.position, target);
@@ -94,20 +106,30 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     }
 
-    private void UpdateUILayer()
-    {
-
-    }
-
-    public void OnPointerDown(PointerEventData eventData)
-    {
-        isSelected = true;
-        // Gọi hiển thị prefab
-        cardContainer.OnCardDisplayPlanetSelection(this);
-    }
+    public void OnPointerDown(PointerEventData eventData) { /*do nothing*/ }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        
+        if (!isSelected)
+        {
+            isSelected = true;
+
+            // Xóa instance đang hiển thị (nếu có)
+            cardContainer.DestroyPlanetSelection();
+
+            // Gọi hiển thị instance theo hành tình trên thẻ
+            cardContainer.OnCardDisplayPlanetSelection(this);
+
+            canvas.sortingOrder = zoomedSortOrder;
+        }
+        else
+        {
+            isSelected = false;
+
+            // Xóa instance đang hiển thị (nếu có)
+            cardContainer.DestroyPlanetSelection();
+
+            canvas.sortingOrder = uiLayer;
+        }
     }
 }
