@@ -15,6 +15,9 @@ public class CardController : MonoBehaviour
     public List<GameObject> allPlanetSelection;
     private GameObject planetSelectionInstance;
 
+    [HideInInspector]
+    public CardWrapper selectedCard = null;
+
     [Header("Mask")]
     public GameObject darkMask;
 
@@ -124,7 +127,6 @@ public class CardController : MonoBehaviour
         SetCardsPosition();
         SetCardsRotation();
         SetCardsUILayers();
-        // UpdateCardOrder();
     }
 
     private void SetCardsUILayers()
@@ -211,7 +213,6 @@ public class CardController : MonoBehaviour
             return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCards.Count - 1) / 2f, 2) / Mathf.Pow((allCards.Count - 1) / 2f, 2));
     }
 
-
     public void OnCardDisplayPlanetSelection(CardWrapper card)
     {
         if (char.IsDigit(card.name[0]))
@@ -240,5 +241,18 @@ public class CardController : MonoBehaviour
             DestroyImmediate(planetSelectionInstance);
             darkMask.SetActive(false);
         }
+    }
+
+    public void ChangeSelectedCard(CardWrapper card)
+    {
+        // Nếu đã có card được chọn từ trước thì gọi hàm Update() 
+        // để reset lại các giá trị Rotation, Position, Sorting
+        if (selectedCard != null)
+        {
+            selectedCard.ResetAllValues();
+        }
+
+        // Gán thẻ được chọn vào biến selectedCard
+        selectedCard = card;
     }
 }
