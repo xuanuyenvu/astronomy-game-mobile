@@ -17,6 +17,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private RectTransform rectTransform;
     private Canvas canvas;
     private bool isSelected = false;
+    public CardController cardContainer;
 
     private float width;
 
@@ -30,7 +31,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     void Start()
     {
         Width = rectTransform.rect.width * rectTransform.localScale.x;
-        Debug.Log("width: " + Width);
+        // Debug.Log("width: " + Width);
         canvas = GetComponent<Canvas>();
     }
 
