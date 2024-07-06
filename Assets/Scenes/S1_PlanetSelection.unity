@@ -775,6 +775,7 @@ MonoBehaviour:
   - {fileID: 4797405546114806468, guid: dbfee3e5dfd2394458893907d309a0c6, type: 3}
   - {fileID: 3579920845329053775, guid: d55aeaf954a873049b1b0bb05e74bc4a, type: 3}
   - {fileID: 2414747145600275333, guid: 3d230fab1375b4747b9ec94dbcc86886, type: 3}
+  darkMask: {fileID: 980844172}
   forceFitContainer: 1
   maxCardRotation: 15
   maxHeightDisplacement: 40

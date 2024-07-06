@@ -13,8 +13,12 @@ public class CardController : MonoBehaviour
 
     [Header("List of selected planets")]
     public List<GameObject> allPlanetSelection;
-    private RectTransform rectTransform;
+    private GameObject planetSelectionInstance;
 
+    [Header("Mask")]
+    public GameObject darkMask;
+
+    [Header("Constraints")]
     [SerializeField]
     private bool forceFitContainer;
 
@@ -27,6 +31,7 @@ public class CardController : MonoBehaviour
 
     [SerializeField]
     private AnimationSpeedConfig animationSpeedConfig;
+    private RectTransform rectTransform;
 
     void Awake()
     {
@@ -34,6 +39,7 @@ public class CardController : MonoBehaviour
     }
     void Start()
     {
+        darkMask.SetActive(false);
         InitCards();
     }
 
@@ -42,13 +48,14 @@ public class CardController : MonoBehaviour
         ShuffleCards();
         DisplayCards();
         SetUpCards();
+        SetCardsAnchor();
     }
-    
+
     private void ShuffleCards()
     {
         for (int i = allCards.Count - 1; i > 0; i--)
         {
-            int randomIndex = Random.Range(0, i + 1); // Tạo một số ngẫu nhiên từ 0 đến i
+            int randomIndex = Random.Range(0, i + 1);
             CardWrapper temp = allCards[i];
             allCards[i] = allCards[randomIndex];
             allCards[randomIndex] = temp;
@@ -66,7 +73,7 @@ public class CardController : MonoBehaviour
 
         allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
     }
-    
+
     private void SetUpCards()
     {
         foreach (CardWrapper card in allCardInstances)
@@ -89,16 +96,17 @@ public class CardController : MonoBehaviour
         }
     }
 
+    private void SetCardsAnchor()
+    {
+        foreach (CardWrapper child in allCardInstances)
+        {
+            child.SetAnchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f));
+        }
+    }
+
     void Update()
     {
         UpdateCards();
-        SetCardsAnchor();
-    }
-
-    private void SetCardsAnchor() {
-        foreach (CardWrapper child in allCardInstances) {
-            child.SetAnchor(new Vector2(0, 0.5f), new Vector2(0, 0.5f));
-        }
     }
 
     private void UpdateCards()
@@ -115,8 +123,16 @@ public class CardController : MonoBehaviour
 
         SetCardsPosition();
         SetCardsRotation();
-        // SetCardsUILayers();
+        SetCardsUILayers();
         // UpdateCardOrder();
+    }
+
+    private void SetCardsUILayers()
+    {
+        for (var i = 0; i < allCardInstances.Count; i++)
+        {
+            allCardInstances[i].uiLayer = 1 + i;
+        }
     }
 
     private void SetCardsPosition()
@@ -198,7 +214,31 @@ public class CardController : MonoBehaviour
 
     public void OnCardDisplayPlanetSelection(CardWrapper card)
     {
-        var planetSelectionName = card.name.Replace("UI", "Selection");
-        Debug.Log("name" + planetSelectionName);
+        if (char.IsDigit(card.name[0]))
+        {
+            // Lấy ký tự đầu tiên của object
+            int idPlanetInList = card.name[0] - '0';
+            GameObject planet = allPlanetSelection[idPlanetInList];
+
+            // Hiển thị planet được chọn
+            Vector3 positionPlanet = new Vector3(0, 0, -9);
+            planetSelectionInstance = Instantiate(planet, positionPlanet, Quaternion.identity);
+
+            // Bật lớp phủ
+            darkMask.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("The first character is not a digit.");
+        }
+    }
+
+    public void DestroyPlanetSelection()
+    {
+        if (planetSelectionInstance != null)
+        {
+            DestroyImmediate(planetSelectionInstance);
+            darkMask.SetActive(false);
+        }
     }
 }
