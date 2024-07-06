@@ -9,8 +9,10 @@ public class CardController : MonoBehaviour
 {
     [Header("List of Cards")]
     public List<CardWrapper> allCards;
-
     private List<CardWrapper> allCardInstances;
+
+    [Header("List of selected planets")]
+    public List<GameObject> allPlanetSelection;
     private RectTransform rectTransform;
 
     [SerializeField]

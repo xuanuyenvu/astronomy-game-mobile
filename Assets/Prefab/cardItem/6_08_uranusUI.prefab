@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 3720745895023114434}
   - component: {fileID: 1238577568112090700}
   m_Layer: 5
-  m_Name: uranusUI
+  m_Name: 6_08_uranusUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

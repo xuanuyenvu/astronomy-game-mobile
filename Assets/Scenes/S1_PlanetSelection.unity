@@ -758,14 +758,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allCards:
-  - {fileID: 7612842471484761107, guid: 138a2d85262df9449b5d80ecbc918ba6, type: 3}
-  - {fileID: 1574396055257405837, guid: 2f60ae727928d1042b04d261a7b2f4c5, type: 3}
-  - {fileID: 6827322045150281432, guid: 03cda9b2811a8ed49bc16544c4ab0f9c, type: 3}
   - {fileID: 5729788283866150833, guid: ce25e0f8f37da7d4fae5186fa566e29e, type: 3}
-  - {fileID: 1589432434959478845, guid: 8500aae34b056e243809e53df8e98f80, type: 3}
+  - {fileID: 2462513237678882519, guid: 610e91dda7105194594fffa6adaf220d, type: 3}
+  - {fileID: 7612842471484761107, guid: 138a2d85262df9449b5d80ecbc918ba6, type: 3}
+  - {fileID: 6827322045150281432, guid: 03cda9b2811a8ed49bc16544c4ab0f9c, type: 3}
+  - {fileID: 1574396055257405837, guid: 2f60ae727928d1042b04d261a7b2f4c5, type: 3}
   - {fileID: 2477768933720269096, guid: 5269ea1fff3679f4395a464c0f6bfb7b, type: 3}
   - {fileID: 1238577568112090700, guid: 0cefd9ef48988b64a93b3df95eb99b57, type: 3}
-  - {fileID: 2462513237678882519, guid: 610e91dda7105194594fffa6adaf220d, type: 3}
+  - {fileID: 1589432434959478845, guid: 8500aae34b056e243809e53df8e98f80, type: 3}
+  allPlanetSelection:
+  - {fileID: 3552773675309807632, guid: 63f2549e13be78440a660a766372f160, type: 3}
+  - {fileID: 1751794173997682043, guid: 7d35401afdecd5a41a0b5b0ba92b40d9, type: 3}
+  - {fileID: 8165098089582785594, guid: 5db0037e384908642a4720a169296393, type: 3}
+  - {fileID: 8990321358841818361, guid: c47c41021f7205e44b486b8898f48bf3, type: 3}
+  - {fileID: 9217098643916112570, guid: d02b4e71d3e225e428987319192a677a, type: 3}
+  - {fileID: 4797405546114806468, guid: dbfee3e5dfd2394458893907d309a0c6, type: 3}
+  - {fileID: 3579920845329053775, guid: d55aeaf954a873049b1b0bb05e74bc4a, type: 3}
+  - {fileID: 2414747145600275333, guid: 3d230fab1375b4747b9ec94dbcc86886, type: 3}
   forceFitContainer: 1
   maxCardRotation: 15
   maxHeightDisplacement: 40
