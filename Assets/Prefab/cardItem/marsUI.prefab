@@ -139,7 +139,6 @@ MonoBehaviour:
     position: 500
     releasePosition: 2000
     zoom: 0.3
-  width: 10
 --- !u!1 &4603919198223090255
 GameObject:
   m_ObjectHideFlags: 0

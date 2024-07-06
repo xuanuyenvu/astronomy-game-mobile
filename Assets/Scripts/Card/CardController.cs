@@ -37,19 +37,11 @@ public class CardController : MonoBehaviour
 
     private void InitCards()
     {
-        SetUpCards();
         ShuffleCards();
         DisplayCards();
+        SetUpCards();
     }
-
-    private void SetUpCards()
-    {
-        foreach (CardWrapper card in allCards)
-        {
-            card.animationSpeedConfig = animationSpeedConfig;
-        }
-    }
-
+    
     private void ShuffleCards()
     {
         for (int i = allCards.Count - 1; i > 0; i--)
@@ -71,6 +63,28 @@ public class CardController : MonoBehaviour
 
         allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
     }
+    
+    private void SetUpCards()
+    {
+        foreach (CardWrapper card in allCardInstances)
+        {
+            var canvas = card.GetComponent<Canvas>();
+            if (canvas == null)
+            {
+                canvas = card.gameObject.AddComponent<Canvas>();
+            }
+
+            canvas.overrideSorting = true;
+
+            if (card.GetComponent<GraphicRaycaster>() == null)
+            {
+                card.gameObject.AddComponent<GraphicRaycaster>();
+            }
+
+            card.animationSpeedConfig = animationSpeedConfig;
+            card.cardContainer = this;
+        }
+    }
 
     void Update()
     {
@@ -89,8 +103,8 @@ public class CardController : MonoBehaviour
             return;
         }
 
-        SetCardsRotation();
         SetCardsPosition();
+        SetCardsRotation();
         // SetCardsUILayers();
         // UpdateCardOrder();
     }
@@ -101,12 +115,10 @@ public class CardController : MonoBehaviour
         float cardsTotalWidth = 0;
         foreach (CardWrapper card in allCardInstances)
         {
-            cardsTotalWidth += card.Width * card.transform.lossyScale.x;
+            cardsTotalWidth += card.Width * (card.transform.lossyScale.x * 9);
         }
-
         // Compute the width of the container in global space
-        var containerWidth = rectTransform.rect.width;
-        Debug.Log("container: " + containerWidth);
+        var containerWidth = rectTransform.rect.width * transform.lossyScale.x;
         if (forceFitContainer && cardsTotalWidth > containerWidth)
         {
             DistributeChildrenToFitContainer(cardsTotalWidth);
@@ -122,12 +134,12 @@ public class CardController : MonoBehaviour
         // Get the width of the container
         var width = rectTransform.rect.width * transform.lossyScale.x;
         // Get the distance between each child
-        var distanceBetweenChildren = (width - childrenTotalWidth) / (allCards.Count - 1);
+        var distanceBetweenChildren = (width - childrenTotalWidth) / (allCardInstances.Count - 1);
         // Set all children's positions to be evenly spaced out
         var currentX = transform.position.x - width / 2;
         foreach (CardWrapper child in allCardInstances)
         {
-            var adjustedChildWidth = child.Width * child.transform.lossyScale.x;
+            var adjustedChildWidth = child.Width * (child.transform.lossyScale.x * 9);
             child.targetPosition = new Vector2(currentX + adjustedChildWidth / 2, transform.position.y);
             currentX += adjustedChildWidth + distanceBetweenChildren;
         }
@@ -138,7 +150,7 @@ public class CardController : MonoBehaviour
         var currentPosition = GetAnchorPositionByAlignment(childrenTotalWidth);
         foreach (CardWrapper child in allCardInstances)
         {
-            var adjustedChildWidth = child.Width * child.transform.lossyScale.x;
+            var adjustedChildWidth = child.Width * (child.transform.lossyScale.x * 9);
             child.targetPosition = new Vector2(currentPosition + adjustedChildWidth / 2, transform.position.y);
             currentPosition += adjustedChildWidth;
         }
@@ -154,8 +166,8 @@ public class CardController : MonoBehaviour
     {
         for (var i = 0; i < allCardInstances.Count; i++)
         {
-            allCards[i].targetRotation = GetCardRotation(i);
-            allCards[i].targetVerticalDisplacement = GetCardVerticalDisplacement(i);
+            allCardInstances[i].targetRotation = GetCardRotation(i);
+            allCardInstances[i].targetVerticalDisplacement = GetCardVerticalDisplacement(i);
         }
     }
 
