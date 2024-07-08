@@ -20039,6 +20039,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 07_saturn
       objectReference: {fileID: 0}
+    - target: {fileID: 4104997909985063850, guid: 6c3c35081774e9e44b3ff22610cfbc2c, type: 3}
+      propertyPath: m_TagString
+      value: PlanetSelection
+      objectReference: {fileID: 0}
     - target: {fileID: 8988047525112771194, guid: 6c3c35081774e9e44b3ff22610cfbc2c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

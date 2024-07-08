@@ -24687,7 +24687,7 @@ GameObject:
   - component: {fileID: 1512238301493939981}
   m_Layer: 0
   m_Name: 03_earth
-  m_TagString: 03_earth
+  m_TagString: PlanetSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

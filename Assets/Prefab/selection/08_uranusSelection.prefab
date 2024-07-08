@@ -20079,6 +20079,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 08_uranus
       objectReference: {fileID: 0}
+    - target: {fileID: 8097865400403079997, guid: 173b0bca70c540747bdb47a03d2aac86, type: 3}
+      propertyPath: m_TagString
+      value: PlanetSelection
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
