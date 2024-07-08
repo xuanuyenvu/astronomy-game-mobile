@@ -20079,6 +20079,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 04_mars
       objectReference: {fileID: 0}
+    - target: {fileID: 1781681862544399129, guid: 1c49c6d0649146849a24cfe9aa4900b4, type: 3}
+      propertyPath: m_TagString
+      value: PlanetSelection
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

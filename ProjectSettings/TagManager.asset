@@ -12,6 +12,7 @@ TagManager:
   - 07_saturn
   - 08_uranus
   - 09_neptune
+  - PlanetSelection
   layers:
   - Default
   - TransparentFX

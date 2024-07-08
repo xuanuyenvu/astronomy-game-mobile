@@ -20039,6 +20039,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: 06_jupiter
       objectReference: {fileID: 0}
+    - target: {fileID: 2225880017587734342, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
+      propertyPath: m_TagString
+      value: PlanetSelection
+      objectReference: {fileID: 0}
     - target: {fileID: 5237972967772034372, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
