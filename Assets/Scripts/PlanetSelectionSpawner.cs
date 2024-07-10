@@ -159,11 +159,20 @@ public class PlanetSelectionSpawner : MonoBehaviour
         return Vector3.zero;
     }
 
-
     public void Play()
     {
         RandomizePosition();
         FindMeanAndSetRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
+    }
+
+    public void HandleConfirmButton(string planetName)
+    {
+        // tắt mask, cửa sổ chọn hành tinh
+        // phải là code bên kia tắt chu
+        Debug.Log("name: " + planetName);
+        // hiển thị hành tinh được chọn ở vị trí m2
+
+        // 
     }
 }

@@ -5,10 +5,10 @@ using UnityEngine;
 public class ButtonController : MonoBehaviour
 {
     public CardController cardController;
-    // public PlanetSelectionSpwaner planetSelectionSpwaner;
+    public PlanetSelectionSpawner planetSelectionSpawner;
     public void CallPlanetSelectionSpawner()
     {
         var planetName = cardController.GetSelectedPlanetName();
-        Debug.Log("name: " + planetName);
+        planetSelectionSpawner.HandleConfirmButton(planetName);
     }
 }
