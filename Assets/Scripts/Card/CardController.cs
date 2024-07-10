@@ -18,8 +18,9 @@ public class CardController : MonoBehaviour
     [HideInInspector]
     public CardWrapper selectedCard = null;
 
-    [Header("Mask")]
+    [Header("Asset in Scene")]
     public GameObject darkMask;
+    public Button confirmButton;
 
     [Header("Constraints")]
     [SerializeField]
@@ -43,6 +44,7 @@ public class CardController : MonoBehaviour
     void Start()
     {
         darkMask.SetActive(false);
+        confirmButton.gameObject.SetActive(false);
         InitCards();
     }
 
@@ -213,13 +215,26 @@ public class CardController : MonoBehaviour
             return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCards.Count - 1) / 2f, 2) / Mathf.Pow((allCards.Count - 1) / 2f, 2));
     }
 
+    private GameObject GetPlanetFromCard(CardWrapper card)
+    {
+
+        int idPlanetInList = card.name[0] - '0';
+
+        if (idPlanetInList >= 0 && idPlanetInList < allPlanetSelection.Count)
+        {
+            return allPlanetSelection[idPlanetInList];
+        }
+
+        return null;
+    }
+
+
     public void OnCardDisplayPlanetSelection(CardWrapper card)
     {
         if (char.IsDigit(card.name[0]))
         {
             // Lấy ký tự đầu tiên của object
-            int idPlanetInList = card.name[0] - '0';
-            GameObject planet = allPlanetSelection[idPlanetInList];
+            GameObject planet = GetPlanetFromCard(card);
 
             // Hiển thị planet được chọn
             Vector3 positionPlanet = new Vector3(0, 0, -9);
@@ -227,6 +242,7 @@ public class CardController : MonoBehaviour
 
             // Bật lớp phủ
             darkMask.SetActive(true);
+            confirmButton.gameObject.SetActive(true);
         }
         else
         {
@@ -240,6 +256,7 @@ public class CardController : MonoBehaviour
         {
             DestroyImmediate(planetSelectionInstance);
             darkMask.SetActive(false);
+            confirmButton.gameObject.SetActive(false); ;
         }
     }
 
@@ -254,5 +271,11 @@ public class CardController : MonoBehaviour
 
         // Gán thẻ được chọn vào biến selectedCard
         selectedCard = card;
+    }
+
+    public string GetSelectedPlanetName()
+    {
+        GameObject planet = GetPlanetFromCard(selectedCard);
+        return planet.name;
     }
 }
