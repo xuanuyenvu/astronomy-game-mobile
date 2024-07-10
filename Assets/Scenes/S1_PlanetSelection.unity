@@ -637,7 +637,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da439829b8a62f546bebaca990ed512b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planet: {fileID: 1233786266}
+  cardController: {fileID: 1233786268}
+  planetSelectionSpawner: {fileID: 0}
 --- !u!4 &840933975
 Transform:
   m_ObjectHideFlags: 0
@@ -1437,7 +1438,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1947174491}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 840933974}
+        m_TargetAssemblyTypeName: ButtonController, Assembly-CSharp
+        m_MethodName: CallPlanetSelectionSpawner
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1947174491
 MonoBehaviour:
   m_ObjectHideFlags: 0
