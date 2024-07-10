@@ -19,7 +19,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public CardController cardContainer;
 
     public AnimationSpeedConfig animationSpeedConfig;
-    private float overrideYPosition = 46;
+    private float overrideYPosition = 9;
     private int zoomedSortOrder = 100;
     public int uiLayer;
 
@@ -90,7 +90,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         var target = new Vector2(targetPosition.x, targetPosition.y + targetVerticalDisplacement);
         if (isSelected)
         {
-            target = new Vector2(target.x, overrideYPosition);
+            target = new Vector2(target.x, target.y + overrideYPosition);
         }
 
         var distance = Vector2.Distance(rectTransform.position, target);
