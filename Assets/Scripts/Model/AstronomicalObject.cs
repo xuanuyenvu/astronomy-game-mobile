@@ -9,7 +9,7 @@ public class AstronomicalObject : MonoBehaviour
     public double Mass;
 
     public float scaleFactor = 1;
-    private float scaleDownFactor = 1000; // 1unit: m -> km
+    protected float scaleDownFactor = 1000; // 1unit: m -> km
 
     public float Distance(AstronomicalObject obj)
     {
