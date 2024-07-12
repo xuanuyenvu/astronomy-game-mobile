@@ -36,6 +36,7 @@ public class CardController : MonoBehaviour
     [SerializeField]
     private AnimationSpeedConfig animationSpeedConfig;
     private RectTransform rectTransform;
+    private bool isListChanging = false;
 
     void Awake()
     {
@@ -116,7 +117,7 @@ public class CardController : MonoBehaviour
 
     private void UpdateCards()
     {
-        if (transform.childCount != allCardInstances.Count)
+        if (transform.childCount != allCardInstances.Count && isListChanging)
         {
             InitCards();
         }
@@ -126,10 +127,63 @@ public class CardController : MonoBehaviour
             return;
         }
 
+        UpdateCardSizeAndProperties(allCardInstances.Count);
+
         SetCardsPosition();
         SetCardsRotation();
         SetCardsUILayers();
     }
+
+    private void UpdateCardSizeAndProperties(int cardCount)
+    {
+        Vector2 targetSize;
+
+        switch (cardCount)
+        {
+            case 7:
+                targetSize = new Vector2(870, rectTransform.sizeDelta.y);
+                break;
+            case 6:
+                targetSize = new Vector2(770, rectTransform.sizeDelta.y);
+                break;
+            case 5:
+                targetSize = new Vector2(670, rectTransform.sizeDelta.y);
+                break;
+            case 4:
+                targetSize = new Vector2(600, rectTransform.sizeDelta.y);
+                maxHeightDisplacement = 0;
+                SetNoRotationForAllCards(true);
+                break;
+            default:
+                return;
+        }
+
+        StartCoroutine(SmoothResize(targetSize, 0.1f));
+    }
+
+    private void SetNoRotationForAllCards(bool noRotation)
+    {
+        foreach (CardWrapper card in allCardInstances)
+        {
+            card.NoRotation = noRotation;
+        }
+    }
+
+    private IEnumerator SmoothResize(Vector2 targetSize, float duration)
+    {
+        Vector2 initialSize = rectTransform.sizeDelta;
+        float timeElapsed = 0;
+
+        while (timeElapsed < duration)
+        {
+            rectTransform.sizeDelta = Vector2.Lerp(initialSize, targetSize, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rectTransform.sizeDelta = targetSize;
+    }
+
 
     private void SetCardsUILayers()
     {
@@ -203,16 +257,16 @@ public class CardController : MonoBehaviour
 
     private float GetCardRotation(int index)
     {
-        if (allCards.Count < 3) return 0;
+        if (allCardInstances.Count < 3) return 0;
         else
-            return -maxCardRotation * (index - (allCardInstances.Count - 1) / 2f) / ((allCards.Count - 1) / 2f);
+            return -maxCardRotation * (index - (allCardInstances.Count - 1) / 2f) / ((allCardInstances.Count - 1) / 2f);
     }
 
     private float GetCardVerticalDisplacement(int index)
     {
         if (allCardInstances.Count < 3) return 0;
         else
-            return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCards.Count - 1) / 2f, 2) / Mathf.Pow((allCards.Count - 1) / 2f, 2));
+            return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCardInstances.Count - 1) / 2f, 2) / Mathf.Pow((allCardInstances.Count - 1) / 2f, 2));
     }
 
     private GameObject GetPlanetFromCard(CardWrapper card)
@@ -254,7 +308,7 @@ public class CardController : MonoBehaviour
     {
         if (planetSelectionInstance != null)
         {
-            DestroyImmediate(planetSelectionInstance);
+            Destroy(planetSelectionInstance);
             darkMask.SetActive(false);
             confirmButton.gameObject.SetActive(false); ;
         }
@@ -276,6 +330,34 @@ public class CardController : MonoBehaviour
     public string GetSelectedPlanetName()
     {
         GameObject planet = GetPlanetFromCard(selectedCard);
+        if (planet != null)
+        {
+            DestroyPlanetSelection();
+        }
+        if (selectedCard != null)
+        {
+            RemoveAndDestroyCardInstance(selectedCard);
+            selectedCard = null;
+        }
         return planet.name;
+    }
+
+    private void RemoveAndDestroyCardInstance(CardWrapper card)
+    {
+        isListChanging = true;
+        if (card != null)
+        {
+            allCardInstances.Remove(card);
+            Destroy(card.gameObject);
+
+        }
+        isListChanging = false;
+        StartCoroutine(SmoothUpdateCards());
+    }
+
+    private IEnumerator SmoothUpdateCards()
+    {
+        yield return new WaitForEndOfFrame();
+        UpdateCards();
     }
 }
