@@ -6,10 +6,22 @@ public class ButtonController : MonoBehaviour
 {
     public CardController cardController;
     public PlanetSelectionSpawner planetSelectionSpawner;
+
+    void Start()
+    {
+        if (cardController == null)
+        {
+            cardController = FindObjectOfType<CardController>();
+        }
+
+        if (planetSelectionSpawner == null)
+        {
+            planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
+        }
+    }
     public void CallPlanetSelectionSpawner()
     {
         string planetName = cardController.GetSelectedPlanetName();
-        // Debug.Log(" _" + planetName);
-        // planetSelectionSpawner.HandleConfirmButton(planetName);
+        planetSelectionSpawner.HandleConfirmButton(planetName);
     }
 }
