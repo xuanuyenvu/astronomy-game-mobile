@@ -638,7 +638,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardController: {fileID: 1233786268}
-  planetSelectionSpawner: {fileID: 0}
+  planetSelectionSpawner: {fileID: 1341054540}
 --- !u!4 &840933975
 Transform:
   m_ObjectHideFlags: 0

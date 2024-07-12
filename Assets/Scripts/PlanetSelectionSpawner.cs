@@ -73,6 +73,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
         spawnPosition.z = -3;
 
         AstronomicalObject clonedPlanet = Instantiate(origin, spawnPosition, Quaternion.identity);
+        clonedPlanet.name = clonedPlanet.name.Replace("(Clone)", "");
 
         if (clonedPlanet.tag == "07_saturn")
         {
@@ -168,11 +169,45 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     public void HandleConfirmButton(string planetName)
     {
-        // tắt mask, cửa sổ chọn hành tinh
-        // phải là code bên kia tắt chu
-        Debug.Log("name: " + planetName);
-        // hiển thị hành tinh được chọn ở vị trí m2
+        DisplaySelectedPlanet(planetName);
+        if (planetName == planet2.name)
+        {
+            Debug.Log("dung");
+        }
+        else
+        {
+            Debug.Log("sai");
+            // rocket lao vao
+            StartCoroutine(MoveRocketToPlanet2());
+            // no cai bum
+        }
+    }
 
-        // 
+    private void DisplaySelectedPlanet(string planetName)
+    {
+        AstronomicalObject selectedPlanet = allPlanets.Find(planet => planet.name == planetName);
+
+        if (selectedPlanet != null)
+        {
+            Instantiate(selectedPlanet, planet2.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogWarning("Planet with name " + planetName + " not found in allPlanets list.");
+        }
+        target.SetActive(false);
+    }
+
+    private IEnumerator MoveRocketToPlanet2()
+    {
+        Vector3 targetPosition = planet2.transform.position;
+        while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+        {
+            Debug.Log("di");
+            rocket.transform.position = Vector3.MoveTowards(rocket.transform.position, targetPosition, 3f * Time.deltaTime);
+            yield return null;
+        }
+        // Optional: Ensure the rocket lands exactly on planet2's position
+        rocket.transform.position = targetPosition;
     }
 }

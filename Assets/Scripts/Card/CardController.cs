@@ -339,6 +339,7 @@ public class CardController : MonoBehaviour
             RemoveAndDestroyCardInstance(selectedCard);
             selectedCard = null;
         }
+        planet.name = planet.name.Replace("Selection", "");
         return planet.name;
     }
 
