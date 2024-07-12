@@ -1105,7 +1105,8 @@ MonoBehaviour:
   - {fileID: 164559625505778577, guid: 8bc7de61445ddf442aeebea2e77806bd, type: 3}
   planet1: {fileID: 0}
   planet2: {fileID: 0}
-  rocket: {fileID: 3511199036536918836, guid: 90ba1301b38853749bfece9e57171690, type: 3}
+  rocketPrefab: {fileID: 2564393266105262465, guid: 90ba1301b38853749bfece9e57171690, type: 3}
+  rocket: {fileID: 0}
   target: {fileID: 8478459348999334745, guid: 28975ffdba1df554494dfba25b0276be, type: 3}
 --- !u!1 &1648514301
 GameObject:

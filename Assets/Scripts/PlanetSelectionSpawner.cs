@@ -15,7 +15,10 @@ public class PlanetSelectionSpawner : MonoBehaviour
     [HideInInspector]
     public AstronomicalObject planet2;
 
-    public AstronomicalObject rocket;
+    public RocketController rocketPrefab;
+
+    [HideInInspector]
+    public RocketController rocket;
     public GameObject target;
 
     private int screenWidth;
@@ -75,7 +78,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
         AstronomicalObject clonedPlanet = Instantiate(origin, spawnPosition, Quaternion.identity);
         clonedPlanet.name = clonedPlanet.name.Replace("(Clone)", "");
 
-        if (clonedPlanet.tag == "07_saturn")
+        if (clonedPlanet.name == "07_saturn")
         {
             Vector3 newRotation = clonedPlanet.transform.rotation.eulerAngles;
             newRotation.x = -10f;
@@ -109,15 +112,9 @@ public class PlanetSelectionSpawner : MonoBehaviour
         var direction = (planet1.transform.position - planet2.transform.position).normalized;
 
         var answer = planet2.transform.position + direction * ((float)d2);
-
-        if (isLeft)
-        {
-            rocket = Instantiate(rocket, answer, Quaternion.Euler(0, 90, 0));
-        }
-        else
-        {
-            rocket = Instantiate(rocket, answer, Quaternion.Euler(0, -90, 0));
-        }
+        
+        rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
+        rocket.RotateRocket(planet1.gameObject);
         rocket.gameObject.SetActive(true);
     }
 
@@ -169,7 +166,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     public void HandleConfirmButton(string planetName)
     {
-        DisplaySelectedPlanet(planetName);
+        AstronomicalObject planetAnswer = DisplaySelectedPlanet(planetName);
+        RocketFlyAnimation(planetAnswer);
         if (planetName == planet2.name)
         {
             Debug.Log("dung");
@@ -178,36 +176,45 @@ public class PlanetSelectionSpawner : MonoBehaviour
         {
             Debug.Log("sai");
             // rocket lao vao
-            StartCoroutine(MoveRocketToPlanet2());
+
+                // StartCoroutine(MoveRocket());
             // no cai bum
         }
     }
 
-    private void DisplaySelectedPlanet(string planetName)
+    private AstronomicalObject DisplaySelectedPlanet(string planetName)
     {
         AstronomicalObject selectedPlanet = allPlanets.Find(planet => planet.name == planetName);
 
         if (selectedPlanet != null)
         {
-            Instantiate(selectedPlanet, planet2.transform.position, Quaternion.identity);
+            return Instantiate(selectedPlanet, planet2.transform.position, Quaternion.identity);
         }
         else
         {
             Debug.LogWarning("Planet with name " + planetName + " not found in allPlanets list.");
+            return null;
         }
-        target.SetActive(false);
+        // target.SetActive(false);
     }
 
-    private IEnumerator MoveRocketToPlanet2()
+    private void RocketFlyAnimation(AstronomicalObject planetAnswer) 
     {
-        Vector3 targetPosition = planet2.transform.position;
-        while (Vector3.Distance(transform.position, targetPosition) > 0.1f)
+        var attractiveForce1 = planet1.GetAttractiveForce(rocket);
+        var attractiveForceAnswer = planetAnswer.GetAttractiveForce(rocket);
+        if (attractiveForce1 > attractiveForceAnswer)
         {
-            Debug.Log("di");
-            rocket.transform.position = Vector3.MoveTowards(rocket.transform.position, targetPosition, 3f * Time.deltaTime);
-            yield return null;
+            Debug.Log("1");
+            StartCoroutine(rocket.FlyTo(planet1.gameObject));
         }
-        // Optional: Ensure the rocket lands exactly on planet2's position
-        rocket.transform.position = targetPosition;
+        else if (attractiveForce1 < attractiveForceAnswer)
+        {
+            Debug.Log("2");
+            StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
+        }
+        else
+        {
+            // rocket.transform.rotation = 
+        }
     }
 }
