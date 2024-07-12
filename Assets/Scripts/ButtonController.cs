@@ -8,7 +8,8 @@ public class ButtonController : MonoBehaviour
     public PlanetSelectionSpawner planetSelectionSpawner;
     public void CallPlanetSelectionSpawner()
     {
-        var planetName = cardController.GetSelectedPlanetName();
-        planetSelectionSpawner.HandleConfirmButton(planetName);
+        string planetName = cardController.GetSelectedPlanetName();
+        // Debug.Log(" _" + planetName);
+        // planetSelectionSpawner.HandleConfirmButton(planetName);
     }
 }

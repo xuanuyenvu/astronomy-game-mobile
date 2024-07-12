@@ -25,7 +25,10 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     private float width;
 
+    private bool noRotation = false;
+
     public global::System.Single Width { get => width; set => width = value; }
+    public global::System.Boolean NoRotation { get => noRotation; set => noRotation = value; }
 
     void Awake()
     {
@@ -65,7 +68,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         // If the angle is negative, add 360 to it to get the positive equivalent
         crtAngle = crtAngle < 0 ? crtAngle + 360 : crtAngle;
         // If the card is hovered and the rotation should be reset, set the target rotation to 0
-        var tempTargetRotation = (isSelected)
+        var tempTargetRotation = (isSelected || noRotation)
             ? 0
             : targetRotation;
         // var tempTargetRotation = targetRotation;
@@ -88,6 +91,11 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private void UpdatePosition()
     {
         var target = new Vector2(targetPosition.x, targetPosition.y + targetVerticalDisplacement);
+
+        if (noRotation)
+        {
+            target = new Vector2(targetPosition.x, 39);
+        }
         if (isSelected)
         {
             target = new Vector2(target.x, target.y + overrideYPosition);
