@@ -31,6 +31,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
     private bool animationTime = false;
     private bool playing;
 
+    private int tryTime = 5;
+
     void Awake()
     {
         screenWidth = Screen.width;
@@ -51,6 +53,11 @@ public class PlanetSelectionSpawner : MonoBehaviour
         }
         else{
             rocket.TurnOnCollider = false;
+        }
+
+        if(tryTime == 0)
+        {
+            Debug.Log("GameOver");
         }
     }
 
@@ -221,11 +228,13 @@ public class PlanetSelectionSpawner : MonoBehaviour
         {
             Debug.Log("1");
             StartCoroutine(rocket.FlyTo(planet1.gameObject));
+            tryTime--;
         }
         else if (attractiveForce1 < attractiveForceAnswer)
         {
             Debug.Log("2");
             StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
+            tryTime--;
         }
         else
         {
