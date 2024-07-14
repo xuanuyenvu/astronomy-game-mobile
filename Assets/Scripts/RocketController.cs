@@ -9,25 +9,25 @@ public class RocketController : AstronomicalObject
 
     public global::System.Boolean TurnOnCollider { get => turnOnCollider; set => turnOnCollider = value; }
 
-    private Collider objectCollider;
+    private Collider rocketCollider;
     void Start()
     {
         if (cameraShake == null)
         {
             cameraShake = FindObjectOfType<CameraShake>();
         }
-        objectCollider = GetComponent<Collider>();
+        rocketCollider = GetComponent<Collider>();
     }
 
     void Update()
     {
         if (turnOnCollider)
         {
-            objectCollider.enabled = true;
+            rocketCollider.enabled = true;
         }
         else
         {
-            objectCollider.enabled = false;
+            rocketCollider.enabled = false;
         }
     }
     
@@ -58,7 +58,6 @@ public class RocketController : AstronomicalObject
 
     private void OnTriggerEnter(Collider planet)
     {
-        // Kiểm tra xem đối tượng nào đã vào vùng trigger
         if (planet.gameObject.CompareTag("Planet"))
         {
             Debug.Log("Đã vào vùng trigger của " + planet.gameObject.name);
