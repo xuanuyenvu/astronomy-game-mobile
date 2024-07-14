@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7279151420320574560}
   - component: {fileID: 2830201452888723428}
   - component: {fileID: 3644385751104852054}
-  - component: {fileID: 6608424697108231835}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -84,27 +83,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6608424697108231835
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1524495956875593698}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.54
-  m_Center: {x: 0, y: 0.0000009536743, z: 0}
 --- !u!1 &5790038646206267912
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,6 +95,7 @@ GameObject:
   - component: {fileID: 3201045717109332313}
   - component: {fileID: 3051985992252235158}
   - component: {fileID: 2564393266105262465}
+  - component: {fileID: 4294554376260594246}
   m_Layer: 0
   m_Name: meteorite
   m_TagString: Rocket
@@ -4980,6 +4959,27 @@ MonoBehaviour:
   Name: Rock
   Mass: 1
   scaleFactor: 1
+--- !u!135 &4294554376260594246
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5790038646206267912}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Radius: 1.27
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5833447707192255341
 GameObject:
   m_ObjectHideFlags: 0
