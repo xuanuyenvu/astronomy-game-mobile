@@ -12,6 +12,8 @@ public class CameraShake : MonoBehaviour
     private bool isShake = false;
     private CinemachineBasicMultiChannelPerlin _cbmcp;
 
+    public global::System.Boolean IsShake { get => isShake; }
+
     void Awake()
     {
         cinemachineVirtualCamera = GetComponent<CinemachineVirtualCamera>();
