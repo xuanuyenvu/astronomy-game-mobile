@@ -3,18 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RocketController : AstronomicalObject
-{    
-    private CameraShake cameraShake;
+{
+    private PlanetSelectionSpawner planetSelectionSpawner;
     private bool turnOnCollider = false;
 
-    public global::System.Boolean TurnOnCollider { get => turnOnCollider; set => turnOnCollider = value; }
-
     private Collider rocketCollider;
+    public global::System.Boolean TurnOnCollider { get => turnOnCollider; set => turnOnCollider = value; }
     void Start()
     {
-        if (cameraShake == null)
+        if (planetSelectionSpawner == null)
         {
-            cameraShake = FindObjectOfType<CameraShake>();
+            planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
         }
         rocketCollider = GetComponent<Collider>();
     }
@@ -30,7 +29,7 @@ public class RocketController : AstronomicalObject
             rocketCollider.enabled = false;
         }
     }
-    
+
     public void RotateRocket(GameObject planet)
     {
         // Tính vector từ rocket tới planet
@@ -43,15 +42,24 @@ public class RocketController : AstronomicalObject
         transform.rotation = rotation;
     }
 
-    public IEnumerator FlyTo(GameObject planet, float time = 2f)
+    public IEnumerator FlyTo(GameObject planet)
     {
         Vector3 startingPos = transform.position;
         Vector3 finalPos = planet.transform.position;
         RotateRocket(planet);
-        for (float t = 0f; t <= time; t += Time.deltaTime / time)
-        {
-            transform.position = Vector3.Lerp(startingPos, finalPos, t);
 
+        // Tính chiều dài quãng đường
+        float distance = Vector3.Distance(startingPos, finalPos);
+        // Đường bay càng xa thì thời gian càng chậm
+        // Ví dụ: bay 1km --> 2s, thì 2km phải bay lâu hơn
+        float time = distance / 6f;
+
+        for (float t = 0f; t <= 1f; t += Time.deltaTime / time)
+        {
+            if (this == null) 
+                yield break; // Dừng coroutine nếu đối tượng đã bị hủy bở hàm OnTriggerEnter
+
+            transform.position = Vector3.Lerp(startingPos, finalPos, t);
             yield return null;
         }
     }
@@ -61,7 +69,9 @@ public class RocketController : AstronomicalObject
         if (planet.gameObject.CompareTag("Planet"))
         {
             Debug.Log("Đã vào vùng trigger của " + planet.gameObject.name);
-            cameraShake.ShakeCamera();
+            Destroy(planet.gameObject);
+            StartCoroutine(planetSelectionSpawner.PlayBoomAndShake());
+            Destroy(this.gameObject);
         }
     }
 }
