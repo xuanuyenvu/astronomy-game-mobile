@@ -30,7 +30,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
     private Vector2 screenCenter;
     private bool isLeft;
 
-    private bool animationTime = false;
+    private bool animationStart = false;
+    private bool animationResult = false;
     private bool playing;
 
     private int tryTime = 5;
@@ -59,7 +60,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     void Update()
     {
-        if (!animationTime && playing)
+        if (!animationStart && playing)
         {
             rocket.TurnOnCollider = true;
         }
@@ -71,6 +72,12 @@ public class PlanetSelectionSpawner : MonoBehaviour
         if (tryTime == 0)
         {
             Debug.Log("GameOver");
+        }
+
+        if (!cameraShake.IsShake && animationResult)
+        {
+            // Destroy(boomInstance.gameObject);
+            animationResult = false;
         }
     }
 
@@ -155,27 +162,25 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     IEnumerator SetPositionBeforePlaying(float time)
     {
-        animationTime = true;
+        animationStart = true;
         var center = GetCenterPoint();
         var planet1Pos = planet1.transform.position;
-        // var placeHolderPos = PlaceHolder.transform.position;
         var rocketPos = rocket.transform.position;
+
         planet1.transform.position = center;
-        // PlaceHolder.transform.position = center;
         rocket.transform.position = center;
+
         for (float t = 0f; t <= 1; t += Time.deltaTime / time)
         {
             planet1.transform.position = Vector3.Lerp(center, planet1Pos, t); ;
-            // PlaceHolder.transform.position = Vector3.Lerp(center, placeHolderPos, t); ;
             rocket.transform.position = Vector3.Lerp(center, rocketPos, t); ;
 
             yield return null;
         }
         planet1.transform.position = planet1Pos;
-        // PlaceHolder.transform.position = placeHolderPos;
         rocket.transform.position = rocketPos;
 
-        animationTime = false;
+        animationStart = false;
         playing = true;
     }
 
@@ -201,6 +206,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     public void HandleConfirmButton(string planetName)
     {
+        // Hiển thị câu trả lời (hành tinh) vào màn chơi
+        animationResult = true;
         AstronomicalObject planetAnswer = DisplaySelectedPlanet(planetName);
         RocketFlyAnimation(planetAnswer);
     }
