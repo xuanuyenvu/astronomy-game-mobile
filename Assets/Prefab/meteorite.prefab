@@ -4959,6 +4959,14 @@ MonoBehaviour:
   Name: Rock
   Mass: 1
   scaleFactor: 1
+  boomPSList:
+  - {fileID: 6884358845297391235, guid: f8be230360aa34f46a4fe781964c1806, type: 3}
+  - {fileID: 4091470809153282979, guid: aac25a86b767a8842ba1b98af0a1965b, type: 3}
+  - {fileID: 6896371774700244012, guid: 20c759523c4bab44f9c8aca9b87e88c2, type: 3}
+  - {fileID: 8004770104173844030, guid: 4f9f52736dfd32b469c4d11a97256005, type: 3}
+  - {fileID: 4087668738407639057, guid: 9731e395a44221945a54415d4a3ae323, type: 3}
+  - {fileID: 277440523812920378, guid: f416900215aab664fb5d8b684c42afd5, type: 3}
+  - {fileID: 1570801088322179724, guid: ec4b05dba798f724b9dda810afe322bc, type: 3}
 --- !u!135 &4294554376260594246
 SphereCollider:
   m_ObjectHideFlags: 0

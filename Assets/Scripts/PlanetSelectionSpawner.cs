@@ -23,6 +23,8 @@ public class PlanetSelectionSpawner : MonoBehaviour
     [HideInInspector]
     public GameObject target = null;
 
+    [Header("List Particle System Boom")]
+    public List<ParticleSystem> boomPSPrefab;
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
@@ -33,12 +35,21 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     private int tryTime = 5;
 
+    [Header("Camera")]
+    public CameraShake cameraShake;
+    private ParticleSystem boomInstance = null;
+
     void Awake()
     {
         screenWidth = Screen.width;
         screenHeight = Screen.height;
 
         screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);
+
+        if (cameraShake == null)
+        {
+            cameraShake = FindObjectOfType<CameraShake>();
+        }
     }
 
     void Start()
@@ -48,14 +59,16 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     void Update()
     {
-        if(!animationTime && playing) {
+        if (!animationTime && playing)
+        {
             rocket.TurnOnCollider = true;
         }
-        else{
+        else
+        {
             rocket.TurnOnCollider = false;
         }
 
-        if(tryTime == 0)
+        if (tryTime == 0)
         {
             Debug.Log("GameOver");
         }
@@ -227,12 +240,14 @@ public class PlanetSelectionSpawner : MonoBehaviour
         if (attractiveForce1 > attractiveForceAnswer)
         {
             Debug.Log("1");
+            FindBoomMatchPlanet(planet1);
             StartCoroutine(rocket.FlyTo(planet1.gameObject));
             tryTime--;
         }
         else if (attractiveForce1 < attractiveForceAnswer)
         {
             Debug.Log("2");
+            FindBoomMatchPlanet(planetAnswer);
             StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
             tryTime--;
         }
@@ -242,4 +257,31 @@ public class PlanetSelectionSpawner : MonoBehaviour
         }
     }
 
+    private void FindBoomMatchPlanet(AstronomicalObject planet)
+    {
+        foreach (ParticleSystem boomPS in boomPSPrefab)
+        {
+            if (boomPS.name.Replace("_hit", "") == planet.name)
+            {
+                boomInstance = Instantiate(boomPS, planet.transform.position, Quaternion.identity);
+                var mainModule = boomInstance.main;
+                mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+                boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
+                return;
+            }
+        }
+        Debug.LogWarning("Planet with name " + planet.name + " not found in boomPSPrefab list.");
+        return;
+    }
+
+    public IEnumerator PlayBoomAndShake()
+    {
+        if (boomInstance != null)
+        {
+            boomInstance.gameObject.SetActive(true);
+            boomInstance.Play();
+        }
+        cameraShake.ShakeCamera();
+        yield return null;
+    }
 }
