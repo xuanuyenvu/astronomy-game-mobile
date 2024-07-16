@@ -10,18 +10,15 @@ public class PlanetSelectionSpawner : MonoBehaviour
     [Header("List of Planets")]
     public List<AstronomicalObject> allPlanets;
 
-    [HideInInspector]
-    public AstronomicalObject planet1;
-    [HideInInspector]
-    public AstronomicalObject planet2;
-
+    [Header("Rocket and Target")]
     public RocketController rocketPrefab;
-
-    [HideInInspector]
-    public RocketController rocket;
     public GameObject targetPrefab;
-    [HideInInspector]
-    public GameObject target = null;
+
+    private AstronomicalObject planet1 = null;
+    private AstronomicalObject planet2 = null;
+    private AstronomicalObject planetAnswer = null;
+    private RocketController rocket = null;
+    private GameObject target = null;
 
     [Header("List Particle System Boom")]
     public List<ParticleSystem> boomPSPrefab;
@@ -40,6 +37,9 @@ public class PlanetSelectionSpawner : MonoBehaviour
     public CameraShake cameraShake;
     private ParticleSystem boomInstance = null;
 
+    [Header("Card Controller")]
+    public CardController cardController;
+
     void Awake()
     {
         screenWidth = Screen.width;
@@ -50,6 +50,10 @@ public class PlanetSelectionSpawner : MonoBehaviour
         if (cameraShake == null)
         {
             cameraShake = FindObjectOfType<CameraShake>();
+        }
+        if (cardController == null)
+        {
+            cardController = FindObjectOfType<CardController>();
         }
     }
 
@@ -69,32 +73,61 @@ public class PlanetSelectionSpawner : MonoBehaviour
             rocket.TurnOnCollider = false;
         }
 
-        if (tryTime == 0)
+        if (cameraShake.IsShake == 0 && animationResult)
         {
-            Debug.Log("GameOver");
-        }
+            // Hủy boom instance
+            Destroy(boomInstance.gameObject);
 
-        if (!cameraShake.IsShake && animationResult)
-        {
-            // Destroy(boomInstance.gameObject);
+            // Đặt lại giá trị
             animationResult = false;
+            cameraShake.IsShake = -1;
+
+            // Thiết lập lại game
+            ReSetUpGame();
         }
+    }
+
+    private void ReSetUpGame()
+    {
+        if (tryTime > 0)
+        {
+            // Set up lại các object trong màn chơi
+            RePlayGame();
+            // Bật tính năng chọn thẻ bài
+            cardController.turnOnPointerHandler();
+        }
+        else
+        {
+            Debug.Log("gameOver");
+        }
+    }
+
+    private void RePlayGame()
+    {
+        planet1.gameObject.SetActive(true);
+        target.SetActive(true);
+
+        Destroy(planetAnswer.gameObject);
+
+        FindMeanAndSetRocket();
+        StartCoroutine(SetPositionBeforePlaying(0.5f));
     }
 
     public void RandomizePosition()
     {
-        var id = UnityEngine.Random.Range(0, allPlanets.Count);
-        // var id = 5;
-        planet1 = allPlanets[id];
+        var id1 = UnityEngine.Random.Range(0, allPlanets.Count);
+        planet1 = allPlanets[id1];
 
-        if (id < 4)
+        var id2 = 0;
+        if (id1 < 4)
         {
-            planet2 = allPlanets[Random.Range(0, 4)];
+            id2 = UnityEngine.Random.Range(0, 4);
         }
         else
         {
-            planet2 = allPlanets[Random.Range(4, allPlanets.Count)];
+            id2 = UnityEngine.Random.Range(4, allPlanets.Count);
         }
+        planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
         planet1 = Clone(planet1, isLeft);
@@ -116,6 +149,12 @@ public class PlanetSelectionSpawner : MonoBehaviour
         Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, spawnY, Camera.main.transform.position.z));
         spawnPosition.z = -3;
 
+        AstronomicalObject clonedPlanet = SpawnObject(origin, spawnPosition);
+        return clonedPlanet;
+    }
+
+    private AstronomicalObject SpawnObject(AstronomicalObject origin, Vector3 spawnPosition)
+    {
         AstronomicalObject clonedPlanet = Instantiate(origin, spawnPosition, Quaternion.identity);
         clonedPlanet.name = clonedPlanet.name.Replace("(Clone)", "");
 
@@ -206,55 +245,54 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     public void HandleConfirmButton(string planetName)
     {
-        // Hiển thị câu trả lời (hành tinh) vào màn chơi
         animationResult = true;
-        AstronomicalObject planetAnswer = DisplaySelectedPlanet(planetName);
+
+        // Tắt tính năng lựa chọn thẻ bài
+        cardController.turnOffPointerHandler();
+
+        // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
+        planetAnswer = DisplaySelectedPlanet(planetName);
+
+        // Tính toán và thực thi thiên thạch
         RocketFlyAnimation(planetAnswer);
     }
 
     private AstronomicalObject DisplaySelectedPlanet(string planetName)
     {
+        // Tìm hành tinh đã chọn trong danh sách
         AstronomicalObject selectedPlanet = allPlanets.Find(planet => planet.name == planetName);
-        AstronomicalObject clonedPlanet = Instantiate(selectedPlanet, planet2.transform.position, Quaternion.identity);
-        if (selectedPlanet == null)
+        // Khởi tạo hành tinh này trên màn hình
+        AstronomicalObject clonedPlanet = SpawnObject(selectedPlanet, planet2.transform.position);
+        // Ẩn target 
+        if (target != null)
         {
-            Debug.LogWarning("Planet with name " + planetName + " not found in allPlanets list.");
-            return null;
-
-        }
-        else
-        {
-            clonedPlanet.name = clonedPlanet.name.Replace("(Clone)", "");
-
-            if (clonedPlanet.name == "07_saturn")
-            {
-                Vector3 newRotation = clonedPlanet.transform.rotation.eulerAngles;
-                newRotation.x = -10f;
-                clonedPlanet.transform.rotation = Quaternion.Euler(newRotation);
-            }
-            if (target != null)
-            {
-                target.SetActive(false);
-            }
+            target.SetActive(false);
         }
         return clonedPlanet;
     }
 
     private void RocketFlyAnimation(AstronomicalObject planetAnswer)
     {
+        // Tính lực hấp dẫn giữa hành tinh 1 và thiên thạch
         var attractiveForce1 = planet1.GetAttractiveForce(rocket);
+
+        // Tính lực hấp dẫn giữa hành tinh trả lời và thiên thạch
         var attractiveForceAnswer = planetAnswer.GetAttractiveForce(rocket);
+
+        // Thực hiện so sánh
         if (attractiveForce1 > attractiveForceAnswer)
         {
-            Debug.Log("1");
+            // Tìm loại boom phù hợp với hành tinh 1
             FindBoomMatchPlanet(planet1);
+            // Bắt đầu bay
             StartCoroutine(rocket.FlyTo(planet1.gameObject));
             tryTime--;
         }
         else if (attractiveForce1 < attractiveForceAnswer)
         {
-            Debug.Log("2");
+            // Tìm loại boom phùm hợp với hành tinh trả lời
             FindBoomMatchPlanet(planetAnswer);
+            // Bắt đầu bay
             StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
             tryTime--;
         }

@@ -9,10 +9,11 @@ public class CameraShake : MonoBehaviour
     private float shakeIntensity = 3f;
     private float shakeTime = 0.9f;
     private float timer;
-    private bool isShake = false;
+    private int isShake = -1; // ban đầu = -1, start = 1, stop = 0
+    // đặt vậy là vì cần phân biệt giữa trạng thái mặc định ban đầu và stop
     private CinemachineBasicMultiChannelPerlin _cbmcp;
 
-    public global::System.Boolean IsShake { get => isShake; }
+    public global::System.Int32 IsShake { get => isShake; set => isShake = value; }
 
     void Awake()
     {
@@ -20,29 +21,29 @@ public class CameraShake : MonoBehaviour
     }
     void Start()
     {
-        StopShake();
+        StopShake(-1);
     }
 
     public void ShakeCamera()
     {
-        if(!isShake)
+        if(IsShake != 1)
         {
-            isShake = true;
+            IsShake = 1;
         }
         _cbmcp = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmcp.m_AmplitudeGain = shakeIntensity;
         timer = shakeTime;
     }
-    void StopShake()
+    void StopShake(int valueIsShake = 0)
     {
         _cbmcp = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmcp.m_AmplitudeGain = 0f;
         timer = shakeTime;
-        isShake = false;
+        IsShake = valueIsShake;
     }
     void Update()
     {
-        if (timer > 0 && isShake)
+        if (timer > 0 && IsShake == 1)
         {
             timer -= Time.deltaTime;
             if (timer <= 0)
