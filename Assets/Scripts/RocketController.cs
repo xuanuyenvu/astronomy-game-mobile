@@ -68,8 +68,7 @@ public class RocketController : AstronomicalObject
     {
         if (planet.gameObject.CompareTag("Planet"))
         {
-            Debug.Log("Đã vào vùng trigger của " + planet.gameObject.name);
-            Destroy(planet.gameObject);
+            planet.gameObject.SetActive(false);
             StartCoroutine(planetSelectionSpawner.PlayBoomAndShake());
             Destroy(this.gameObject);
         }

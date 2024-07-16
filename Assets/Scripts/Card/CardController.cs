@@ -361,4 +361,20 @@ public class CardController : MonoBehaviour
         yield return new WaitForEndOfFrame();
         UpdateCards();
     }
+
+    public void turnOffPointerHandler()
+    {
+        foreach (CardWrapper card in allCardInstances)
+        {
+            card.turnOnPointerDownAdnUp = false;
+        }
+    }
+
+    public void turnOnPointerHandler()
+    {
+        foreach (CardWrapper card in allCardInstances)
+        {
+            card.turnOnPointerDownAdnUp = true;
+        }
+    }
 }

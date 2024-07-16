@@ -6,12 +6,9 @@ using config;
 
 public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
-    [HideInInspector]
-    public Vector2 targetPosition;
-    [HideInInspector]
-    public float targetRotation;
-    [HideInInspector]
-    public float targetVerticalDisplacement;
+    [HideInInspector] public Vector2 targetPosition;
+    [HideInInspector] public float targetRotation;
+    [HideInInspector] public float targetVerticalDisplacement;
     private const float EPS = 0.01f;
     private RectTransform rectTransform;
     private Canvas canvas;
@@ -26,6 +23,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private float width;
 
     private bool noRotation = false;
+    [HideInInspector] public bool turnOnPointerDownAdnUp = true;
 
     public global::System.Single Width { get => width; set => width = value; }
     public global::System.Boolean NoRotation { get => noRotation; set => noRotation = value; }
@@ -113,7 +111,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!isSelected)
+        if (!isSelected && turnOnPointerDownAdnUp)
         {
             isSelected = true;
 

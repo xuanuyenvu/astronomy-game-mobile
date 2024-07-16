@@ -1138,12 +1138,8 @@ MonoBehaviour:
   - {fileID: 4301846034760436145, guid: 6c3c35081774e9e44b3ff22610cfbc2c, type: 3}
   - {fileID: -7558401501948290285, guid: 173b0bca70c540747bdb47a03d2aac86, type: 3}
   - {fileID: 164559625505778577, guid: 8bc7de61445ddf442aeebea2e77806bd, type: 3}
-  planet1: {fileID: 0}
-  planet2: {fileID: 0}
   rocketPrefab: {fileID: 2564393266105262465, guid: 90ba1301b38853749bfece9e57171690, type: 3}
-  rocket: {fileID: 0}
   targetPrefab: {fileID: 8478459348999334745, guid: 28975ffdba1df554494dfba25b0276be, type: 3}
-  target: {fileID: 8478459348999334745, guid: 28975ffdba1df554494dfba25b0276be, type: 3}
   boomPSPrefab:
   - {fileID: 6884358845297391235, guid: f8be230360aa34f46a4fe781964c1806, type: 3}
   - {fileID: 4091470809153282979, guid: aac25a86b767a8842ba1b98af0a1965b, type: 3}
@@ -1153,6 +1149,8 @@ MonoBehaviour:
   - {fileID: 277440523812920378, guid: f416900215aab664fb5d8b684c42afd5, type: 3}
   - {fileID: 1570801088322179724, guid: ec4b05dba798f724b9dda810afe322bc, type: 3}
   - {fileID: 354120209986404382, guid: aa726e95bf7c78b418125173d9d2ebb8, type: 3}
+  cameraShake: {fileID: 1939734920}
+  cardController: {fileID: 1233786268}
 --- !u!1 &1485649031
 GameObject:
   m_ObjectHideFlags: 3
