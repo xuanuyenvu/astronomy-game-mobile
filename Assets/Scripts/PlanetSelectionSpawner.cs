@@ -31,13 +31,13 @@ public class PlanetSelectionSpawner : MonoBehaviour
     private bool animationResult = false;
     private bool playing;
 
-    [Header("Camera")]
-    public CameraShake cameraShake;
     private ParticleSystem boomInstance = null;
 
     [Header("Scripts")]
+    public CameraShake cameraShake;
     public CardController cardController;
     public HealthManager healthManager;
+    public ScoreManager scoreManager;
 
     void Awake()
     {
@@ -135,7 +135,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
         planet2 = Clone(planet2, !isLeft);
         planet2.gameObject.SetActive(false);
 
-        target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.identity);
+        target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(49, 0, 0));
         target.name = target.name.Replace("(Clone)", "");
         target.SetActive(true);
     }
@@ -240,6 +240,9 @@ public class PlanetSelectionSpawner : MonoBehaviour
         RandomizePosition();
         FindMeanAndSetRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
+
+        // Bắt đầu tính thời gian
+        scoreManager.StartGame();
     }
 
     public void HandleConfirmButton(string planetName)
@@ -272,6 +275,14 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     private void RocketFlyAnimation(AstronomicalObject planetAnswer)
     {
+        // Nếu kết quả đúng thì xoay rocket
+        if (planetAnswer.name == planet2.name)
+        {
+            rocket.transform.rotation = Quaternion.identity;
+            scoreManager.FinalScore(healthManager.health);
+            return;
+        }
+
         // Tính lực hấp dẫn giữa hành tinh 1 và thiên thạch
         var attractiveForce1 = planet1.GetAttractiveForce(rocket);
 
@@ -286,16 +297,12 @@ public class PlanetSelectionSpawner : MonoBehaviour
             // Bắt đầu bay
             StartCoroutine(rocket.FlyTo(planet1.gameObject));
         }
-        else if (attractiveForce1 < attractiveForceAnswer)
+        else
         {
             // Tìm loại boom phùm hợp với hành tinh trả lời
             FindBoomMatchPlanet(planetAnswer);
             // Bắt đầu bay
             StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
-        }
-        else
-        {
-            // rocket.transform.rotation = 
         }
     }
 
