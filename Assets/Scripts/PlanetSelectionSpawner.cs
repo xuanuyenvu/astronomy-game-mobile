@@ -31,14 +31,13 @@ public class PlanetSelectionSpawner : MonoBehaviour
     private bool animationResult = false;
     private bool playing;
 
-    private int tryTime = 5;
-
     [Header("Camera")]
     public CameraShake cameraShake;
     private ParticleSystem boomInstance = null;
 
-    [Header("Card Controller")]
+    [Header("Scripts")]
     public CardController cardController;
+    public HealthManager healthManager;
 
     void Awake()
     {
@@ -89,7 +88,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     private void ReSetUpGame()
     {
-        if (tryTime > 0)
+        if (healthManager.health > 0)
         {
             // Set up lại các object trong màn chơi
             RePlayGame();
@@ -286,7 +285,6 @@ public class PlanetSelectionSpawner : MonoBehaviour
             FindBoomMatchPlanet(planet1);
             // Bắt đầu bay
             StartCoroutine(rocket.FlyTo(planet1.gameObject));
-            tryTime--;
         }
         else if (attractiveForce1 < attractiveForceAnswer)
         {
@@ -294,7 +292,6 @@ public class PlanetSelectionSpawner : MonoBehaviour
             FindBoomMatchPlanet(planetAnswer);
             // Bắt đầu bay
             StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
-            tryTime--;
         }
         else
         {
@@ -327,6 +324,9 @@ public class PlanetSelectionSpawner : MonoBehaviour
             boomInstance.Play();
         }
         cameraShake.ShakeCamera();
+
+        // Mất 1 mạng
+        healthManager.health--;
         yield return null;
     }
 }
