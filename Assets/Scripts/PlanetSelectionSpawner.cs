@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class PlanetSelectionSpawner : MonoBehaviour
+public class PlanetSelectionSpawner : IGamePlay
 {
     [Header("List of Planets")]
     public List<AstronomicalObject> allPlanets;
@@ -58,7 +58,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
 
     void Start()
     {
-        Play();
+        //Play();
     }
 
     void Update()
@@ -72,6 +72,17 @@ public class PlanetSelectionSpawner : MonoBehaviour
             rocket.TurnOnCollider = false;
         }
 
+        if (cardController.GetNumOfCards() == 0)
+        {
+            GameOver();
+        }
+
+        DestroyEffectAfterFin();
+    }
+
+    private void DestroyEffectAfterFin()
+    {
+        // Hủy hiệu ứng sau khi hành tinh phát nổ
         if (cameraShake.IsShake == 0 && animationResult)
         {
             // Hủy boom instance
@@ -97,7 +108,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
         }
         else
         {
-            Debug.Log("gameOver");
+            GameOver();
         }
     }
 
@@ -235,7 +246,7 @@ public class PlanetSelectionSpawner : MonoBehaviour
         return Vector3.zero;
     }
 
-    public void Play()
+    public override void Play()
     {
         RandomizePosition();
         FindMeanAndSetRocket();
@@ -335,5 +346,10 @@ public class PlanetSelectionSpawner : MonoBehaviour
         // Mất 1 mạng
         healthManager.health--;
         yield return null;
+    }
+
+    private void GameOver()
+    {
+        Debug.Log("gameOver");
     }
 }
