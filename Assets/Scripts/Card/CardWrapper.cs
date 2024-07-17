@@ -92,7 +92,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (noRotation)
         {
-            target = new Vector2(targetPosition.x, 39);
+            target = new Vector2(targetPosition.x, 33);
         }
         if (isSelected)
         {
