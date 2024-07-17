@@ -15,26 +15,20 @@ public class CardController : MonoBehaviour
     public List<GameObject> allPlanetSelection;
     private GameObject planetSelectionInstance;
 
-    [HideInInspector]
-    public CardWrapper selectedCard = null;
+    [HideInInspector] public CardWrapper selectedCard = null;
 
     [Header("Asset in Scene")]
     public GameObject darkMask;
     public Button confirmButton;
 
     [Header("Constraints")]
-    [SerializeField]
-    private bool forceFitContainer;
+    [SerializeField] private bool forceFitContainer;
 
     [Header("Rotation")]
-    [SerializeField]
-    [Range(0f, 90f)]
-    private float maxCardRotation;
-    [SerializeField]
-    private float maxHeightDisplacement;
+    [SerializeField] [Range(0f, 90f)] private float maxCardRotation;
+    [SerializeField] private float maxHeightDisplacement;
 
-    [SerializeField]
-    private AnimationSpeedConfig animationSpeedConfig;
+    [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
     private RectTransform rectTransform;
     private bool isListChanging = false;
 
@@ -316,7 +310,7 @@ public class CardController : MonoBehaviour
 
     public void ChangeSelectedCard(CardWrapper card)
     {
-        // Nếu đã có card được chọn từ trước thì gọi hàm Update() 
+        // Nếu đã có card được chọn từ trước thì gọi hàm ResetAllValues() 
         // để reset lại các giá trị Rotation, Position, Sorting
         if (selectedCard != null)
         {
@@ -376,5 +370,9 @@ public class CardController : MonoBehaviour
         {
             card.turnOnPointerDownAdnUp = true;
         }
+    }
+
+    public int GetNumOfCards() {
+        return allCardInstances.Count;
     }
 }
