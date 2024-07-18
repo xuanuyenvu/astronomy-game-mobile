@@ -33,12 +33,6 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private ParticleSystem boomInstance = null;
 
-    [Header("Scripts")]
-    public CameraShake cameraShake;
-    public CardController cardController;
-    public HealthManager healthManager;
-    public ScoreManager scoreManager;
-
     void Awake()
     {
         screenWidth = Screen.width;
@@ -146,7 +140,7 @@ public class PlanetSelectionSpawner : IGamePlay
         planet2 = Clone(planet2, !isLeft);
         planet2.gameObject.SetActive(false);
 
-        target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(49, 0, 0));
+        target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
         target.name = target.name.Replace("(Clone)", "");
         target.SetActive(true);
     }

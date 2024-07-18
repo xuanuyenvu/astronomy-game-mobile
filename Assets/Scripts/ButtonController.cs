@@ -5,16 +5,23 @@ using UnityEngine;
 public class ButtonController : MonoBehaviour
 {
     public CardController cardController;
-    public PlanetSelectionSpawner planetSelectionSpawner;
+    // private IGamePlay current;
+    private PlanetSelectionSpawner planetSelectionSpawner;
 
     void Start()
-    {
+    {  
+        if(planetSelectionSpawner == null)
+        {
+            planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
+        }
         if (cardController == null)
         {
             cardController = FindObjectOfType<CardController>();
         }
+    }
 
-        if (planetSelectionSpawner == null)
+    void Update(){
+        if(planetSelectionSpawner == null)
         {
             planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
         }
