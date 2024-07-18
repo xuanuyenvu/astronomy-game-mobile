@@ -10,7 +10,7 @@ public class CameraShake : MonoBehaviour
     private float shakeTime = 0.9f;
     private float timer;
     private int isShake = -1; // ban đầu = -1, start = 1, stop = 0
-    // đặt vậy là vì cần phân biệt giữa trạng thái mặc định ban đầu và stop
+    // đặt vậy là vì cần phân biệt giữa trạng thái ban đầu và trạng thái stop
     private CinemachineBasicMultiChannelPerlin _cbmcp;
 
     public global::System.Int32 IsShake { get => isShake; set => isShake = value; }
