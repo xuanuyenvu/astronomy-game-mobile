@@ -300,14 +300,18 @@ public class PlanetSelectionSpawner : IGamePlay
             // Tìm loại boom phù hợp với hành tinh 1
             FindBoomMatchPlanet(planet1);
             // Bắt đầu bay
-            StartCoroutine(rocket.FlyTo(planet1.gameObject));
+            // StartCoroutine(rocket.FlyTo(planet1.gameObject));
+            // rocket.transform.rotation = Quaternion.identity;
+            StartCoroutine(rocket.ShakeAndFlyTo(planet1.gameObject));
         }
         else
         {
             // Tìm loại boom phùm hợp với hành tinh trả lời
             FindBoomMatchPlanet(planetAnswer);
             // Bắt đầu bay
-            StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
+            // StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
+            // rocket.transform.rotation = Quaternion.identity;
+            StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject));
         }
     }
 
