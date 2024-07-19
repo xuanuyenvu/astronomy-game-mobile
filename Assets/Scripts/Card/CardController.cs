@@ -25,7 +25,7 @@ public class CardController : MonoBehaviour
     [SerializeField] private bool forceFitContainer;
 
     [Header("Rotation")]
-    [SerializeField] [Range(0f, 90f)] private float maxCardRotation;
+    [SerializeField][Range(0f, 90f)] private float maxCardRotation;
     [SerializeField] private float maxHeightDisplacement;
 
     [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
@@ -321,22 +321,6 @@ public class CardController : MonoBehaviour
         selectedCard = card;
     }
 
-    public string GetSelectedPlanetName()
-    {
-        GameObject planet = GetPlanetFromCard(selectedCard);
-        if (planet != null)
-        {
-            DestroyPlanetSelection();
-        }
-        if (selectedCard != null)
-        {
-            RemoveAndDestroyCardInstance(selectedCard);
-            selectedCard = null;
-        }
-        planet.name = planet.name.Replace("Selection", "");
-        return planet.name;
-    }
-
     private void RemoveAndDestroyCardInstance(CardWrapper card)
     {
         isListChanging = true;
@@ -356,6 +340,31 @@ public class CardController : MonoBehaviour
         UpdateCards();
     }
 
+    public GameObject GetSelectedPlanet()
+    {
+        // Tìm kiếm GameObject có script AstronomicalObject trong planetSelectionInstance
+        // Tức là truy cập đến hành tinh đang bay bên trên thẻ bài
+        AstronomicalObject astronomicalObject = planetSelectionInstance.GetComponentInChildren<AstronomicalObject>();
+
+        // Nếu selectedCard vẫn còn giá trị 
+        // Thì hủy instance của card đó và đặt lại giá trị null
+        if (selectedCard != null)
+        {
+            RemoveAndDestroyCardInstance(selectedCard);
+            selectedCard = null;
+        }
+
+        // Nếu tìm thấy planet ở dòng trên
+        // Thì hủy instance của thẻ, thẻ nghiêng, hành tinh, ...
+        if (astronomicalObject != null)
+        {
+            DestroyPlanetSelection();
+            return astronomicalObject.gameObject;
+        }
+
+        return null;
+    }
+
     public void turnOffPointerHandler()
     {
         foreach (CardWrapper card in allCardInstances)
@@ -372,7 +381,8 @@ public class CardController : MonoBehaviour
         }
     }
 
-    public int GetNumOfCards() {
+    public int GetNumOfCards()
+    {
         return allCardInstances.Count;
     }
 }

@@ -68,3 +68,4 @@ MonoBehaviour:
   - {fileID: 277440523812920378, guid: f416900215aab664fb5d8b684c42afd5, type: 3}
   - {fileID: 1570801088322179724, guid: ec4b05dba798f724b9dda810afe322bc, type: 3}
   - {fileID: 354120209986404382, guid: aa726e95bf7c78b418125173d9d2ebb8, type: 3}
+  winEffectPSPrefab: {fileID: 358637981425055526, guid: 69c6a568978c3ce44a3a09018972ea24, type: 3}

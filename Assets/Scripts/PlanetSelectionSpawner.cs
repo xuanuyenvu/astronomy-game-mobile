@@ -22,6 +22,9 @@ public class PlanetSelectionSpawner : IGamePlay
 
     [Header("List Particle System Boom")]
     public List<ParticleSystem> boomPSPrefab;
+    public GameObject winEffectPSPrefab;
+
+
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
@@ -32,6 +35,7 @@ public class PlanetSelectionSpawner : IGamePlay
     private bool playing;
 
     private ParticleSystem boomInstance = null;
+    private ParticleSystem winEffectInstance = null;
 
     void Awake()
     {
@@ -71,16 +75,17 @@ public class PlanetSelectionSpawner : IGamePlay
             GameOver();
         }
 
-        DestroyEffectAfterFin();
+        DestroyEffect();
     }
 
-    private void DestroyEffectAfterFin()
+    private void DestroyEffect()
     {
         // Hủy hiệu ứng sau khi hành tinh phát nổ
         if (cameraShake.IsShake == 0 && animationResult)
         {
             // Hủy boom instance
             Destroy(boomInstance.gameObject);
+            boomInstance = null;
 
             // Đặt lại giá trị
             animationResult = false;
@@ -88,6 +93,20 @@ public class PlanetSelectionSpawner : IGamePlay
 
             // Thiết lập lại game
             ReSetUpGame();
+        }
+        if (winEffectInstance != null)
+        {
+            if (!winEffectInstance.isPlaying && animationResult)
+            {
+                // Hủy win effect
+                Destroy(winEffectInstance.gameObject);
+                winEffectInstance = null;
+
+                // Đặt lại giá trị
+                animationResult = false;
+
+                // Thắng hoặc qua màn sau
+            }
         }
     }
 
@@ -250,7 +269,7 @@ public class PlanetSelectionSpawner : IGamePlay
         scoreManager.StartGame();
     }
 
-    public void HandleConfirmButton(string planetName)
+    public void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
         animationResult = true;
 
@@ -258,32 +277,64 @@ public class PlanetSelectionSpawner : IGamePlay
         cardController.turnOffPointerHandler();
 
         // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
-        planetAnswer = DisplaySelectedPlanet(planetName);
+        planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
 
-        // Tính toán và thực thi thiên thạch
-        RocketFlyAnimation(planetAnswer);
+        // Hàm thực hiện bay hành tinh và bay rocket
+        StartCoroutine(CoroutineExcutesequentially());
     }
 
-    private AstronomicalObject DisplaySelectedPlanet(string planetName)
+    private AstronomicalObject DisplaySelectedPlanet(string planetName, Vector3 planetPosition)
     {
         // Tìm hành tinh đã chọn trong danh sách
         AstronomicalObject selectedPlanet = allPlanets.Find(planet => planet.name == planetName);
         // Khởi tạo hành tinh này trên màn hình
-        AstronomicalObject clonedPlanet = SpawnObject(selectedPlanet, planet2.transform.position);
+        AstronomicalObject clonedPlanet = SpawnObject(selectedPlanet, planetPosition);
+
+        return clonedPlanet;
+    }
+
+    private IEnumerator CoroutineExcutesequentially()
+    {
+        // Cho hành tinh bay đến vị trí
+        yield return StartCoroutine(FlySelectedPlanetToTarget());
+
+        // Tính toán và thực thi thiên thạch
+        RocketFlyAnimation();
+    }
+
+    private IEnumerator FlySelectedPlanetToTarget()
+    {
+        Vector3 startingPos = planetAnswer.transform.position;
+        Vector3 finalPos = target.transform.position;
+
+        // Tính chiều dài quãng đường
+        float distance = Vector3.Distance(startingPos, finalPos);
+        // Đường bay càng xa thì thời gian càng chậm
+        // Ví dụ: bay 1km --> 2s, thì 2km phải bay lâu hơn
+        float time = distance / 9f;
+
+        for (float t = 0f; t <= 1f; t += Time.deltaTime / time)
+        {
+            planetAnswer.transform.position = Vector3.Lerp(startingPos, finalPos, t);
+            yield return null;
+        }
+
+        yield return null;
+
         // Ẩn target 
         if (target != null)
         {
             target.SetActive(false);
         }
-        return clonedPlanet;
     }
 
-    private void RocketFlyAnimation(AstronomicalObject planetAnswer)
+    private void RocketFlyAnimation()
     {
         // Nếu kết quả đúng thì xoay rocket
         if (planetAnswer.name == planet2.name)
         {
-            rocket.transform.rotation = Quaternion.identity;
+            // Lắc rocket và hiển thị hiệu ứng correct
+            StartCoroutine(CoroutineCorrectAnwser());
             scoreManager.FinalScore(healthManager.health);
             return;
         }
@@ -299,18 +350,14 @@ public class PlanetSelectionSpawner : IGamePlay
         {
             // Tìm loại boom phù hợp với hành tinh 1
             FindBoomMatchPlanet(planet1);
-            // Bắt đầu bay
-            // StartCoroutine(rocket.FlyTo(planet1.gameObject));
-            // rocket.transform.rotation = Quaternion.identity;
+            // Bắt đầu lắc và bay
             StartCoroutine(rocket.ShakeAndFlyTo(planet1.gameObject));
         }
         else
         {
             // Tìm loại boom phùm hợp với hành tinh trả lời
             FindBoomMatchPlanet(planetAnswer);
-            // Bắt đầu bay
-            // StartCoroutine(rocket.FlyTo(planetAnswer.gameObject));
-            // rocket.transform.rotation = Quaternion.identity;
+            // Bắt đầu lắc và bay
             StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject));
         }
     }
@@ -343,6 +390,44 @@ public class PlanetSelectionSpawner : IGamePlay
 
         // Mất 1 mạng
         healthManager.health--;
+        yield return null;
+    }
+
+    private IEnumerator CoroutineCorrectAnwser()
+    {
+        yield return StartCoroutine(rocket.ShakeRocket());
+
+        // Rocket cân bằng giữa 2 hành tinh
+        rocket.transform.rotation = Quaternion.identity;
+
+        // Khởi tạo hiệu ứng tại vị trí planetAnswer
+        winEffectInstance = Instantiate(winEffectPSPrefab, planetAnswer.transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<ParticleSystem>();
+        var mainModule = winEffectInstance.main;
+        mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+        winEffectInstance.gameObject.SetActive(false);
+
+        // Chỉnh lại giá trị scale
+        int idPlanetInList = planetAnswer.name[1] - '0';
+
+        if (idPlanetInList <= 4)
+        {
+            winEffectInstance.gameObject.transform.localScale = new Vector3(0.66f, 0.66f, 0.66f);
+        }
+        else
+        {
+            winEffectInstance.gameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+        }
+
+        StartCoroutine(PlayWinEffect(winEffectInstance));
+    }
+
+    private IEnumerator PlayWinEffect(ParticleSystem winEffect)
+    {
+        if (winEffect != null)
+        {
+            winEffect.gameObject.SetActive(true);
+            winEffect.Play();
+        }
         yield return null;
     }
 
