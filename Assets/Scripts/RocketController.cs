@@ -52,7 +52,6 @@ public class RocketController : AstronomicalObject
         float distance = Vector3.Distance(startingPos, finalPos);
         // Đường bay càng xa thì thời gian càng chậm
         // Ví dụ: bay 1km --> 2s, thì 2km phải bay lâu hơn
-        // float time = distance / 9f;
         float time = distance / 9f;
 
         for (float t = 0f; t <= 1f; t += Time.deltaTime / time)
@@ -101,11 +100,6 @@ public class RocketController : AstronomicalObject
             transform.position = new Vector3(startingPos.x + offsetPos, startingPos.y, startingPos.z);
             transform.rotation = Quaternion.Euler(startingRot.eulerAngles.x + offsetRot, startingRot.eulerAngles.y, startingRot.eulerAngles.z);
 
-            // if (elapsedTime > 0.6f)
-            // {
-                
-            //     StartCoroutine(FlyTo(planet));
-            // }
             yield return null;
         }
 

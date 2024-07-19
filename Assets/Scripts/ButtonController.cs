@@ -28,7 +28,7 @@ public class ButtonController : MonoBehaviour
     }
     public void CallPlanetSelectionSpawner()
     {
-        string planetName = cardController.GetSelectedPlanetName();
-        planetSelectionSpawner.HandleConfirmButton(planetName);
+        GameObject selectedPlanet = cardController.GetSelectedPlanet();
+        planetSelectionSpawner.HandleConfirmButton(selectedPlanet.name, selectedPlanet.transform.position);
     }
 }

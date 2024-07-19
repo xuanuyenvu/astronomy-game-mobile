@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4596544553357837919}
   - component: {fileID: 3005581896905022112}
   m_Layer: 0
-  m_Name: Explosion
+  m_Name: winEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -225,7 +225,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.7139466, b: 0.36470592, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.3529412}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5122,7 +5122,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.636079, b: 0.33333337, a: 1}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.19607843}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -10010,7 +10010,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.8621718, b: 0.48627448, a: 0.3764706}
+      maxColor: {r: 1, g: 1, b: 1, a: 0.11764706}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
