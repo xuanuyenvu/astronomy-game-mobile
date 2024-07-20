@@ -64,7 +64,6 @@ public class CardController : MonoBehaviour
 
     private void DisplayCards()
     {
-        Transform canvasTransform = this.transform;
         foreach (CardWrapper card in allCards)
         {
             CardWrapper cardInstance = Instantiate(card, this.transform);
@@ -276,7 +275,6 @@ public class CardController : MonoBehaviour
         return null;
     }
 
-
     public void OnCardDisplayPlanetSelection(CardWrapper card)
     {
         if (char.IsDigit(card.name[0]))
@@ -317,8 +315,17 @@ public class CardController : MonoBehaviour
             selectedCard.ResetAllValues();
         }
 
+        // Nếu tồn tại card dùng cho hiển thị animation thì hủy nó
+        if(selectedCardAnimation != null)
+        {
+            // Destroy(selectedCardAnimation.gameObject);
+        }
+
         // Gán thẻ được chọn vào biến selectedCard
         selectedCard = card;
+
+        // Spawn card mới và chạy animation
+        SpawnSelectedCardForAnimation();
     }
 
     private void RemoveAndDestroyCardInstance(CardWrapper card)
@@ -329,6 +336,10 @@ public class CardController : MonoBehaviour
             allCardInstances.Remove(card);
             Destroy(card.gameObject);
 
+        }
+        if(selectedCardAnimation != null)
+        {
+            // Destroy(selectedCardAnimation.gameObject);
         }
         isListChanging = false;
         StartCoroutine(SmoothUpdateCards());
@@ -384,5 +395,14 @@ public class CardController : MonoBehaviour
     public int GetNumOfCards()
     {
         return allCardInstances.Count;
+    }
+
+    private CardWrapper selectedCardAnimation = null;
+    private void SpawnSelectedCardForAnimation()
+    {
+        selectedCardAnimation = Instantiate(selectedCard, this.transform.parent);
+        selectedCardAnimation.IsAnimation = true;
+        selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
+        StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
     }
 }

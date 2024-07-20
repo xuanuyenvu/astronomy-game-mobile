@@ -104,7 +104,7 @@ public class RocketController : AstronomicalObject
         }
 
         transform.position = startingPos; // trở về vị trí ban đầu sau khi kết thúc
-                transform.rotation = originRot; // trở về góc quay ban đầu sau khi kết thúc
+        transform.rotation = originRot; // trở về góc quay ban đầu sau khi kết thúc
         elapsedTime = 0f; // Reset lại giá trị để dùng cho lần lắc sau
     }
 
