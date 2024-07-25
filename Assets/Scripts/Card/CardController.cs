@@ -325,7 +325,7 @@ public class CardController : MonoBehaviour
         selectedCard = card;
 
         // Spawn card mới và chạy animation
-        SpawnSelectedCardForAnimation();
+        // SpawnSelectedCardForAnimation();
     }
 
     private void RemoveAndDestroyCardInstance(CardWrapper card)

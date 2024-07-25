@@ -164,7 +164,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private IEnumerator MoveSelectedCard(CardWrapper card2)
     {
         Vector3 startingPos = this.rectTransform.position;
-        Vector3 finalPos = new Vector3(0, 0, 0);
+        Vector3 finalPos = new Vector3(startingPos.x, 0, 0);
 
         float time = 1f;
 
