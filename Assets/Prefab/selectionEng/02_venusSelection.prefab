@@ -4977,6 +4977,8 @@ GameObject:
   m_Component:
   - component: {fileID: 311081181159800119}
   - component: {fileID: 3388358630882319864}
+  - component: {fileID: 6048679643732330424}
+  - component: {fileID: 2122492694684131607}
   m_Layer: 0
   m_Name: venusCard_perpective
   m_TagString: Untagged
@@ -5051,6 +5053,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &6048679643732330424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4817093263913582567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &2122492694684131607
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4817093263913582567}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 65.12469, y: 30.4, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4897425777371831067
 GameObject:
   m_ObjectHideFlags: 0
@@ -20039,10 +20074,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: 02_venus
       objectReference: {fileID: 0}
-    - target: {fileID: 4053271374897006710, guid: c541b23eca4f34b4e93a2480f4cd4190, type: 3}
-      propertyPath: m_TagString
-      value: PlanetSelection
-      objectReference: {fileID: 0}
     - target: {fileID: 7300343565702603417, guid: c541b23eca4f34b4e93a2480f4cd4190, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -20086,10 +20117,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4053271374897006710, guid: c541b23eca4f34b4e93a2480f4cd4190, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1237795806884249618}
   m_SourcePrefab: {fileID: 100100000, guid: c541b23eca4f34b4e93a2480f4cd4190, type: 3}
 --- !u!4 &1488805353063154692 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7300343565702603417, guid: c541b23eca4f34b4e93a2480f4cd4190, type: 3}
   m_PrefabInstance: {fileID: 8212678270857291421}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5312373481180655339 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4053271374897006710, guid: c541b23eca4f34b4e93a2480f4cd4190, type: 3}
+  m_PrefabInstance: {fileID: 8212678270857291421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1237795806884249618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5312373481180655339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -10018,6 +10018,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3108990735026481205}
   - component: {fileID: 8924241359450195987}
+  - component: {fileID: 2481319045407133164}
+  - component: {fileID: 665648629315204673}
   m_Layer: 0
   m_Name: jupiterCard_perpective
   m_TagString: Untagged
@@ -10092,6 +10094,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2481319045407133164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6267816833767914711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &665648629315204673
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6267816833767914711}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 65.12469, y: 30.4, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6962014429106684573
 GameObject:
   m_ObjectHideFlags: 0
@@ -20039,10 +20074,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: 06_jupiter
       objectReference: {fileID: 0}
-    - target: {fileID: 2225880017587734342, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
-      propertyPath: m_TagString
-      value: PlanetSelection
-      objectReference: {fileID: 0}
     - target: {fileID: 5237972967772034372, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -20086,10 +20117,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2225880017587734342, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7821864479012633394}
   m_SourcePrefab: {fileID: 100100000, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
 --- !u!4 &2176883419564878446 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5237972967772034372, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
   m_PrefabInstance: {fileID: 6234340082791005994}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5217201722166458476 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2225880017587734342, guid: 23d9d3c7f2aa6dd42848708477e9a2c1, type: 3}
+  m_PrefabInstance: {fileID: 6234340082791005994}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7821864479012633394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5217201722166458476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
