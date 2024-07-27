@@ -6,12 +6,12 @@ public class BackgroundRotation : MonoBehaviour
 {
     public Transform BG1;
     public Transform BG2;
-    private Renderer renderer;
+    private Renderer spriteRenderer;
     public float speed = -0.06f;
     Vector3 size;
     void Start(){
-        renderer = BG1.GetComponent<SpriteRenderer>();
-        size = renderer.bounds.size;
+        spriteRenderer = BG1.GetComponent<SpriteRenderer>();
+        size = spriteRenderer.bounds.size;
     }
     void Update()
     {
