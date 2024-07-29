@@ -1367,7 +1367,6 @@ MonoBehaviour:
   - {fileID: 2414747145600275333, guid: cc5a7da1802146049b4c2009e3ea80ba, type: 3}
   selectedCard: {fileID: 0}
   darkMask: {fileID: 980844172}
-  confirmButton: {fileID: 1947174490}
   forceFitContainer: 1
   maxCardRotation: 15
   maxHeightDisplacement: 26
@@ -2385,6 +2384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gamePlays:
   - {fileID: 5961215160765093927, guid: 4da62f268b9951e49afabc441e1f7745, type: 3}
+  - {fileID: 707041888182469267, guid: 7b78f210f14bd4049ab087b90e659aa4, type: 3}
 --- !u!4 &2063473539
 Transform:
   m_ObjectHideFlags: 0
