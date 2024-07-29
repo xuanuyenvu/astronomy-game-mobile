@@ -19,7 +19,6 @@ public class CardController : MonoBehaviour
 
     [Header("Asset in Scene")]
     public GameObject darkMask;
-    public Button confirmButton;
 
     [Header("Constraints")]
     [SerializeField] private bool forceFitContainer;
@@ -39,7 +38,6 @@ public class CardController : MonoBehaviour
     void Start()
     {
         darkMask.SetActive(false);
-        confirmButton.gameObject.SetActive(false);
         InitCards();
     }
 
@@ -288,7 +286,6 @@ public class CardController : MonoBehaviour
 
             // Bật lớp phủ
             darkMask.SetActive(true);
-            confirmButton.gameObject.SetActive(true);
         }
         else
         {
@@ -302,7 +299,6 @@ public class CardController : MonoBehaviour
         {
             Destroy(planetSelectionInstance);
             darkMask.SetActive(false);
-            confirmButton.gameObject.SetActive(false); ;
         }
     }
 
@@ -404,5 +400,28 @@ public class CardController : MonoBehaviour
         selectedCardAnimation.IsAnimation = true;
         selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
         StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
+    }
+
+    public void DisplayACard(string name)
+    {
+        CardWrapper cardToDisplay = allCardInstances.FirstOrDefault(card => 
+        {
+            string cardNameToCompare = card.name.Substring(0, Mathf.Min(3, card.name.Length));
+            Debug.Log("card " + cardNameToCompare);
+            Debug.Log("name " + name);
+            return cardNameToCompare == name;
+        });
+
+        if (cardToDisplay != null)
+        {
+            foreach (CardWrapper card in allCardInstances.ToList())
+            {
+                if (card != cardToDisplay)
+                {
+                    Debug.Log("destroy " + card.name);
+                    RemoveAndDestroyCardInstance(card);
+                }
+            }
+        }
     }
 }

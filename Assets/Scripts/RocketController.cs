@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class RocketController : AstronomicalObject
 {
-    private PlanetSelectionSpawner planetSelectionSpawner;
+    private IGamePlay iGamePlay;
     private bool turnOnCollider = false;
 
     private Collider rocketCollider;
     public global::System.Boolean TurnOnCollider { get => turnOnCollider; set => turnOnCollider = value; }
     void Start()
     {
-        if (planetSelectionSpawner == null)
+        if (iGamePlay == null)
         {
-            planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
+            iGamePlay = FindObjectOfType<IGamePlay>();
         }
         rocketCollider = GetComponent<Collider>();
     }
@@ -69,7 +69,7 @@ public class RocketController : AstronomicalObject
         if (planet.gameObject.CompareTag("Planet"))
         {
             planet.gameObject.SetActive(false);
-            StartCoroutine(planetSelectionSpawner.PlayBoomAndShake());
+            StartCoroutine(iGamePlay.PlayBoomAndShake());
             Destroy(this.gameObject);
         }
     }

@@ -6,16 +6,16 @@ using UnityEngine.EventSystems;
 public class DoubleClickController : MonoBehaviour, IPointerClickHandler
 {
     private CardController cardController;
-    private PlanetSelectionSpawner planetSelectionSpawner;
+    private IGamePlay iGamePlay;
 
     private float lastClickTime = 0f;
     private float doubleClickThreshold = 0.6f;
 
     void Start()
     {  
-        if(planetSelectionSpawner == null)
+        if(iGamePlay == null)
         {
-            planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
+            iGamePlay = FindObjectOfType<IGamePlay>();
         }
         if (cardController == null)
         {
@@ -30,7 +30,7 @@ public class DoubleClickController : MonoBehaviour, IPointerClickHandler
         {
             Debug.Log("Double Click: " + this.name);
             GameObject selectedPlanet = cardController.GetSelectedPlanet();
-            planetSelectionSpawner.HandleConfirmButton(selectedPlanet.name, selectedPlanet.transform.position);
+            iGamePlay.HandleConfirmButton(selectedPlanet.name, selectedPlanet.transform.position);
         }
 
         lastClickTime = Time.time;

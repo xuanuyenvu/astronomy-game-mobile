@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class PlanetSelectionSpawner : IGamePlay
+public class PositionSelectionSpawner : IGamePlay
 {
     [Header("List of Planets")]
     public List<AstronomicalObject> allPlanets;
@@ -18,7 +18,9 @@ public class PlanetSelectionSpawner : IGamePlay
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planetAnswer = null;
     private RocketController rocket = null;
-    private GameObject target = null;
+    private GameObject target1 = null;
+    private GameObject target2 = null;
+    private GameObject target3 = null;
 
     [Header("List Particle System Boom")]
     public List<ParticleSystem> boomPSPrefab;
@@ -37,17 +39,28 @@ public class PlanetSelectionSpawner : IGamePlay
     private ParticleSystem boomInstance = null;
     private ParticleSystem winEffectInstance = null;
 
+    private List<float> partOfScreen;
+
     void Awake()
     {
         screenWidth = Screen.width;
         screenHeight = Screen.height;
 
         screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);
+
+        // Chia màn hình thành 10 phần bằng nhau theo trục x
+        partOfScreen = new List<float>();
+        float partWidth = screenWidth / 10;
+        for (int i = 0; i < 10; i++)
+        {
+            partOfScreen.Add(partWidth * i);
+        }
     }
 
     void Start()
     {
         //Play();
+        // DisplayOneCard();
     }
 
     void Update()
@@ -119,7 +132,9 @@ public class PlanetSelectionSpawner : IGamePlay
     private void RePlayGame()
     {
         planet1.gameObject.SetActive(true);
-        target.SetActive(true);
+        target1.SetActive(true);
+        target2.SetActive(true);
+        target3.SetActive(true);
 
         Destroy(planetAnswer.gameObject);
 
@@ -150,9 +165,120 @@ public class PlanetSelectionSpawner : IGamePlay
         planet2 = Clone(planet2, !isLeft);
         planet2.gameObject.SetActive(false);
 
-        target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
-        target.name = target.name.Replace("(Clone)", "");
-        target.SetActive(true);
+        target1 = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
+        SetLocalScaleOfTarget(target1);
+        target1.name = target1.name.Replace("(Clone)", "1");
+        target1.SetActive(true);
+    }
+
+    public int GetScreenSegmentIndex(float objectScreenX)
+    {
+        for (int i = 0; i < partOfScreen.Count - 1; i++)
+        {
+            if (objectScreenX >= partOfScreen[i] && objectScreenX < partOfScreen[i + 1])
+            {
+                return i;
+            }
+        }
+        if (objectScreenX >= partOfScreen[partOfScreen.Count - 1])
+        {
+            return partOfScreen.Count - 1;
+        }
+        return -1;
+    }
+
+    private void FakeTargetSpawner()
+    {
+        int indexOfTarget1 = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(target1.transform.position).x);
+        int indexOfRocket = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(rocket.transform.position).x);
+        int indexOfTarget2 = -1;
+        int indexOfTarget3 = -1;
+
+        // Màn hình được chia làm 10 phần
+        // Quy tắc là chọn vị trí cho target 2 sao cho 
+        // khoảng cách từ target2 đến rocket và target2 đến target1 > 1 phần của màn hình
+        if (isLeft) // target1 nằm bên phải màn hình
+        {
+            Debug.Log("target1 - phai");
+            // chạy từ (indexOfRocket + 2) tới phần con thứ 9 trên màn hình 
+            // (không xét phần con số 10 vì nó là padding)
+            for (int i = indexOfRocket + 2; i < 10; i++)
+            {
+                if (Mathf.Abs(i - indexOfRocket) >= 1 && Mathf.Abs(i - indexOfTarget1) >= 1)
+                {
+                    indexOfTarget2 = i;
+                    break;
+                }
+            }
+            for (int i = indexOfTarget2 + 2; i < 10; i++)
+            {
+                if (Mathf.Abs(i - indexOfTarget2) >= 1 && Mathf.Abs(i - indexOfTarget1) >= 1)
+                {
+                    indexOfTarget3 = i;
+                    break;
+                }
+            }
+        }
+        else // target1 nằm bên trái màn hình
+        {
+            Debug.Log("target1 - trai");
+            // chạy từ indexOfRocket - 2 đến phần con thứ 1 trên màn hình 
+            // (không xét phần con số 0 vì nó là padding)
+            for (int i = indexOfRocket - 2; i > 0; i--)
+            {
+                if (Mathf.Abs(i - indexOfRocket) >= 1 && Mathf.Abs(i - indexOfTarget1) >= 1)
+                {
+                    indexOfTarget2 = i;
+                    break;
+                }
+            }
+            for (int i = indexOfTarget2 - 2; i > 0; i--)
+            {
+                if (Mathf.Abs(i - indexOfTarget2) >= 1 && Mathf.Abs(i - indexOfTarget1) >= 1)
+                {
+                    indexOfTarget3 = i;
+                    break;
+                }
+            }
+        }
+
+        Debug.Log("rocket: " + indexOfRocket);
+        Debug.Log("target: " + indexOfTarget1);
+        Debug.Log("target2: " + indexOfTarget2);
+        Debug.Log("target3: " + indexOfTarget3);
+
+        target2 = CloneFakeTarget(indexOfTarget2);
+        if (target3 != null)
+        {
+            target2.name = target2.name.Replace("(Clone)", "2");
+        }
+        target3 = CloneFakeTarget(indexOfTarget3);
+        if (target3 != null)
+        {
+            target3.name = target3.name.Replace("(Clone)", "3");
+        }
+    }
+
+    private GameObject CloneFakeTarget(int index)
+    {
+        if (index > 0)
+        {
+            float spawnX = (partOfScreen[index] + partOfScreen[index + 1]) / 2;
+
+            Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, screenHeight / 2, Camera.main.nearClipPlane));
+            position.y = target1.transform.position.y;
+            position.z = target1.transform.position.z;
+            GameObject clonedTarget = Instantiate(targetPrefab, position, Quaternion.Euler(63, 0, 0));
+            SetLocalScaleOfTarget(clonedTarget);
+            clonedTarget.SetActive(true);
+            return clonedTarget;
+        }
+        return null;
+    }
+
+    private void DisplayOneCard()
+    {
+        cardController.DisplayACard(planet2.name);
     }
 
     private AstronomicalObject Clone(AstronomicalObject origin, bool isLeftPart = true)
@@ -170,6 +296,7 @@ public class PlanetSelectionSpawner : IGamePlay
     private AstronomicalObject SpawnObject(AstronomicalObject origin, Vector3 spawnPosition)
     {
         AstronomicalObject clonedPlanet = Instantiate(origin, spawnPosition, Quaternion.identity);
+        SetLocalScaleOfPlanet(clonedPlanet.gameObject);
         clonedPlanet.name = clonedPlanet.name.Replace("(Clone)", "");
 
         if (clonedPlanet.name == "07_saturn")
@@ -208,6 +335,7 @@ public class PlanetSelectionSpawner : IGamePlay
         var answer = planet2.transform.position + direction * ((float)d2);
 
         rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
+        SetLocalScaleOfRocket(rocket.gameObject);
         rocket.name = rocket.name.Replace("(Clone)", "");
         rocket.RotateRocket(planet1.gameObject);
         rocket.gameObject.SetActive(true);
@@ -254,10 +382,36 @@ public class PlanetSelectionSpawner : IGamePlay
     {
         RandomizePosition();
         FindMeanAndSetRocket();
+        FakeTargetSpawner();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
 
         // Bắt đầu tính thời gian
         scoreManager.StartGame();
+    }
+
+    private void SetLocalScaleOfTarget(GameObject targetObject)
+    {
+        targetObject.transform.localScale *= 0.8f;
+        Transform particleSystemTransform = targetObject.transform.Find("Particle System");
+        if (particleSystemTransform != null)
+        {
+            particleSystemTransform.localScale *= .8f;
+        }
+    }
+
+    private void SetLocalScaleOfPlanet(GameObject planetObject)
+    {
+        planetObject.transform.localScale *= .85f;
+    }
+
+    private void SetLocalScaleOfRocket(GameObject rocketObject)
+    {
+        rocketObject.transform.localScale *= .85f;
+        // Transform particleSystemTransform = object.transform.Find("Particle System");
+        // if (particleSystemTransform != null)
+        // {
+        //     particleSystemTransform.localScale *= .8f;
+        // }
     }
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
@@ -296,7 +450,7 @@ public class PlanetSelectionSpawner : IGamePlay
     private IEnumerator FlySelectedPlanetToTarget()
     {
         Vector3 startingPos = planetAnswer.transform.position;
-        Vector3 finalPos = target.transform.position;
+        Vector3 finalPos = target1.transform.position;
 
         // Tính chiều dài quãng đường
         float distance = Vector3.Distance(startingPos, finalPos);
@@ -313,9 +467,9 @@ public class PlanetSelectionSpawner : IGamePlay
         yield return null;
 
         // Ẩn target 
-        if (target != null)
+        if (target1 != null)
         {
-            target.SetActive(false);
+            target1.SetActive(false);
         }
     }
 

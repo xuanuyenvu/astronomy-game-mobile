@@ -8,25 +8,26 @@ public class GameManger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var current = Instantiate(gamePlays[0]);
-        PlanetSelectionSpawner planetSelectionSpawner = current.GetComponent<PlanetSelectionSpawner>();
-        if (planetSelectionSpawner.cameraShake == null)
+        // var current = Instantiate(gamePlays[0]);
+        var current = Instantiate(gamePlays[1]);
+        IGamePlay iGamePlay = current.GetComponent<IGamePlay>();
+        if (iGamePlay.cameraShake == null)
         {
-            planetSelectionSpawner.cameraShake = FindObjectOfType<CameraShake>();
+            iGamePlay.cameraShake = FindObjectOfType<CameraShake>();
         }
-        if (planetSelectionSpawner.cardController == null)
+        if (iGamePlay.cardController == null)
         {
-            planetSelectionSpawner.cardController = FindObjectOfType<CardController>();
+            iGamePlay.cardController = FindObjectOfType<CardController>();
         }
-        if (planetSelectionSpawner.healthManager == null)
+        if (iGamePlay.healthManager == null)
         {
-            planetSelectionSpawner.healthManager = FindObjectOfType<HealthManager>();
+            iGamePlay.healthManager = FindObjectOfType<HealthManager>();
         }
-        if (planetSelectionSpawner.scoreManager == null)
+        if (iGamePlay.scoreManager == null)
         {
-            planetSelectionSpawner.scoreManager = FindObjectOfType<ScoreManager>();
+            iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
         }
-        planetSelectionSpawner.Play();
+        iGamePlay.Play();
     }
 
     // Update is called once per frame

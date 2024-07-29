@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 public abstract class IGamePlay : MonoBehaviour
 {
      [HideInInspector] public CameraShake cameraShake;
@@ -6,4 +9,8 @@ public abstract class IGamePlay : MonoBehaviour
      [HideInInspector] public HealthManager healthManager;
      [HideInInspector] public ScoreManager scoreManager;
      public abstract void Play();
+
+     public abstract IEnumerator PlayBoomAndShake();
+
+     public abstract void HandleConfirmButton(string planetName, Vector3 planetPosition);
 }
