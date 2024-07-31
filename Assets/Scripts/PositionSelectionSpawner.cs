@@ -199,25 +199,20 @@ public class PositionSelectionSpawner : IGamePlay
     //     int indexOfRocket = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(rocket.transform.position).x);
     //     int indexOfTarget2 = -1;
     //     int indexOfTarget3 = -1;
-    //     int k = 2;
 
     //     // Màn hình được chia làm 12 phần theo trục x
     //     // Quy tắc là chọn vị trí cho target 2 sao cho 
-    //     // khoảng cách từ target2 đến rocket > 2/12 phần màn hình (do đuôi rocket dài) 
-    //     // và target2 đến target1 > 1/12 phần màn hình
+    //     // khoảng cách từ target2 đến rocket > 2/14 phần màn hình (do đuôi rocket dài) 
+    //     // và target2 đến target1 > 1/14 phần màn hình
     //     if (isLeft) // target1 nằm bên phải màn hình
     //     {
     //         Debug.Log("target1 - phai");
     //         // chạy từ (indexOfRocket + 2) tới phần con thứ 8 trên màn hình 
-    //         // (không xét phần con số 10 vì nó là padding)
-    //         if (indexOfRocket > 6)
-    //         {
-    //             k = 1;
-    //         }
+    //         // (không xét phần con số 13 vì nó là padding)
 
-    //         for (int i = indexOfRocket + k; i < 13; i++)
+    //         for (int i = indexOfRocket + 2; i < 13; i++)
     //         {
-    //             if (Mathf.Abs(i - indexOfRocket) >= k && Mathf.Abs(i - indexOfTarget1) >= 1)
+    //             if (Mathf.Abs(i - indexOfRocket) >= 2 && Mathf.Abs(i - indexOfTarget1) >= 1)
     //             {
     //                 indexOfTarget2 = i;
     //                 break;
@@ -238,13 +233,9 @@ public class PositionSelectionSpawner : IGamePlay
     //         Debug.Log("target1 - trai");
     //         // chạy từ indexOfRocket - 2 đến phần con thứ 1 trên màn hình 
     //         // (không xét phần con số 0 vì nó là padding)
-    //         if (indexOfRocket < 5)
+    //         for (int i = indexOfRocket - 2; i > 0; i--)
     //         {
-    //             k = 1;
-    //         }
-    //         for (int i = indexOfRocket - k; i > 0; i--)
-    //         {
-    //             if (Mathf.Abs(i - indexOfRocket) >= k && Mathf.Abs(i - indexOfTarget1) >= 1)
+    //             if (Mathf.Abs(i - indexOfRocket) >= 2 && Mathf.Abs(i - indexOfTarget1) >= 1)
     //             {
     //                 indexOfTarget2 = i;
     //                 break;
@@ -294,12 +285,12 @@ public class PositionSelectionSpawner : IGamePlay
             Debug.Log("target1 - phai");
             do
             {
-                indexOfTarget2 = Random.Range(indexOfRocket + 1, 12);
+                indexOfTarget2 = Random.Range(indexOfRocket + 1, 13);
             } while (Mathf.Abs(indexOfTarget2 - indexOfRocket) < 2 
                     || Mathf.Abs(indexOfTarget2 - indexOfTarget1) < 1);
             do
             {
-                indexOfTarget3 = Random.Range(indexOfRocket + 1, 12);
+                indexOfTarget3 = Random.Range(indexOfRocket + 1, 13);
             } while (Mathf.Abs(indexOfTarget3 - indexOfRocket) < 2
                     || Mathf.Abs(indexOfTarget3 - indexOfTarget1) < 1
                     || Mathf.Abs(indexOfTarget3 - indexOfTarget2) < 1);
@@ -400,11 +391,30 @@ public class PositionSelectionSpawner : IGamePlay
 
     public void FindMeanAndSetRocket()
     {
-        var d = Vector3.Distance(planet1.transform.position, planet2.transform.position);
-        var d2 = d / (1 + Math.Sqrt(planet1.Mass / planet2.Mass));
-        var direction = (planet1.transform.position - planet2.transform.position).normalized;
+        Vector3 answer;
+        do{
+            var d = Vector3.Distance(planet1.transform.position, planet2.transform.position);
+            var d2 = d / (1 + Math.Sqrt(planet1.Mass / planet2.Mass));
+            var direction = (planet1.transform.position - planet2.transform.position).normalized;
+            answer = planet2.transform.position + direction * ((float)d2);
 
-        var answer = planet2.transform.position + direction * ((float)d2);
+            int idAnswer = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(answer).x);
+
+            if((isLeft && idAnswer < 9)
+                || (!isLeft && idAnswer > 4))
+            {
+                Debug.Log("co break");
+                break;
+            }
+
+            Debug.Log("ko break");
+            Destroy(planet1.gameObject);
+            Destroy(planet2.gameObject);
+            Destroy(target1.gameObject);
+            RandomizePosition();
+
+        } while(true);
+        
 
         rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
         SetLocalScaleOfAstronimicalObject(rocket.gameObject);
