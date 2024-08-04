@@ -5,11 +5,13 @@ using UnityEngine;
 public class GameManger : MonoBehaviour
 {
     public IGamePlay[] gamePlays;
+    public Player player;
+
+    private int id  = 1;
     // Start is called before the first frame update
     void Start()
     {
-        // var current = Instantiate(gamePlays[0]);
-        var current = Instantiate(gamePlays[1]);
+        var current = Instantiate(gamePlays[id]);
         IGamePlay iGamePlay = current.GetComponent<IGamePlay>();
         if (iGamePlay.cameraShake == null)
         {
@@ -27,7 +29,14 @@ public class GameManger : MonoBehaviour
         {
             iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
         }
-        // iGamePlay.cardController.idGamePlay = 0;
+        if (id == 1)
+        {
+            player.gameObject.SetActive(true);
+        }
+        else
+        {
+            iGamePlay.cardController.idGamePlay = id;
+        }
         iGamePlay.Play();
     }
 

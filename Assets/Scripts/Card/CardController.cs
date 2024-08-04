@@ -49,7 +49,7 @@ public class CardController : MonoBehaviour
 
     private void InitCards()
     {
-        if(idGamePlay == 0)
+        if (idGamePlay == 0)
         {
             ShuffleCards();
             DisplayCards();
@@ -58,14 +58,14 @@ public class CardController : MonoBehaviour
         {
 
         }
-        
+
         SetUpCards();
         SetCardsAnchor();
     }
 
     public void DisplayACard(string planetName)
     {
-        CardWrapper card = allCards.Find(c => 
+        CardWrapper card = allCards.Find(c =>
         {
             string trimmedName = c.name.Substring(2, c.name.Length - 4);
             return trimmedName == planetName;
@@ -133,13 +133,13 @@ public class CardController : MonoBehaviour
 
     void Update()
     {
-        if(!isStart && idGamePlay != -1)
+        if (!isStart && idGamePlay != -1)
         {
             isStart = true;
             InitCards();
         }
 
-        if(isStart)
+        if (isStart)
         {
             UpdateCards();
         }
@@ -343,6 +343,15 @@ public class CardController : MonoBehaviour
         }
     }
 
+    public void HideACard()
+    {
+        foreach (CardWrapper cardInstance in allCardInstances)
+        {
+            cardInstance.gameObject.SetActive(false);
+            cardInstance.IsSelected = false;
+        }
+    }
+
     public void ChangeSelectedCard(CardWrapper card)
     {
         // Nếu đã có card được chọn từ trước thì gọi hàm ResetAllValues() 
@@ -353,7 +362,7 @@ public class CardController : MonoBehaviour
         }
 
         // Nếu tồn tại card dùng cho hiển thị animation thì hủy nó
-        if(selectedCardAnimation != null)
+        if (selectedCardAnimation != null)
         {
             // Destroy(selectedCardAnimation.gameObject);
         }
@@ -374,7 +383,7 @@ public class CardController : MonoBehaviour
             Destroy(card.gameObject);
 
         }
-        if(selectedCardAnimation != null)
+        if (selectedCardAnimation != null)
         {
             // Destroy(selectedCardAnimation.gameObject);
         }

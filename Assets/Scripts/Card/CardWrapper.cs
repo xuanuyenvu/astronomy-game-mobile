@@ -30,6 +30,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     public global::System.Single Width { get => width; set => width = value; }
     public global::System.Boolean NoRotation { get => noRotation; set => noRotation = value; }
     public global::System.Boolean IsAnimation { get => isAnimation; set => isAnimation = value; }
+    public global::System.Boolean IsSelected { get => isSelected; set => isSelected = value; }
 
     void Awake()
     {
