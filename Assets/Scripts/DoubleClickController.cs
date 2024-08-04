@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
 
 public class DoubleClickController : MonoBehaviour, IPointerClickHandler
 {
@@ -12,8 +12,8 @@ public class DoubleClickController : MonoBehaviour, IPointerClickHandler
     private float doubleClickThreshold = 0.6f;
 
     void Start()
-    {  
-        if(iGamePlay == null)
+    {
+        if (iGamePlay == null)
         {
             iGamePlay = FindObjectOfType<IGamePlay>();
         }
@@ -24,15 +24,19 @@ public class DoubleClickController : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        float timeSinceLastClick = Time.time - lastClickTime;
-
-        if (timeSinceLastClick <= doubleClickThreshold)
+        if (cardController.idGamePlay == 0)
         {
-            Debug.Log("Double Click: " + this.name);
-            GameObject selectedPlanet = cardController.GetSelectedPlanet();
-            iGamePlay.HandleConfirmButton(selectedPlanet.name, selectedPlanet.transform.position);
-        }
+            Debug.Log("OnPointerClick");
+            float timeSinceLastClick = Time.time - lastClickTime;
 
-        lastClickTime = Time.time;
+            if (timeSinceLastClick <= doubleClickThreshold)
+            {
+                Debug.Log("Double Click: " + this.name);
+                GameObject selectedPlanet = cardController.GetSelectedPlanet();
+                iGamePlay.HandleConfirmButton(selectedPlanet.name, selectedPlanet.transform.position);
+            }
+
+            lastClickTime = Time.time;
+        }
     }
 }

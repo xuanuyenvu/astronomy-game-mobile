@@ -4974,6 +4974,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3885833356755362356}
   - component: {fileID: 9036571042741523187}
+  - component: {fileID: 7759918609859283472}
+  - component: {fileID: 88888455787433334}
   m_Layer: 0
   m_Name: marsCard_perpective
   m_TagString: Untagged
@@ -5048,6 +5050,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7759918609859283472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642894469679798045}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &88888455787433334
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 642894469679798045}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 65.12469, y: 30.4, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &966258440756789343
 GameObject:
   m_ObjectHideFlags: 0
@@ -20086,10 +20121,30 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1781681862544399129, guid: 1c49c6d0649146849a24cfe9aa4900b4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6345373917383618745}
   m_SourcePrefab: {fileID: 100100000, guid: 1c49c6d0649146849a24cfe9aa4900b4, type: 3}
 --- !u!4 &7006149418690123660 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 326296900900728525, guid: 1c49c6d0649146849a24cfe9aa4900b4, type: 3}
   m_PrefabInstance: {fileID: 7331273654458267969}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &9008365549127541336 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1781681862544399129, guid: 1c49c6d0649146849a24cfe9aa4900b4, type: 3}
+  m_PrefabInstance: {fileID: 7331273654458267969}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6345373917383618745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9008365549127541336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
