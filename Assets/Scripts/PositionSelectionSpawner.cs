@@ -60,7 +60,6 @@ public class PositionSelectionSpawner : IGamePlay
     void Start()
     {
         //Play();
-        // DisplayOneCard();
     }
 
     void Update()
@@ -72,11 +71,6 @@ public class PositionSelectionSpawner : IGamePlay
         else
         {
             rocket.TurnOnCollider = false;
-        }
-
-        if (cardController.GetNumOfCards() == 0)
-        {
-            GameOver();
         }
 
         DestroyEffect();
@@ -192,82 +186,6 @@ public class PositionSelectionSpawner : IGamePlay
         }
         return -1;
     }
-
-    // private void FakeTargetSpawner()
-    // {
-    //     int indexOfTarget1 = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(target1.transform.position).x);
-    //     int indexOfRocket = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(rocket.transform.position).x);
-    //     int indexOfTarget2 = -1;
-    //     int indexOfTarget3 = -1;
-
-    //     // Màn hình được chia làm 12 phần theo trục x
-    //     // Quy tắc là chọn vị trí cho target 2 sao cho 
-    //     // khoảng cách từ target2 đến rocket > 2/14 phần màn hình (do đuôi rocket dài) 
-    //     // và target2 đến target1 > 1/14 phần màn hình
-    //     if (isLeft) // target1 nằm bên phải màn hình
-    //     {
-    //         Debug.Log("target1 - phai");
-    //         // chạy từ (indexOfRocket + 2) tới phần con thứ 8 trên màn hình 
-    //         // (không xét phần con số 13 vì nó là padding)
-
-    //         for (int i = indexOfRocket + 2; i < 13; i++)
-    //         {
-    //             if (Mathf.Abs(i - indexOfRocket) >= 2 && Mathf.Abs(i - indexOfTarget1) >= 1)
-    //             {
-    //                 indexOfTarget2 = i;
-    //                 break;
-    //             }
-    //         }
-    //         // indexOfTarget2 = Random(indexOfRocket + k, 10)
-    //         for (int i = 12; i >= indexOfTarget2 + 1; i--)
-    //         {
-    //             if (Mathf.Abs(i - indexOfTarget2) >= 1 && Mathf.Abs(i - indexOfTarget1) >= 1)
-    //             {
-    //                 indexOfTarget3 = i;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     else // target1 nằm bên trái màn hình
-    //     {
-    //         Debug.Log("target1 - trai");
-    //         // chạy từ indexOfRocket - 2 đến phần con thứ 1 trên màn hình 
-    //         // (không xét phần con số 0 vì nó là padding)
-    //         for (int i = indexOfRocket - 2; i > 0; i--)
-    //         {
-    //             if (Mathf.Abs(i - indexOfRocket) >= 2 && Mathf.Abs(i - indexOfTarget1) >= 1)
-    //             {
-    //                 indexOfTarget2 = i;
-    //                 break;
-    //             }
-    //         }
-
-    //         for (int i = 1; i <= indexOfTarget2 - 1; i++)
-    //         {
-    //             if (Mathf.Abs(i - indexOfTarget2) >= 1 && Mathf.Abs(i - indexOfTarget1) >= 1)
-    //             {
-    //                 indexOfTarget3 = i;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //     Debug.Log("planet: " + GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(planet1.transform.position).x));
-    //     Debug.Log("rocket: " + indexOfRocket);
-    //     Debug.Log("target: " + indexOfTarget1);
-    //     Debug.Log("target2: " + indexOfTarget2);
-    //     Debug.Log("target3: " + indexOfTarget3);
-
-    //     if (indexOfTarget2 > 0)
-    //     {
-    //         target2 = CloneFakeTarget(indexOfTarget2);
-    //         target2.name = target2.name.Replace("(Clone)", "2");
-    //     }
-    //     if (indexOfTarget3 > 0)
-    //     {
-    //         target3 = CloneFakeTarget(indexOfTarget3);
-    //         target3.name = target3.name.Replace("(Clone)", "3");
-    //     }
-    // }
 
     private void FakeTargetSpawner()
     {
@@ -400,14 +318,16 @@ public class PositionSelectionSpawner : IGamePlay
 
             int idAnswer = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(answer).x);
 
+            // Nếu vị trí rocket nằm trong đoạn 4 < rocket.position < 9
+            // thì thoát vòng while
             if((isLeft && idAnswer < 9)
                 || (!isLeft && idAnswer > 4))
             {
-                Debug.Log("co break");
                 break;
             }
 
-            Debug.Log("ko break");
+            // Ngược lại rocket vi phạm bound đã đặt
+            // thì phải destroy và tạo lại từ đầu
             Destroy(planet1.gameObject);
             Destroy(planet2.gameObject);
             Destroy(target1.gameObject);
@@ -464,12 +384,17 @@ public class PositionSelectionSpawner : IGamePlay
     {
         RandomizePosition();
         FindMeanAndSetRocket();
+
+        cardController.idGamePlay = 1;
+        cardController.DisplayACard(planet2.name);
+
         FakeTargetSpawner();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
 
         // Bắt đầu tính thời gian
         scoreManager.StartGame();
     }
+
 
     private void SetLocalScaleOfTarget(GameObject targetObject)
     {

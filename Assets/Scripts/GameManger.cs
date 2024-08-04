@@ -27,6 +27,7 @@ public class GameManger : MonoBehaviour
         {
             iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
         }
+        // iGamePlay.cardController.idGamePlay = 0;
         iGamePlay.Play();
     }
 

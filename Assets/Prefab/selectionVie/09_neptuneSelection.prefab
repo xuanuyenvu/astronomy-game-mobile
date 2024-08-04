@@ -14640,6 +14640,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3263346900296486076}
   - component: {fileID: 9039725174779402769}
+  - component: {fileID: 1492067230106664435}
+  - component: {fileID: 944473066347072166}
   m_Layer: 0
   m_Name: neptuneCard_perpective
   m_TagString: Untagged
@@ -14714,6 +14716,39 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!65 &1492067230106664435
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3702439342036222296}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 65.12469, y: 30.4, z: 0.2}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &944473066347072166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3702439342036222296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3764505521852574767
 GameObject:
   m_ObjectHideFlags: 0
@@ -20086,8 +20121,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1618648335746833044, guid: 8bc7de61445ddf442aeebea2e77806bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6349402936079553242}
   m_SourcePrefab: {fileID: 100100000, guid: 8bc7de61445ddf442aeebea2e77806bd, type: 3}
+--- !u!1 &5173053541954556826 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1618648335746833044, guid: 8bc7de61445ddf442aeebea2e77806bd, type: 3}
+  m_PrefabInstance: {fileID: 5889856036607658254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6349402936079553242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5173053541954556826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aadd1ce43b2986e4d9c8ffe3d41c68cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5305705972149488509 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1737650191371272819, guid: 8bc7de61445ddf442aeebea2e77806bd, type: 3}

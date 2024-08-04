@@ -24,29 +24,59 @@ public class CardController : MonoBehaviour
     [SerializeField] private bool forceFitContainer;
 
     [Header("Rotation")]
-    [SerializeField][Range(0f, 90f)] private float maxCardRotation;
-    [SerializeField] private float maxHeightDisplacement;
+    [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
+    [SerializeField] private float maxHeightDisplacement = 26;
 
     [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
     private RectTransform rectTransform;
     private bool isListChanging = false;
 
+    [HideInInspector] public int idGamePlay = -1;
+    private bool isStart = false;
+
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        if (darkMask == null)
+        {
+            darkMask = GameObject.FindGameObjectWithTag("DarkMask");
+        }
     }
     void Start()
     {
         darkMask.SetActive(false);
-        InitCards();
     }
 
     private void InitCards()
     {
-        ShuffleCards();
-        DisplayCards();
+        if(idGamePlay == 0)
+        {
+            ShuffleCards();
+            DisplayCards();
+        }
+        else if (idGamePlay == 1)
+        {
+
+        }
+        
         SetUpCards();
         SetCardsAnchor();
+    }
+
+    public void DisplayACard(string planetName)
+    {
+        CardWrapper card = allCards.Find(c => 
+        {
+            string trimmedName = c.name.Substring(2, c.name.Length - 4);
+            return trimmedName == planetName;
+        });
+
+        if (card != null)
+        {
+            CardWrapper cardInstance = Instantiate(card, this.transform);
+            cardInstance.name = cardInstance.name.Replace("(Clone)", "");
+            allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
+        }
     }
 
     private void ShuffleCards()
@@ -103,7 +133,16 @@ public class CardController : MonoBehaviour
 
     void Update()
     {
-        UpdateCards();
+        if(!isStart && idGamePlay != -1)
+        {
+            isStart = true;
+            InitCards();
+        }
+
+        if(isStart)
+        {
+            UpdateCards();
+        }
     }
 
     private void UpdateCards()
@@ -141,9 +180,11 @@ public class CardController : MonoBehaviour
                 targetSize = new Vector2(670, rectTransform.sizeDelta.y);
                 break;
             case 4:
+            case 1:
                 targetSize = new Vector2(600, rectTransform.sizeDelta.y);
                 maxHeightDisplacement = 0;
                 SetNoRotationForAllCards(true);
+
                 break;
             default:
                 return;
@@ -400,28 +441,5 @@ public class CardController : MonoBehaviour
         selectedCardAnimation.IsAnimation = true;
         selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
         StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
-    }
-
-    public void DisplayACard(string name)
-    {
-        CardWrapper cardToDisplay = allCardInstances.FirstOrDefault(card => 
-        {
-            string cardNameToCompare = card.name.Substring(0, Mathf.Min(3, card.name.Length));
-            Debug.Log("card " + cardNameToCompare);
-            Debug.Log("name " + name);
-            return cardNameToCompare == name;
-        });
-
-        if (cardToDisplay != null)
-        {
-            foreach (CardWrapper card in allCardInstances.ToList())
-            {
-                if (card != cardToDisplay)
-                {
-                    Debug.Log("destroy " + card.name);
-                    RemoveAndDestroyCardInstance(card);
-                }
-            }
-        }
     }
 }
