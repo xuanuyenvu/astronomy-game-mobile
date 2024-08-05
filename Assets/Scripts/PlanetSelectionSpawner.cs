@@ -260,6 +260,11 @@ public class PlanetSelectionSpawner : IGamePlay
         scoreManager.StartGame();
     }
 
+    public override void CheckDragPosition(Vector3 dragPos, string planetName)
+    {
+        // do nothing
+    }
+
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
         animationResult = true;
