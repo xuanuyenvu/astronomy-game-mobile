@@ -14,6 +14,7 @@ public class Player : MonoBehaviour
     private AstronomicalObject selectedPlanetCard = null;
 
     public CardController cardController;
+    private IGamePlay iGamePlay;
 
     void Start()
     {
@@ -22,6 +23,10 @@ public class Player : MonoBehaviour
         if (cardController == null)
         {
             cardController = FindObjectOfType<CardController>();
+        }
+        if (iGamePlay == null)
+        {
+            iGamePlay = FindObjectOfType<IGamePlay>();
         }
     }
 
@@ -48,7 +53,6 @@ public class Player : MonoBehaviour
 
     private void OnDragStart()
     {
-        Debug.Log("Start drag");
         isDragging = true;
     }
 
@@ -66,21 +70,21 @@ public class Player : MonoBehaviour
                 // Kiểm tra va chạm và tag của đối tượng
                 if (hit.collider != null && hit.transform.CompareTag("PlanetSelection") && !isSelected)
                 {
-                    // Debug.Log(hit.transform.name);
                     AstronomicalObject selectedPlanetCard = hit.transform.GetComponent<AstronomicalObject>();
-                    // Debug.Log("name " + selectedPlanetCard.name);
+
                     if (selectedPlanetCard != null && !isSelected)
                     {
                         draggedPlanet = Instantiate(selectedPlanetCard, worldPosition, Quaternion.identity);
+                        draggedPlanet.name = draggedPlanet.name.Replace("(Clone)", "");
                     }
+                    selectedPlanetCard = null;
                     isSelected = true;
-
                 }
 
                 if (draggedPlanet != null && isSelected)
                 {
                     draggedPlanet.transform.position = new Vector3(worldPosition.x, worldPosition.y, -10);
-
+                    iGamePlay.CheckDragPosition(draggedPlanet.transform.position, draggedPlanet.name);
                     // chỉ thực hiện gọi 1 lần
                     if (!hasExecuted)
                     {
@@ -95,7 +99,6 @@ public class Player : MonoBehaviour
 
     private void OnDragEnd()
     {
-        Debug.Log("End drag");
         isDragging = false;
         isSelected = false;
         if (draggedPlanet != null)

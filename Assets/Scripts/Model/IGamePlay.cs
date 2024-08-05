@@ -13,4 +13,6 @@ public abstract class IGamePlay : MonoBehaviour
      public abstract IEnumerator PlayBoomAndShake();
 
      public abstract void HandleConfirmButton(string planetName, Vector3 planetPosition);
+
+     public abstract void CheckDragPosition(Vector3 dragPos, string planetName);
 }

@@ -41,6 +41,23 @@ public class PositionSelectionSpawner : IGamePlay
 
     private List<float> partOfScreen;
 
+    // --------------------------------------------
+    // lưu giá trị bound cho từng target
+    private float xMargin = 0.6f;
+    private float target1XMin;
+    private float target1XMax;
+    private float target2XMin;
+    private float target2XMax;
+    private float target3XMin;
+    private float target3XMax;
+    private bool overlap12;
+    private bool overlap13;
+    private bool overlap23;
+    private Vector3 target1Position;
+    private Vector3 target2Position;
+    private Vector3 target3Position;
+    // --------------------------------------------
+
     void Awake()
     {
         screenWidth = Screen.width;
@@ -166,7 +183,7 @@ public class PositionSelectionSpawner : IGamePlay
         planet2.gameObject.SetActive(false);
 
         target1 = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
-        SetLocalScaleOfTarget(target1);
+        // SetLocalScaleOfTarget(target1);
         target1.name = target1.name.Replace("(Clone)", "1");
         target1.SetActive(true);
     }
@@ -200,11 +217,10 @@ public class PositionSelectionSpawner : IGamePlay
         // và target2 đến target1 > 1/12 phần màn hình
         if (isLeft) // target1 nằm bên phải màn hình
         {
-            Debug.Log("target1 - phai");
             do
             {
                 indexOfTarget2 = Random.Range(indexOfRocket + 1, 13);
-            } while (Mathf.Abs(indexOfTarget2 - indexOfRocket) < 2 
+            } while (Mathf.Abs(indexOfTarget2 - indexOfRocket) < 2
                     || Mathf.Abs(indexOfTarget2 - indexOfTarget1) < 1);
             do
             {
@@ -215,13 +231,12 @@ public class PositionSelectionSpawner : IGamePlay
         }
         else // target1 nằm bên trái màn hình
         {
-            Debug.Log("target1 - trai");
             // chạy từ indexOfRocket - 2 đến phần con thứ 1 trên màn hình 
             // (không xét phần con số 0 vì nó là padding)
             do
             {
                 indexOfTarget2 = Random.Range(1, indexOfRocket - 1);
-            } while (Mathf.Abs(indexOfTarget2 - indexOfRocket) < 2 
+            } while (Mathf.Abs(indexOfTarget2 - indexOfRocket) < 2
                     || Mathf.Abs(indexOfTarget2 - indexOfTarget1) < 1);
             do
             {
@@ -247,6 +262,8 @@ public class PositionSelectionSpawner : IGamePlay
             target3 = CloneFakeTarget(indexOfTarget3);
             target3.name = target3.name.Replace("(Clone)", "3");
         }
+
+        CalculateTargetDistance();
     }
 
     private GameObject CloneFakeTarget(int index)
@@ -257,7 +274,7 @@ public class PositionSelectionSpawner : IGamePlay
         position.y = target1.transform.position.y;
         position.z = target1.transform.position.z;
         GameObject clonedTarget = Instantiate(targetPrefab, position, Quaternion.Euler(63, 0, 0));
-        SetLocalScaleOfTarget(clonedTarget);
+        // SetLocalScaleOfTarget(clonedTarget);
         clonedTarget.SetActive(true);
         return clonedTarget;
     }
@@ -277,7 +294,7 @@ public class PositionSelectionSpawner : IGamePlay
     private AstronomicalObject SpawnObject(AstronomicalObject origin, Vector3 spawnPosition)
     {
         AstronomicalObject clonedPlanet = Instantiate(origin, spawnPosition, Quaternion.identity);
-        SetLocalScaleOfAstronimicalObject(clonedPlanet.gameObject);
+        // SetLocalScaleOfAstronimicalObject(clonedPlanet.gameObject);
         clonedPlanet.name = clonedPlanet.name.Replace("(Clone)", "");
 
         if (clonedPlanet.name == "07_saturn")
@@ -310,7 +327,8 @@ public class PositionSelectionSpawner : IGamePlay
     public void FindMeanAndSetRocket()
     {
         Vector3 answer;
-        do{
+        do
+        {
             var d = Vector3.Distance(planet1.transform.position, planet2.transform.position);
             var d2 = d / (1 + Math.Sqrt(planet1.Mass / planet2.Mass));
             var direction = (planet1.transform.position - planet2.transform.position).normalized;
@@ -320,7 +338,7 @@ public class PositionSelectionSpawner : IGamePlay
 
             // Nếu vị trí rocket nằm trong đoạn 4 < rocket.position < 9
             // thì thoát vòng while
-            if((isLeft && idAnswer < 9)
+            if ((isLeft && idAnswer < 9)
                 || (!isLeft && idAnswer > 4))
             {
                 break;
@@ -333,11 +351,11 @@ public class PositionSelectionSpawner : IGamePlay
             Destroy(target1.gameObject);
             RandomizePosition();
 
-        } while(true);
-        
+        } while (true);
+
 
         rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
-        SetLocalScaleOfAstronimicalObject(rocket.gameObject);
+        // SetLocalScaleOfAstronimicalObject(rocket.gameObject);
         rocket.name = rocket.name.Replace("(Clone)", "");
         rocket.RotateRocket(planet1.gameObject);
         rocket.gameObject.SetActive(true);
@@ -411,6 +429,185 @@ public class PositionSelectionSpawner : IGamePlay
         _object.transform.localScale *= .85f;
     }
 
+    public override void CheckDragPosition(Vector3 dragPos, string planetName)
+    {
+        float radiusPS = CheckPlanetName(planetName);
+        Debug.Log("_ " + planetName + " " + radiusPS);
+        float validDragRange = screenHeight / 8;
+
+        Vector3 screenDragPos = Camera.main.WorldToScreenPoint(dragPos);
+
+        float screenHeightMiddle = screenHeight / 2;
+        float lowerBound = screenHeightMiddle - validDragRange;
+        float upperBound = screenHeightMiddle + validDragRange;
+
+        if (screenDragPos.y >= lowerBound && screenDragPos.y <= upperBound)
+        {
+            int targetCloser = CheckIfDragIsInTargetArea(dragPos);
+            // Debug.Log("closer: " + targetCloser);
+            switch (targetCloser)
+            {
+                case 0:
+                    ChangePSColorAlpha(target1, 1f);
+                    ChangePSColorAlpha(target2, 1f);
+                    ChangePSColorAlpha(target3, 1f);
+                    IncreasePSShapeRadius(target1, 1f, 63f);
+                    IncreasePSShapeRadius(target2, 1f, 63f);
+                    IncreasePSShapeRadius(target3, 1f, 63f);
+                    break;
+                case 1:
+                    ChangePSColorAlpha(target1, 1f);
+                    ChangePSColorAlpha(target2, 0.05f);
+                    ChangePSColorAlpha(target3, 0.05f);
+                    IncreasePSShapeRadius(target1, radiusPS, 0f);
+                    IncreasePSShapeRadius(target2, 1f, 63f);
+                    IncreasePSShapeRadius(target3, 1f, 63f);
+                    break;
+                case 2:
+                    ChangePSColorAlpha(target1, 0.05f);
+                    ChangePSColorAlpha(target2, 1f);
+                    ChangePSColorAlpha(target3, 0.05f);
+                    IncreasePSShapeRadius(target1, 1f, 63f);
+                    IncreasePSShapeRadius(target2, radiusPS, 0f);
+                    IncreasePSShapeRadius(target3, 1f, 63f);
+                    break;
+                case 3:
+                    ChangePSColorAlpha(target1, 0.05f);
+                    ChangePSColorAlpha(target2, 0.05f);
+                    ChangePSColorAlpha(target3, 1f);
+                    IncreasePSShapeRadius(target1, 1f, 63f);
+                    IncreasePSShapeRadius(target2, 1f, 63f);
+                    IncreasePSShapeRadius(target3, radiusPS, 0f);
+                    break;
+            }
+        }
+        else
+        {
+            ChangePSColorAlpha(target1, 1f);
+            ChangePSColorAlpha(target2, 1f);
+            ChangePSColorAlpha(target3, 1f);
+            IncreasePSShapeRadius(target1, 1f, 63f);
+            IncreasePSShapeRadius(target2, 1f, 63f);
+            IncreasePSShapeRadius(target3, 1f, 63f);
+        }
+    }
+
+    private void ChangePSColorAlpha(GameObject psObject, float _alpha)
+    {
+        ParticleSystem particleSystem = psObject.transform.Find("Particle System").GetComponent<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            var mainModule = particleSystem.main;
+            Color currentColor = mainModule.startColor.color;
+            currentColor.a = _alpha;
+            mainModule.startColor = new Color(currentColor.r, currentColor.g, currentColor.b, currentColor.a);
+        }
+    }
+
+    public void IncreasePSShapeRadius(GameObject psObject, float increaseAmount, float _rotation)
+    {
+        Quaternion rotation = psObject.transform.rotation;
+        rotation.eulerAngles = new Vector3(_rotation, rotation.eulerAngles.y, rotation.eulerAngles.z);
+        psObject.transform.rotation = rotation;
+
+        ParticleSystem particleSystem = psObject.transform.Find("Particle System").GetComponent<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            var shapeModule = particleSystem.shape;
+            shapeModule.radius = increaseAmount;
+        }
+    }
+
+    private bool IsOverlapping(float min1, float max1, float min2, float max2)
+    {
+        return (min1 < max2 && max1 > min2);
+    }
+
+    private void CalculateTargetDistance()
+    {
+        target1Position = target1.transform.position;
+        target1XMin = target1Position.x - xMargin;
+        target1XMax = target1Position.x + xMargin;
+
+        target2Position = target2.transform.position;
+        target2XMin = target2Position.x - xMargin;
+        target2XMax = target2Position.x + xMargin;
+
+        target3Position = target3.transform.position;
+        target3XMin = target3Position.x - xMargin;
+        target3XMax = target3Position.x + xMargin;
+
+        bool overlap12 = IsOverlapping(target1XMin, target1XMax, target2XMin, target2XMax);
+        bool overlap13 = IsOverlapping(target1XMin, target1XMax, target3XMin, target3XMax);
+        bool overlap23 = IsOverlapping(target2XMin, target2XMax, target3XMin, target3XMax);
+    }
+
+    private int CheckIfDragIsInTargetArea(Vector3 dragPos)
+    {
+        if (overlap12 || overlap13 || overlap23)
+        {
+            if (overlap12)
+            {
+                float distanceToTarget1 = Mathf.Abs(dragPos.x - target1Position.x);
+                float distanceToTarget2 = Mathf.Abs(dragPos.x - target2Position.x);
+
+                if (distanceToTarget1 < distanceToTarget2)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 2;
+                }
+            }
+
+            if (overlap13)
+            {
+                float distanceToTarget1 = Mathf.Abs(dragPos.x - target1Position.x);
+                float distanceToTarget3 = Mathf.Abs(dragPos.x - target3Position.x);
+
+                if (distanceToTarget1 < distanceToTarget3)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+
+            if (overlap23)
+            {
+                float distanceToTarget2 = Mathf.Abs(dragPos.x - target2Position.x);
+                float distanceToTarget3 = Mathf.Abs(dragPos.x - target3Position.x);
+
+                if (distanceToTarget2 < distanceToTarget3)
+                {
+                    return 2;
+                }
+                else
+                {
+                    return 3;
+                }
+            }
+        }
+
+        // Kiểm tra dragPos nằm trong vùng target nào
+        else if (dragPos.x >= target1XMin && dragPos.x <= target1XMax)
+        {
+            return 1;
+        }
+        else if (dragPos.x >= target2XMin && dragPos.x <= target2XMax)
+        {
+            return 2;
+        }
+        else if (dragPos.x >= target3XMin && dragPos.x <= target3XMax)
+        {
+            return 3;
+        }
+        return 0;
+    }
+
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
         animationResult = true;
@@ -419,20 +616,30 @@ public class PositionSelectionSpawner : IGamePlay
         cardController.turnOffPointerHandler();
 
         // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
-        planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
+        // planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
 
         // Hàm thực hiện bay hành tinh và bay rocket
         StartCoroutine(CoroutineExcutesequentially());
     }
 
-    private AstronomicalObject DisplaySelectedPlanet(string planetName, Vector3 planetPosition)
+    private float CheckPlanetName(string planetName)
     {
-        // Tìm hành tinh đã chọn trong danh sách
-        AstronomicalObject selectedPlanet = allPlanets.Find(planet => planet.name == planetName);
-        // Khởi tạo hành tinh này trên màn hình
-        AstronomicalObject clonedPlanet = SpawnObject(selectedPlanet, planetPosition);
-
-        return clonedPlanet;
+        if (planetName == "01_mercury" || planetName == "04_mars")
+        {
+            return 2.06f;
+        }
+        else if (planetName == "03_earth" || planetName == "02_venus")
+        {
+            return 2.7f;
+        }
+        else if (planetName == "06_jupiter")
+        {
+            return 4.1f;
+        }
+        else 
+        {
+            return 3.6f;
+        }
     }
 
     private IEnumerator CoroutineExcutesequentially()
