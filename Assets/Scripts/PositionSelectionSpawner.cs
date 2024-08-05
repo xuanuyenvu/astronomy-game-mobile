@@ -56,6 +56,7 @@ public class PositionSelectionSpawner : IGamePlay
     private Vector3 target1Position;
     private Vector3 target2Position;
     private Vector3 target3Position;
+    private int targetCloser = 0;
     // --------------------------------------------
 
     void Awake()
@@ -133,6 +134,7 @@ public class PositionSelectionSpawner : IGamePlay
             RePlayGame();
             // Bật tính năng chọn thẻ bài
             cardController.turnOnPointerHandler();
+            cardController.ShowACard();
         }
         else
         {
@@ -443,17 +445,11 @@ public class PositionSelectionSpawner : IGamePlay
 
         if (screenDragPos.y >= lowerBound && screenDragPos.y <= upperBound)
         {
-            int targetCloser = CheckIfDragIsInTargetArea(dragPos);
-            // Debug.Log("closer: " + targetCloser);
+            targetCloser = CheckIfDragIsInTargetArea(dragPos);
             switch (targetCloser)
             {
                 case 0:
-                    ChangePSColorAlpha(target1, 1f);
-                    ChangePSColorAlpha(target2, 1f);
-                    ChangePSColorAlpha(target3, 1f);
-                    IncreasePSShapeRadius(target1, 1f, 63f);
-                    IncreasePSShapeRadius(target2, 1f, 63f);
-                    IncreasePSShapeRadius(target3, 1f, 63f);
+                    ResetAllTarget();
                     break;
                 case 1:
                     ChangePSColorAlpha(target1, 1f);
@@ -483,13 +479,19 @@ public class PositionSelectionSpawner : IGamePlay
         }
         else
         {
-            ChangePSColorAlpha(target1, 1f);
-            ChangePSColorAlpha(target2, 1f);
-            ChangePSColorAlpha(target3, 1f);
-            IncreasePSShapeRadius(target1, 1f, 63f);
-            IncreasePSShapeRadius(target2, 1f, 63f);
-            IncreasePSShapeRadius(target3, 1f, 63f);
+            targetCloser = 0;
+            ResetAllTarget();
         }
+    }
+
+    private void ResetAllTarget()
+    {
+        ChangePSColorAlpha(target1, 1f);
+        ChangePSColorAlpha(target2, 1f);
+        ChangePSColorAlpha(target3, 1f);
+        IncreasePSShapeRadius(target1, 1f, 63f);
+        IncreasePSShapeRadius(target2, 1f, 63f);
+        IncreasePSShapeRadius(target3, 1f, 63f);
     }
 
     private void ChangePSColorAlpha(GameObject psObject, float _alpha)
@@ -610,13 +612,18 @@ public class PositionSelectionSpawner : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
+        if (targetCloser == 0)
+        {
+            cardController.ShowACard();
+            return;
+        }
         animationResult = true;
 
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 
         // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
-        // planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
+        planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
 
         // Hàm thực hiện bay hành tinh và bay rocket
         StartCoroutine(CoroutineExcutesequentially());
@@ -636,10 +643,20 @@ public class PositionSelectionSpawner : IGamePlay
         {
             return 4.1f;
         }
-        else 
+        else
         {
-            return 3.6f;
+            return 3.5f;
         }
+    }
+
+    private AstronomicalObject DisplaySelectedPlanet(string planetName, Vector3 planetPosition)
+    {
+        // Tìm hành tinh đã chọn trong danh sách
+        AstronomicalObject selectedPlanet = allPlanets.Find(planet => planet.name == planetName);
+        // Khởi tạo hành tinh này trên màn hình
+        AstronomicalObject clonedPlanet = SpawnObject(selectedPlanet, planetPosition);
+
+        return clonedPlanet;
     }
 
     private IEnumerator CoroutineExcutesequentially()
@@ -654,7 +671,19 @@ public class PositionSelectionSpawner : IGamePlay
     private IEnumerator FlySelectedPlanetToTarget()
     {
         Vector3 startingPos = planetAnswer.transform.position;
-        Vector3 finalPos = target1.transform.position;
+        Vector3 finalPos;
+        if (targetCloser == 1)
+        {
+            finalPos = target1.transform.position;
+        }
+        else if (targetCloser == 2)
+        {
+            finalPos = target2.transform.position;
+        }
+        else
+        {
+            finalPos = target3.transform.position;
+        }
 
         // Tính chiều dài quãng đường
         float distance = Vector3.Distance(startingPos, finalPos);
@@ -670,17 +699,27 @@ public class PositionSelectionSpawner : IGamePlay
 
         yield return null;
 
-        // Ẩn target 
+        // Ẩn target
+        ResetAllTarget();
+        targetCloser = 0; 
         if (target1 != null)
         {
             target1.SetActive(false);
+        }
+        if (target2 != null)
+        {
+            target2.SetActive(false);
+        }
+        if (target3 != null)
+        {
+            target3.SetActive(false);
         }
     }
 
     private void RocketFlyAnimation()
     {
         // Nếu kết quả đúng thì xoay rocket
-        if (planetAnswer.name == planet2.name)
+        if (targetCloser == 1)
         {
             // Lắc rocket và hiển thị hiệu ứng correct
             StartCoroutine(CoroutineCorrectAnwser());
