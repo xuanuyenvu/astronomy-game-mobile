@@ -30,10 +30,10 @@ public class RocketController : AstronomicalObject
         }
     }
 
-    public void RotateRocket(GameObject planet)
+    public void RotateRocket(Vector3 planetPosition)
     {
         // Tính vector từ rocket tới planet
-        Vector3 direction = planet.transform.position - transform.position;
+        Vector3 direction = planetPosition - transform.position;
 
         // Tính góc quay để hướng rocket về phía planet
         Quaternion rotation = Quaternion.LookRotation(direction);
@@ -42,11 +42,11 @@ public class RocketController : AstronomicalObject
         transform.rotation = rotation;
     }
 
-    private IEnumerator FlyTo(GameObject planet)
+    private IEnumerator FlyTo(Vector3 planetPosition)
     {
         Vector3 startingPos = transform.position;
-        Vector3 finalPos = planet.transform.position;
-        RotateRocket(planet);
+        Vector3 finalPos = planetPosition;
+        RotateRocket(planetPosition);
 
         // Tính chiều dài quãng đường
         float distance = Vector3.Distance(startingPos, finalPos);
@@ -108,9 +108,9 @@ public class RocketController : AstronomicalObject
         elapsedTime = 0f; // Reset lại giá trị để dùng cho lần lắc sau
     }
 
-    public IEnumerator ShakeAndFlyTo(GameObject planet)
+    public IEnumerator ShakeAndFlyTo(Vector3 planetPosition)
     {
         yield return StartCoroutine(ShakeRocket());
-        StartCoroutine(FlyTo(planet));
+        StartCoroutine(FlyTo(planetPosition));
     }
 }
