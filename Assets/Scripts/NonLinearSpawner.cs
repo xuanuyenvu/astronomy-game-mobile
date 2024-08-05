@@ -28,6 +28,7 @@ public class NonLinearSpawner : IGamePlay
     private int screenHeight;
     private Vector2 screenCenter;
     private bool isLeft;
+    private bool isTop;
 
     private bool animationStart = false;
     private bool animationResult = false;
@@ -35,6 +36,8 @@ public class NonLinearSpawner : IGamePlay
 
     private ParticleSystem boomInstance = null;
     private ParticleSystem winEffectInstance = null;
+
+    GameObject monster = null;
 
     void Awake()
     {
@@ -122,7 +125,7 @@ public class NonLinearSpawner : IGamePlay
 
         Destroy(planetAnswer.gameObject);
 
-        FindMeanAndSetRocket();
+        SetRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
     }
 
@@ -143,10 +146,11 @@ public class NonLinearSpawner : IGamePlay
         planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
-        planet1 = Clone(planet1, isLeft);
+        isTop = Random.Range(0, 2) == 0 ? true : false;
+        planet1 = Clone(planet1, isLeft, isTop);
         planet1.gameObject.SetActive(true);
 
-        planet2 = Clone(planet2, !isLeft);
+        planet2 = Clone(planet2, !isLeft, !isTop);
         planet2.gameObject.SetActive(false);
 
         target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
@@ -154,9 +158,10 @@ public class NonLinearSpawner : IGamePlay
         target.SetActive(true);
     }
 
-    private AstronomicalObject Clone(AstronomicalObject origin, bool isLeftPart = true)
+    private AstronomicalObject Clone(AstronomicalObject origin, bool isLeftPart = true, bool isTopPart = true)
     {
-        float spawnY = screenHeight / 2;
+        // float spawnY = screenHeight / 2;
+        float spawnY = GetSpawnY(isTopPart);
         float spawnX = GetSpawnX(isLeftPart);
 
         Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, spawnY, Camera.main.transform.position.z));
@@ -181,6 +186,23 @@ public class NonLinearSpawner : IGamePlay
         return clonedPlanet;
     }
 
+    private float GetSpawnY(bool isTopPart = true)
+    {
+        float spawnY = 0;
+        float padding = screenHeight / 8;
+
+        if (isTopPart)
+        {
+            spawnY = Random.Range(0 + padding * 2f, screenHeight / 2 - padding * 1.5f);
+        }
+        else
+        {
+            spawnY = Random.Range(screenHeight / 2 + padding * 1.2f, screenHeight - padding * 2f);
+        }
+
+        return spawnY;
+    }
+
     private float GetSpawnX(bool isLeftPart = true)
     {
         float spawnX = 0;
@@ -198,17 +220,36 @@ public class NonLinearSpawner : IGamePlay
         return spawnX;
     }
 
-    public void FindMeanAndSetRocket()
+    private void SetDestinationPosition()
     {
-        var d = Vector3.Distance(planet1.transform.position, planet2.transform.position);
-        var d2 = d / (1 + Math.Sqrt(planet1.Mass / planet2.Mass));
-        var direction = (planet1.transform.position - planet2.transform.position).normalized;
+        float spawnY;
+        float spawnX;
+        if (Random.Range(0, 2) == 0 ? true : false)
+        {
+            spawnY = GetSpawnY(!isTop);
+            spawnX = GetSpawnX(isLeft);
+        }
+        else
+        {
+            spawnY = GetSpawnY(isTop);
+            spawnX = GetSpawnX(!isLeft);
+        }
 
-        var answer = planet2.transform.position + direction * ((float)d2);
+        Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, spawnY, Camera.main.transform.position.z));
+        spawnPosition.z = -3;
 
-        rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
+        monster = Instantiate(targetPrefab, spawnPosition, Quaternion.identity);
+        monster.SetActive(false);
+    }
+
+    public void SetRocket()
+    {
+        Vector3 monsterPosition = monster.transform.position;
+        Vector3 inversePosition = new Vector3(-monsterPosition.x, -monsterPosition.y, monsterPosition.z);
+
+        rocket = Instantiate(rocketPrefab, inversePosition, Quaternion.identity);
         rocket.name = rocket.name.Replace("(Clone)", "");
-        rocket.RotateRocket(planet1.gameObject);
+        rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
     }
 
@@ -252,7 +293,8 @@ public class NonLinearSpawner : IGamePlay
     public override void Play()
     {
         RandomizePosition();
-        FindMeanAndSetRocket();
+        SetDestinationPosition();
+        SetRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
 
         // Bắt đầu tính thời gian
@@ -334,59 +376,31 @@ public class NonLinearSpawner : IGamePlay
             return;
         }
 
-        // Tính lực hấp dẫn giữa hành tinh 1 và thiên thạch
-        var attractiveForce1 = planet1.GetAttractiveForce(rocket);
+        // Tính vector lực hấp dẫn giữa hành tinh 1 và thiên thạch
+        Vector3 directionToPlanet1 = planet1.transform.position - rocket.transform.position;
 
-        // Tính lực hấp dẫn giữa hành tinh trả lời và thiên thạch
-        var attractiveForceAnswer = planetAnswer.GetAttractiveForce(rocket);
+        // Tính vector lực hấp dẫn giữa hành tinh trả lời và thiên thạch
+        Vector3 directionToPlanetAnswer = planetAnswer.transform.position - rocket.transform.position;
 
-        // Thực hiện so sánh
-        if (attractiveForce1 > attractiveForceAnswer)
-        {
-            // Tìm loại boom phù hợp với hành tinh 1
-            FindBoomMatchPlanet(planet1);
-            // Bắt đầu lắc và bay
-            StartCoroutine(rocket.ShakeAndFlyTo(planet1.gameObject));
-        }
-        else
-        {
-            // Tìm loại boom phùm hợp với hành tinh trả lời
-            FindBoomMatchPlanet(planetAnswer);
-            // Bắt đầu lắc và bay
-            StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject));
-        }
+        // Tính vector hợp lực
+        Vector3 resultant = directionToPlanet1 + directionToPlanetAnswer;
+        // resultant.Normalize();
+        StartCoroutine(rocket.ShakeAndFlyTo(resultant));
     }
 
-    private void FindBoomMatchPlanet(AstronomicalObject planet)
-    {
-        foreach (ParticleSystem boomPS in boomPSPrefab)
-        {
-            if (boomPS.name.Replace("_hit", "") == planet.name)
-            {
-                boomInstance = Instantiate(boomPS, planet.transform.position, Quaternion.identity);
-                var mainModule = boomInstance.main;
-                mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
-                boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
-                return;
-            }
-        }
-        Debug.LogWarning("Planet with name " + planet.name + " not found in boomPSPrefab list.");
-        return;
-    }
+    // public override IEnumerator PlayBoomAndShake()
+    // {
+    //     if (boomInstance != null)
+    //     {
+    //         boomInstance.gameObject.SetActive(true);
+    //         boomInstance.Play();
+    //     }
+    //     cameraShake.ShakeCamera();
 
-    public override IEnumerator PlayBoomAndShake()
-    {
-        if (boomInstance != null)
-        {
-            boomInstance.gameObject.SetActive(true);
-            boomInstance.Play();
-        }
-        cameraShake.ShakeCamera();
-
-        // Mất 1 mạng
-        healthManager.health--;
-        yield return null;
-    }
+    //     // Mất 1 mạng
+    //     healthManager.health--;
+    //     yield return null;
+    // }
 
     private IEnumerator CoroutineCorrectAnwser()
     {

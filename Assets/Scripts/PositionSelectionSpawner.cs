@@ -359,7 +359,7 @@ public class PositionSelectionSpawner : IGamePlay
         rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
         // SetLocalScaleOfAstronimicalObject(rocket.gameObject);
         rocket.name = rocket.name.Replace("(Clone)", "");
-        rocket.RotateRocket(planet1.gameObject);
+        rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
     }
 
@@ -738,14 +738,14 @@ public class PositionSelectionSpawner : IGamePlay
             // Tìm loại boom phù hợp với hành tinh 1
             FindBoomMatchPlanet(planet1);
             // Bắt đầu lắc và bay
-            StartCoroutine(rocket.ShakeAndFlyTo(planet1.gameObject));
+            StartCoroutine(rocket.ShakeAndFlyTo(planet1.gameObject.transform.position));
         }
         else
         {
             // Tìm loại boom phùm hợp với hành tinh trả lời
             FindBoomMatchPlanet(planetAnswer);
             // Bắt đầu lắc và bay
-            StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject));
+            StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject.transform.position));
         }
         targetCloser = 0;
     }
