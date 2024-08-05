@@ -37,7 +37,7 @@ public class NonLinearSpawner : IGamePlay
     private ParticleSystem boomInstance = null;
     private ParticleSystem winEffectInstance = null;
 
-    GameObject monster = null;
+    RocketController monster = null;
 
     void Awake()
     {
@@ -238,16 +238,17 @@ public class NonLinearSpawner : IGamePlay
         Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, spawnY, Camera.main.transform.position.z));
         spawnPosition.z = -3;
 
-        monster = Instantiate(targetPrefab, spawnPosition, Quaternion.identity);
-        monster.SetActive(false);
+        monster = Instantiate(rocketPrefab, spawnPosition, Quaternion.identity);
+        monster.gameObject.SetActive(false);
     }
 
     public void SetRocket()
     {
-        Vector3 monsterPosition = monster.transform.position;
-        Vector3 inversePosition = new Vector3(-monsterPosition.x, -monsterPosition.y, monsterPosition.z);
+        Vector3 rocketPostion = CalculateResultantPosition(planet1.gameObject.transform.position, 
+                                                    planet2.gameObject.transform.position,
+                                                    monster.gameObject.transform.position);
 
-        rocket = Instantiate(rocketPrefab, inversePosition, Quaternion.identity);
+        rocket = Instantiate(rocketPrefab, rocketPostion, Quaternion.identity);
         rocket.name = rocket.name.Replace("(Clone)", "");
         rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
@@ -365,42 +366,51 @@ public class NonLinearSpawner : IGamePlay
         }
     }
 
+    private Vector3 CalculateResultantPosition(Vector3 positionP1, Vector3 positionP2, Vector3 positionR)
+    {
+        // Tính vector lực hấp dẫn giữa hành tinh 1 và thiên thạch
+        Vector3 directionToP1 = positionP1 - positionR;
+
+        // Tính vector lực hấp dẫn giữa hành tinh 2 và thiên thạch
+        Vector3 directionToP2 = positionP2 - positionR;
+
+        // Tính vector hợp lực
+        Vector3 resultant = directionToP1 + directionToP2;
+        Vector3 resultantPosition = resultant + positionR;
+        return resultantPosition;
+    }
+
     private void RocketFlyAnimation()
     {
         // Nếu kết quả đúng thì xoay rocket
-        if (planetAnswer.name == planet2.name)
-        {
-            // Lắc rocket và hiển thị hiệu ứng correct
-            StartCoroutine(CoroutineCorrectAnwser());
-            scoreManager.FinalScore(healthManager.health);
-            return;
-        }
+        // if (planetAnswer.name == planet2.name)
+        // {
+        //     // Lắc rocket và hiển thị hiệu ứng correct
+        //     StartCoroutine(CoroutineCorrectAnwser());
+        //     scoreManager.FinalScore(healthManager.health);
+        //     return;
+        // }
 
-        // Tính vector lực hấp dẫn giữa hành tinh 1 và thiên thạch
-        Vector3 directionToPlanet1 = planet1.transform.position - rocket.transform.position;
-
-        // Tính vector lực hấp dẫn giữa hành tinh trả lời và thiên thạch
-        Vector3 directionToPlanetAnswer = planetAnswer.transform.position - rocket.transform.position;
-
-        // Tính vector hợp lực
-        Vector3 resultant = directionToPlanet1 + directionToPlanetAnswer;
+        Vector3 resultant = CalculateResultantPosition(planet1.gameObject.transform.position, 
+                                                planetAnswer.gameObject.transform.position,
+                                                rocket.transform.position);
         // resultant.Normalize();
         StartCoroutine(rocket.ShakeAndFlyTo(resultant));
     }
 
-    // public override IEnumerator PlayBoomAndShake()
-    // {
-    //     if (boomInstance != null)
-    //     {
-    //         boomInstance.gameObject.SetActive(true);
-    //         boomInstance.Play();
-    //     }
-    //     cameraShake.ShakeCamera();
+    public override IEnumerator PlayBoomAndShake()
+    {
+        // if (boomInstance != null)
+        // {
+        //     boomInstance.gameObject.SetActive(true);
+        //     boomInstance.Play();
+        // }
+        // cameraShake.ShakeCamera();
 
-    //     // Mất 1 mạng
-    //     healthManager.health--;
-    //     yield return null;
-    // }
+        // // Mất 1 mạng
+        // healthManager.health--;
+        yield return null;
+    }
 
     private IEnumerator CoroutineCorrectAnwser()
     {
