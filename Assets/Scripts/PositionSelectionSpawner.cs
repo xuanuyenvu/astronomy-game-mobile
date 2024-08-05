@@ -701,7 +701,6 @@ public class PositionSelectionSpawner : IGamePlay
 
         // Ẩn target
         ResetAllTarget();
-        targetCloser = 0; 
         if (target1 != null)
         {
             target1.SetActive(false);
@@ -748,6 +747,7 @@ public class PositionSelectionSpawner : IGamePlay
             // Bắt đầu lắc và bay
             StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject));
         }
+        targetCloser = 0;
     }
 
     private void FindBoomMatchPlanet(AstronomicalObject planet)

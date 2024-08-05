@@ -7,7 +7,7 @@ public class GameManger : MonoBehaviour
     public IGamePlay[] gamePlays;
     public Player player;
 
-    private int id  = 1;
+    private int id  = 2;
     // Start is called before the first frame update
     void Start()
     {
