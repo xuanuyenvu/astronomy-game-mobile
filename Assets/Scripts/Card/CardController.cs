@@ -49,7 +49,7 @@ public class CardController : MonoBehaviour
 
     private void InitCards()
     {
-        if (idGamePlay == 0)
+        if (idGamePlay == 0 || idGamePlay == 2)
         {
             ShuffleCards();
             DisplayCards();

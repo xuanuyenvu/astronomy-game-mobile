@@ -24,7 +24,7 @@ public class DoubleClickController : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (cardController.idGamePlay == 0)
+        if (cardController.idGamePlay == 0 || cardController.idGamePlay == 2)
         {
             Debug.Log("OnPointerClick");
             float timeSinceLastClick = Time.time - lastClickTime;
