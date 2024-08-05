@@ -352,6 +352,15 @@ public class CardController : MonoBehaviour
         }
     }
 
+    public void ShowACard()
+    {
+        foreach (CardWrapper cardInstance in allCardInstances)
+        {
+            cardInstance.gameObject.SetActive(true);
+            cardInstance.IsSelected = false;
+        }
+    }
+
     public void ChangeSelectedCard(CardWrapper card)
     {
         // Nếu đã có card được chọn từ trước thì gọi hàm ResetAllValues() 
@@ -444,11 +453,11 @@ public class CardController : MonoBehaviour
     }
 
     private CardWrapper selectedCardAnimation = null;
-    private void SpawnSelectedCardForAnimation()
-    {
-        selectedCardAnimation = Instantiate(selectedCard, this.transform.parent);
-        selectedCardAnimation.IsAnimation = true;
-        selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
-        StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
-    }
+    // private void SpawnSelectedCardForAnimation()
+    // {
+    //     selectedCardAnimation = Instantiate(selectedCard, this.transform.parent);
+    //     selectedCardAnimation.IsAnimation = true;
+    //     selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
+    //     StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
+    // }
 }

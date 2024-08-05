@@ -76,6 +76,12 @@ public class Player : MonoBehaviour
                     {
                         draggedPlanet = Instantiate(selectedPlanetCard, worldPosition, Quaternion.identity);
                         draggedPlanet.name = draggedPlanet.name.Replace("(Clone)", "");
+                        if (draggedPlanet.name == "07_saturn")
+                        {
+                            Vector3 newRotation = draggedPlanet.transform.rotation.eulerAngles;
+                            newRotation.x = -10f;
+                            draggedPlanet.transform.rotation = Quaternion.Euler(newRotation);
+                        }
                     }
                     selectedPlanetCard = null;
                     isSelected = true;
@@ -103,8 +109,10 @@ public class Player : MonoBehaviour
         isSelected = false;
         if (draggedPlanet != null)
         {
+            iGamePlay.HandleConfirmButton(draggedPlanet.name, draggedPlanet.transform.position);
             Destroy(draggedPlanet.gameObject);
             draggedPlanet = null;
+            hasExecuted = false;
         }
     }
 }
