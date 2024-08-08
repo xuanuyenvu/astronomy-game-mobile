@@ -345,17 +345,22 @@ public class PlanetSelectionSpawner : IGamePlay
         if (attractiveForce1 > attractiveForceAnswer)
         {
             // Tìm loại boom phù hợp với hành tinh 1
-            FindBoomMatchPlanet(planet1);
+            // FindBoomMatchPlanet(planet1);
             // Bắt đầu lắc và bay
             StartCoroutine(rocket.ShakeAndFlyTo(planet1.gameObject.transform.position));
         }
         else
         {
             // Tìm loại boom phùm hợp với hành tinh trả lời
-            FindBoomMatchPlanet(planetAnswer);
+            // FindBoomMatchPlanet(planetAnswer);
             // Bắt đầu lắc và bay
             StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject.transform.position));
         }
+    }
+
+    public override void ExecuteAfterCollision(AstronomicalObject planet)
+    {
+        FindBoomMatchPlanet(planet);
     }
 
     private void FindBoomMatchPlanet(AstronomicalObject planet)
@@ -368,20 +373,19 @@ public class PlanetSelectionSpawner : IGamePlay
                 var mainModule = boomInstance.main;
                 mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
                 boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
-                return;
+                break;
             }
         }
-        Debug.LogWarning("Planet with name " + planet.name + " not found in boomPSPrefab list.");
-        return;
-    }
-
-    public override IEnumerator PlayBoomAndShake()
-    {
         if (boomInstance != null)
         {
-            boomInstance.gameObject.SetActive(true);
-            boomInstance.Play();
+            StartCoroutine(PlayBoomAndShake());
         }
+    }
+
+    private IEnumerator PlayBoomAndShake()
+    {
+        boomInstance.gameObject.SetActive(true);
+        boomInstance.Play();
         cameraShake.ShakeCamera();
 
         // Mất 1 mạng

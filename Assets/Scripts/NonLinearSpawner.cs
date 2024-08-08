@@ -37,7 +37,8 @@ public class NonLinearSpawner : IGamePlay
     private ParticleSystem boomInstance = null;
     private ParticleSystem winEffectInstance = null;
 
-    RocketController monster = null;
+    RocketController destinationRocket = null;
+    private Vector3 spawnRocketPosition = Vector3.zero;
 
     void Awake()
     {
@@ -61,6 +62,7 @@ public class NonLinearSpawner : IGamePlay
         else
         {
             rocket.TurnOnCollider = false;
+            destinationRocket.TurnOnCollider = false;
         }
 
         if (cardController.GetNumOfCards() == 0)
@@ -193,11 +195,11 @@ public class NonLinearSpawner : IGamePlay
 
         if (isTopPart)
         {
-            spawnY = Random.Range(0 + padding * 2f, screenHeight / 2 - padding * 1.5f);
+            spawnY = Random.Range(screenHeight / 2 + padding * 1.2f, screenHeight - padding * 1.6f);
         }
         else
         {
-            spawnY = Random.Range(screenHeight / 2 + padding * 1.2f, screenHeight - padding * 2f);
+            spawnY = Random.Range(0 + padding * 2f, screenHeight / 2 - padding);
         }
 
         return spawnY;
@@ -220,38 +222,40 @@ public class NonLinearSpawner : IGamePlay
         return spawnX;
     }
 
-    private void SetDestinationPosition()
+    private void SetRocket()
     {
-        float spawnY;
-        float spawnX;
-        if (Random.Range(0, 2) == 0 ? true : false)
+        if (spawnRocketPosition == Vector3.zero)
         {
-            spawnY = GetSpawnY(!isTop);
-            spawnX = GetSpawnX(isLeft);
+            float spawnY;
+            float spawnX;
+            if (Random.Range(0, 2) == 0 ? true : false)
+            {
+                spawnY = GetSpawnY(!isTop);
+                spawnX = GetSpawnX(isLeft);
+            }
+            else
+            {
+                spawnY = GetSpawnY(isTop);
+                spawnX = GetSpawnX(!isLeft);
+            }
+            spawnRocketPosition = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, spawnY, Camera.main.transform.position.z));
+            spawnRocketPosition.z = -3;
         }
-        else
-        {
-            spawnY = GetSpawnY(isTop);
-            spawnX = GetSpawnX(!isLeft);
-        }
 
-        Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(new Vector3(spawnX, spawnY, Camera.main.transform.position.z));
-        spawnPosition.z = -3;
-
-        monster = Instantiate(rocketPrefab, spawnPosition, Quaternion.identity);
-        monster.gameObject.SetActive(false);
-    }
-
-    public void SetRocket()
-    {
-        Vector3 rocketPostion = CalculateResultantPosition(planet1.gameObject.transform.position, 
-                                                    planet2.gameObject.transform.position,
-                                                    monster.gameObject.transform.position);
-
-        rocket = Instantiate(rocketPrefab, rocketPostion, Quaternion.identity);
+        rocket = Instantiate(rocketPrefab, spawnRocketPosition, Quaternion.identity);
         rocket.name = rocket.name.Replace("(Clone)", "");
         rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
+    }
+
+    public void SetDestinationOfRocket()
+    {
+        Vector3 desPostion = CalculateResultantPosition(planet1, planet2, rocket).normalized * 2;
+
+        destinationRocket = Instantiate(rocketPrefab, desPostion, Quaternion.identity);
+        destinationRocket.name = destinationRocket.name.Replace("meteorite(Clone)", "destination");
+        destinationRocket.gameObject.tag = "Rocket";
+        destinationRocket.gameObject.SetActive(true);
     }
 
     IEnumerator SetPositionBeforePlaying(float time)
@@ -260,19 +264,23 @@ public class NonLinearSpawner : IGamePlay
         var center = GetCenterPoint();
         var planet1Pos = planet1.transform.position;
         var rocketPos = rocket.transform.position;
+        var destinationPos = destinationRocket.transform.position;
 
         planet1.transform.position = center;
         rocket.transform.position = center;
+        destinationRocket.transform.position = center;
 
         for (float t = 0f; t <= 1; t += Time.deltaTime / time)
         {
-            planet1.transform.position = Vector3.Lerp(center, planet1Pos, t); ;
-            rocket.transform.position = Vector3.Lerp(center, rocketPos, t); ;
+            planet1.transform.position = Vector3.Lerp(center, planet1Pos, t);
+            rocket.transform.position = Vector3.Lerp(center, rocketPos, t);
+            destinationRocket.transform.position = Vector3.Lerp(center, destinationPos, t);
 
             yield return null;
         }
         planet1.transform.position = planet1Pos;
         rocket.transform.position = rocketPos;
+        destinationRocket.transform.position = destinationPos;
 
         animationStart = false;
         playing = true;
@@ -294,8 +302,8 @@ public class NonLinearSpawner : IGamePlay
     public override void Play()
     {
         RandomizePosition();
-        SetDestinationPosition();
         SetRocket();
+        SetDestinationOfRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
 
         // Bắt đầu tính thời gian
@@ -318,7 +326,7 @@ public class NonLinearSpawner : IGamePlay
         planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
 
         // Hàm thực hiện bay hành tinh và bay rocket
-        StartCoroutine(CoroutineExcutesequentially());
+        StartCoroutine(CoroutineExecutesequentially());
     }
 
     private AstronomicalObject DisplaySelectedPlanet(string planetName, Vector3 planetPosition)
@@ -331,7 +339,7 @@ public class NonLinearSpawner : IGamePlay
         return clonedPlanet;
     }
 
-    private IEnumerator CoroutineExcutesequentially()
+    private IEnumerator CoroutineExecutesequentially()
     {
         // Cho hành tinh bay đến vị trí
         yield return StartCoroutine(FlySelectedPlanetToTarget());
@@ -366,59 +374,99 @@ public class NonLinearSpawner : IGamePlay
         }
     }
 
-    private Vector3 CalculateResultantPosition(Vector3 positionP1, Vector3 positionP2, Vector3 positionR)
+    private Vector3 CalculateResultantPosition(AstronomicalObject _planet1,
+                                                AstronomicalObject _planet2, AstronomicalObject _rocket)
     {
         // Tính vector lực hấp dẫn giữa hành tinh 1 và thiên thạch
-        Vector3 directionToP1 = positionP1 - positionR;
+        Vector3 force1 = _rocket.GetVectorAttractiveForce(_planet1);
 
         // Tính vector lực hấp dẫn giữa hành tinh 2 và thiên thạch
-        Vector3 directionToP2 = positionP2 - positionR;
+        Vector3 force2 = _rocket.GetVectorAttractiveForce(_planet2);
 
         // Tính vector hợp lực
-        Vector3 resultant = directionToP1 + directionToP2;
-        Vector3 resultantPosition = resultant + positionR;
-        return resultantPosition;
+        Vector3 resultantForce = force1 + force2;
+        resultantForce.z = -3;
+
+        return resultantForce + rocket.transform.position;
     }
 
     private void RocketFlyAnimation()
     {
         // Nếu kết quả đúng thì xoay rocket
-        // if (planetAnswer.name == planet2.name)
-        // {
-        //     // Lắc rocket và hiển thị hiệu ứng correct
-        //     StartCoroutine(CoroutineCorrectAnwser());
-        //     scoreManager.FinalScore(healthManager.health);
-        //     return;
-        // }
+        if (planetAnswer.name == planet2.name)
+        {
+            // Lắc rocket và hiển thị hiệu ứng correct
+            destinationRocket.TurnOnCollider = true;
+            StartCoroutine(CoroutineCorrectAnwser());
+            scoreManager.FinalScore(healthManager.health);
+            return;
+        }
 
-        Vector3 resultant = CalculateResultantPosition(planet1.gameObject.transform.position, 
-                                                planetAnswer.gameObject.transform.position,
-                                                rocket.transform.position);
+        Vector3 resultant = CalculateResultantPosition(planet1, planetAnswer, rocket);
         // resultant.Normalize();
         StartCoroutine(rocket.ShakeAndFlyTo(resultant));
     }
 
-    public override IEnumerator PlayBoomAndShake()
+    public override void ExecuteAfterCollision(AstronomicalObject planet)
     {
-        // if (boomInstance != null)
-        // {
-        //     boomInstance.gameObject.SetActive(true);
-        //     boomInstance.Play();
-        // }
-        // cameraShake.ShakeCamera();
+        if (planet != null)
+        {
+            FindBoomMatchPlanet(planet);
+        }
+        else
+        {
+            DestroyTwoPlanet();
+        }
+    }
 
-        // // Mất 1 mạng
-        // healthManager.health--;
+    private void DestroyTwoPlanet()
+    {
+        RocketController rocketChild1 = Instantiate(rocketPrefab, destinationRocket.transform.position, Quaternion.identity);
+        RocketController rocketChild2 = Instantiate(rocketPrefab, destinationRocket.transform.position, Quaternion.identity);
+
+        rocketChild1.RotateRocket(planet1.transform.position);
+        rocketChild2.RotateRocket(planetAnswer.transform.position);
+
+        rocketChild1.TurnOnCollider = true;
+        rocketChild2.TurnOnCollider = true;
+
+        StartCoroutine(rocketChild1.ShakeAndFlyTo(planet1.transform.position));
+        StartCoroutine(rocketChild2.ShakeAndFlyTo(planetAnswer.transform.position));
+    }
+
+    private void FindBoomMatchPlanet(AstronomicalObject planet)
+    {
+        foreach (ParticleSystem boomPS in boomPSPrefab)
+        {
+            if (boomPS.name.Replace("_hit", "") == planet.name)
+            {
+                boomInstance = Instantiate(boomPS, planet.transform.position, Quaternion.identity);
+                var mainModule = boomInstance.main;
+                mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+                boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
+                break;
+            }
+        }
+        if (boomInstance != null)
+        {
+            StartCoroutine(PlayBoomAndShake());
+        }
+    }
+
+    private IEnumerator PlayBoomAndShake()
+    {
+        boomInstance.gameObject.SetActive(true);
+        boomInstance.Play();
+        cameraShake.ShakeCamera();
+
+        // Mất 1 mạng
+        healthManager.health--;
         yield return null;
     }
 
     private IEnumerator CoroutineCorrectAnwser()
     {
-        yield return StartCoroutine(rocket.ShakeRocket());
-
-        // Rocket cân bằng giữa 2 hành tinh
-        rocket.transform.rotation = Quaternion.identity;
-
+        yield return StartCoroutine(rocket.ShakeAndFlyTo(destinationRocket.transform.position));
         // Khởi tạo hiệu ứng tại vị trí planetAnswer
         winEffectInstance = Instantiate(winEffectPSPrefab, planetAnswer.transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<ParticleSystem>();
         var mainModule = winEffectInstance.main;
@@ -454,4 +502,6 @@ public class NonLinearSpawner : IGamePlay
     {
         Debug.Log("gameOver");
     }
+
+
 }
