@@ -33,7 +33,7 @@ public class RocketController : AstronomicalObject
     public void RotateRocket(Vector3 planetPosition)
     {
         // Tính vector từ rocket tới planet
-        Vector3 direction = planetPosition - transform.position;
+        Vector3 direction = planetPosition - this.transform.position;
 
         // Tính góc quay để hướng rocket về phía planet
         Quaternion rotation = Quaternion.LookRotation(direction);
@@ -64,12 +64,17 @@ public class RocketController : AstronomicalObject
         }
     }
 
-    private void OnTriggerEnter(Collider planet)
+    private void OnTriggerEnter(Collider obj)
     {
-        if (planet.gameObject.CompareTag("Planet"))
+        if (obj.gameObject.CompareTag("Planet") || obj.gameObject.CompareTag("Rocket"))
         {
-            planet.gameObject.SetActive(false);
-            StartCoroutine(iGamePlay.PlayBoomAndShake());
+            obj.gameObject.SetActive(false);
+            iGamePlay.ExecuteAfterCollision(obj.gameObject.GetComponent<AstronomicalObject>());
+            Destroy(this.gameObject);
+        }
+        else if (obj.gameObject.CompareTag("Bound"))
+        {
+            iGamePlay.ExecuteAfterCollision(null);
             Destroy(this.gameObject);
         }
     }

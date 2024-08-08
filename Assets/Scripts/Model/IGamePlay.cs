@@ -10,7 +10,7 @@ public abstract class IGamePlay : MonoBehaviour
      [HideInInspector] public ScoreManager scoreManager;
      public abstract void Play();
 
-     public abstract IEnumerator PlayBoomAndShake();
+     public abstract void ExecuteAfterCollision(AstronomicalObject planet);
 
      public abstract void HandleConfirmButton(string planetName, Vector3 planetPosition);
 
