@@ -256,26 +256,46 @@ public class NonLinearSpawner : IGamePlay
         float distance2 = planet2.Distance(rocket);
 
         // Nêu hai planet giống nhau
-        // hoặc nếu rocket trùng trục x với 1 trong 2 planet
-        if (planet1.name == planet2.name 
-            || Mathf.Abs(rocket.transform.position.x - planet1.transform.position.x) < 1
-            || Mathf.Abs(rocket.transform.position.x - planet2.transform.position.x) < 1)
+        if (planet1.name == planet2.name)
         {
-            Debug.Log(" do a nha ");
-            if (distance1 > distance2)
+            // Tính tỉ lệ khoảng cách
+            float ratio = Mathf.Max(distance1, distance2) / Mathf.Min(distance1, distance2);
+            Debug.Log("ratio = " + ratio);
+            // Nếu khoảng cách gần gấp đôi
+            if (ratio > 1.6f)
             {
-                MoveRocketCloserToPlanet(planet1);
-                rocket.RotateRocket(planet1.gameObject.transform.position);
-            }
-            else if (distance1 < distance2)
-            {
-                MoveRocketCloserToPlanet(planet2);
-                rocket.RotateRocket(planet1.gameObject.transform.position);
+                Debug.Log("ratio > 1.8f");
+                if (distance1 > distance2)
+                {
+                    Debug.Log("ve 1");
+                    MoveRocketCloserToPlanet(planet1, 4f);
+                }
+                else if (distance1 < distance2)
+                {
+                    Debug.Log("ve 2");
+                    MoveRocketCloserToPlanet(planet2, 4f);
+                }
             }
         }
 
-        if (planet1.name != planet2.name)
+        // nếu hai planet không giống nhau
+        else
         {
+
+            // nếu rocket trùng trục x với 1 trong 2 planet
+            if (Mathf.Abs(rocket.transform.position.x - planet1.transform.position.x) < 1
+                || Mathf.Abs(rocket.transform.position.x - planet2.transform.position.x) < 1)
+            {
+                if (distance1 > distance2)
+                {
+                    MoveRocketCloserToPlanet(planet1);
+                }
+                else if (distance1 < distance2)
+                {
+                    MoveRocketCloserToPlanet(planet2);
+                }
+            }
+
             float mass1 = (float)planet1.Mass;
             float mass2 = (float)planet2.Mass;
 
@@ -283,16 +303,17 @@ public class NonLinearSpawner : IGamePlay
             // tức là cùng cao hơn cái còn lại
             bool isOrderCorrect = (distance1 > distance2 && mass1 > mass2)
                                     || (distance1 < distance2 && mass1 < mass2);
-            Debug.Log("isOrderCorrect " + isOrderCorrect);
+
             if (!isOrderCorrect)
             {
                 SwapPlanetPosition();
-                rocket.RotateRocket(planet1.gameObject.transform.position);
             }
+
         }
+        rocket.RotateRocket(planet1.gameObject.transform.position);
     }
 
-    private void MoveRocketCloserToPlanet(AstronomicalObject _planet, float moveDistance = 3.0f)
+    private void MoveRocketCloserToPlanet(AstronomicalObject _planet, float moveDistance = 2.6f)
     {
         // Tính vector di chuyển từ rocket tới hành tinh
         Vector3 directionToPlanet = (_planet.transform.position - rocket.transform.position).normalized;
@@ -454,20 +475,20 @@ public class NonLinearSpawner : IGamePlay
         Vector3 resultantForce = force1 + force2;
         // translatedResultantForce.z = -3;
 
-        return (resultantForce.normalized * d) + rocket.transform.position;;
+        return (resultantForce.normalized * d) + rocket.transform.position; ;
     }
 
     private void RocketFlyAnimation()
     {
         // Nếu kết quả đúng thì xoay rocket
-        // if (planetAnswer.name == planet2.name)
-        // {
-        //     // Lắc rocket và hiển thị hiệu ứng correct
-        //     destinationRocket.TurnOnCollider = true;
-        //     StartCoroutine(CoroutineCorrectAnwser());
-        //     scoreManager.FinalScore(healthManager.health);
-        //     return;
-        // }
+        if (planetAnswer.name == planet2.name)
+        {
+            // Lắc rocket và hiển thị hiệu ứng correct
+            destinationRocket.TurnOnCollider = true;
+            StartCoroutine(CoroutineCorrectAnwser());
+            scoreManager.FinalScore(healthManager.health);
+            return;
+        }
 
         Vector3 resultant = CalculateResultantPosition(planet1, planetAnswer, rocket, 20);
         // resultant.Normalize();
