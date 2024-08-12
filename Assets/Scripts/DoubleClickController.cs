@@ -9,7 +9,7 @@ public class DoubleClickController : MonoBehaviour, IPointerClickHandler
     private IGamePlay iGamePlay;
 
     private float lastClickTime = 0f;
-    private float doubleClickThreshold = 0.6f;
+    private float doubleClickThreshold = 0.8f;
 
     void Start()
     {
@@ -24,14 +24,12 @@ public class DoubleClickController : MonoBehaviour, IPointerClickHandler
     }
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (cardController.idGamePlay == 0 || cardController.idGamePlay == 2)
+        if (cardController.idGamePlay != 1)
         {
-            Debug.Log("OnPointerClick");
             float timeSinceLastClick = Time.time - lastClickTime;
 
             if (timeSinceLastClick <= doubleClickThreshold)
             {
-                Debug.Log("Double Click: " + this.name);
                 GameObject selectedPlanet = cardController.GetSelectedPlanet();
                 iGamePlay.HandleConfirmButton(selectedPlanet.name, selectedPlanet.transform.position);
             }

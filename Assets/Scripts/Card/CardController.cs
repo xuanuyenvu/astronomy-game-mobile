@@ -49,14 +49,14 @@ public class CardController : MonoBehaviour
 
     private void InitCards()
     {
-        if (idGamePlay == 0 || idGamePlay == 2)
+        if (idGamePlay == 1)
+        {
+
+        }
+        else
         {
             ShuffleCards();
             DisplayCards();
-        }
-        else if (idGamePlay == 1)
-        {
-
         }
 
         SetUpCards();

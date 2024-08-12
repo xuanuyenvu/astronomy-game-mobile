@@ -7,8 +7,8 @@ public class GameManger : MonoBehaviour
     public IGamePlay[] gamePlays;
     public Player player;
 
-    private int id  = 2;
-    // Start is called before the first frame update
+    private int id  = 3;
+
     void Start()
     {
         var current = Instantiate(gamePlays[id]);
