@@ -42,7 +42,7 @@ public class RocketController : AstronomicalObject
         transform.rotation = rotation;
     }
 
-    private IEnumerator FlyTo(Vector3 planetPosition)
+    public IEnumerator FlyTo(Vector3 planetPosition)
     {
         Vector3 startingPos = transform.position;
         Vector3 finalPos = planetPosition;

@@ -17,6 +17,7 @@ public class RocketFlySpawner : IGamePlay
     private AstronomicalObject planet1 = null;
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planet3 = null;
+    private AstronomicalObject resultPlanet = null;
     private AstronomicalObject planetAnswer = null;
     private RocketController rocket = null;
     private GameObject target = null;
@@ -62,12 +63,27 @@ public class RocketFlySpawner : IGamePlay
             rocket.TurnOnCollider = false;
         }
 
+        if (scoreManager.changeResultPlanet == 1)
+        {
+            scoreManager.changeResultPlanet = -1;
+            ChangeResultPlanet();
+        }
+
         if (cardController.GetNumOfCards() == 0)
         {
             GameOver();
         }
 
         DestroyEffect();
+    }
+
+    private void ChangeResultPlanet()
+    {
+        Vector3 positionRP = resultPlanet.transform.position;
+        Destroy(resultPlanet.gameObject);
+        resultPlanet = SpawnObject(planet3, positionRP);
+        resultPlanet.gameObject.SetActive(false);
+        FindMeanAndSetRocket();
     }
 
     private void DestroyEffect()
@@ -157,18 +173,14 @@ public class RocketFlySpawner : IGamePlay
 
         SortPlanetByMass();
 
-        Debug.Log("p1 : " + planet1.name);
-        Debug.Log("p2 : " + planet2.name);
-        Debug.Log("p3 : " + planet3.name);
-
         isLeft = Random.Range(0, 2) == 0 ? true : false;
         planet1 = Clone(planet1, isLeft);
         planet1.gameObject.SetActive(true);
 
-        planet2 = Clone(planet2, !isLeft);
-        planet2.gameObject.SetActive(false);
+        resultPlanet = Clone(planet2, !isLeft);
+        resultPlanet.gameObject.SetActive(false);
 
-        target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
+        target = Instantiate(targetPrefab, resultPlanet.transform.position, Quaternion.Euler(63, 0, 0));
         target.name = target.name.Replace("(Clone)", "");
         target.SetActive(true);
     }
@@ -181,7 +193,7 @@ public class RocketFlySpawner : IGamePlay
 
         planet1 = _planets[0]; // Hành tinh có khối lượng lớn nhất
         planet2 = _planets[2]; // Hành tinh có khối lượng nhỏ nhất
-        planet3 = _planets[1]; 
+        planet3 = _planets[1]; // Hành tinh có khối lượng ở giữa
     }
 
     private AstronomicalObject Clone(AstronomicalObject origin, bool isLeftPart = true)
@@ -230,13 +242,25 @@ public class RocketFlySpawner : IGamePlay
 
     public void FindMeanAndSetRocket()
     {
-        var d = Vector3.Distance(planet1.transform.position, planet2.transform.position);
-        var d2 = d / (1 + Math.Sqrt(planet1.Mass / planet2.Mass));
-        var direction = (planet1.transform.position - planet2.transform.position).normalized;
+        var d = Vector3.Distance(planet1.transform.position, resultPlanet.transform.position);
+        var d2 = d / (1 + Math.Sqrt(planet1.Mass / resultPlanet.Mass));
+        var direction = (planet1.transform.position - resultPlanet.transform.position).normalized;
 
-        var answer = planet2.transform.position + direction * ((float)d2);
+        Vector3 answer = resultPlanet.transform.position + direction * ((float)d2);
 
-        rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
+        if (rocket != null)
+        {
+            StartCoroutine(rocket.FlyTo(answer));
+        }
+        else
+        {
+            SetRocket(answer);
+        }
+    }
+
+    private void SetRocket(Vector3 _position)
+    {
+        rocket = Instantiate(rocketPrefab, _position, Quaternion.identity);
         rocket.name = rocket.name.Replace("(Clone)", "");
         rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
@@ -356,7 +380,7 @@ public class RocketFlySpawner : IGamePlay
     private void RocketFlyAnimation()
     {
         // Nếu kết quả đúng thì xoay rocket
-        if (planetAnswer.name == planet2.name)
+        if (planetAnswer.name == resultPlanet.name)
         {
             // Lắc rocket và hiển thị hiệu ứng correct
             StartCoroutine(CoroutineCorrectAnwser());
@@ -383,7 +407,7 @@ public class RocketFlySpawner : IGamePlay
             // Tìm loại boom phùm hợp với hành tinh trả lời
             // FindBoomMatchPlanet(planetAnswer);
             // Bắt đầu lắc và bay
-            StartCoroutine(rocket.ShakeAndFlyTo(planet2.gameObject.transform.position));
+            StartCoroutine(rocket.ShakeAndFlyTo(resultPlanet.gameObject.transform.position));
         }
     }
 
