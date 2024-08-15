@@ -7,7 +7,7 @@ public class GameManger : MonoBehaviour
     public IGamePlay[] gamePlays;
     public Player player;
 
-    private int id  = 3;
+    private int id  = 1;
 
     void Start()
     {
