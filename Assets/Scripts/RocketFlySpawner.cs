@@ -34,10 +34,12 @@ public class RocketFlySpawner : IGamePlay
 
     private bool animationStart = false;
     private bool animationResult = false;
-    private bool playing;
+    private bool playing = false;
 
     private ParticleSystem boomInstance = null;
     private ParticleSystem winEffectInstance = null;
+    private float elapsedTime = 0f;
+    private bool isChangePlanet = false;
 
     void Awake()
     {
@@ -54,6 +56,18 @@ public class RocketFlySpawner : IGamePlay
 
     void Update()
     {
+        if (playing && !isChangePlanet)
+        {
+            if (elapsedTime < 10f)
+            {
+                elapsedTime += Time.deltaTime;
+            }
+            else
+            {
+                ChangeResultPlanet();
+            }
+        }
+
         if (!animationStart && playing)
         {
             rocket.TurnOnCollider = true;
@@ -63,11 +77,11 @@ public class RocketFlySpawner : IGamePlay
             rocket.TurnOnCollider = false;
         }
 
-        if (scoreManager.changeResultPlanet == 1)
-        {
-            scoreManager.changeResultPlanet = -1;
-            ChangeResultPlanet();
-        }
+        // if (scoreManager.changeResultPlanet == 1)
+        // {
+        //     scoreManager.changeResultPlanet = -1;
+        //     ChangeResultPlanet();
+        // }
 
         if (cardController.GetNumOfCards() == 0)
         {
@@ -83,6 +97,8 @@ public class RocketFlySpawner : IGamePlay
         Destroy(resultPlanet.gameObject);
         resultPlanet = SpawnObject(planet3, positionRP);
         resultPlanet.gameObject.SetActive(false);
+
+        isChangePlanet = true;
         FindMeanAndSetRocket();
     }
 
@@ -146,7 +162,7 @@ public class RocketFlySpawner : IGamePlay
 
     public void RandomizePosition()
     {
-        int[] arrayId1 = { 2, 3, 4, 5 };
+        int[] arrayId1 = { 2, 3, 6, 7 };
         var id1 = arrayId1[UnityEngine.Random.Range(0, arrayId1.Length)];
         planet1 = allPlanets[id1];
 
@@ -154,7 +170,7 @@ public class RocketFlySpawner : IGamePlay
         var id3 = 0;
         if (id1 < 4)
         {
-            id2 = UnityEngine.Random.Range(0, 4);
+            id2 = UnityEngine.Random.Range(0, id1);
             do
             {
                 id3 = UnityEngine.Random.Range(0, 4);
@@ -162,16 +178,23 @@ public class RocketFlySpawner : IGamePlay
         }
         else
         {
-            id2 = UnityEngine.Random.Range(4, allPlanets.Count);
+            id2 = UnityEngine.Random.Range(4, id1);
             do
             {
                 id3 = UnityEngine.Random.Range(4, allPlanets.Count);
             } while (id2 == id3);
         }
+
         planet2 = allPlanets[id2];
         planet3 = allPlanets[id3];
+        Debug.Log("1 " + planet1.name);
+        Debug.Log("2 " + planet2.name);
+        Debug.Log("3 " + planet3.name);
 
         SortPlanetByMass();
+        Debug.Log("1 " + planet1.name);
+        Debug.Log("2 " + planet2.name);
+        Debug.Log("3 " + planet3.name);
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
         planet1 = Clone(planet1, isLeft);
@@ -250,12 +273,36 @@ public class RocketFlySpawner : IGamePlay
 
         if (rocket != null)
         {
-            StartCoroutine(rocket.FlyTo(answer));
+            animationStart = true;
+            Debug.Log("" + animationStart);
+            StartCoroutine(FlyTo(answer));
         }
         else
         {
             SetRocket(answer);
         }
+    }
+
+    private IEnumerator FlyTo(Vector3 planetPosition)
+    {
+        Vector3 startingPos = rocket.transform.position;
+        Vector3 finalPos = planetPosition;
+        rocket.RotateRocket(planetPosition);
+
+        // Tính chiều dài quãng đường
+        float distance = Vector3.Distance(startingPos, finalPos);
+        // Đường bay càng xa thì thời gian càng chậm
+        // Ví dụ: bay 1km --> 2s, thì 2km phải bay lâu hơn
+        float time = distance / 3f;
+
+        for (float t = 0f; t <= 1f; t += Time.deltaTime / time)
+        {
+            rocket.transform.position = Vector3.Lerp(startingPos, finalPos, t);
+            yield return null;
+        }
+
+        animationStart = false;
+        Debug.Log("animationStart " + animationStart);
     }
 
     private void SetRocket(Vector3 _position)

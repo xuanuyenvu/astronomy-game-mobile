@@ -9,8 +9,6 @@ public class ScoreManager : MonoBehaviour
     private float score = 0;
     private bool playing;
 
-    [HideInInspector] public int changeResultPlanet = 0;
-
     public void StartGame()
     {
         ResetValue();
@@ -21,10 +19,6 @@ public class ScoreManager : MonoBehaviour
         if (playing)
         {
             elapsedTime += Time.deltaTime;
-        }
-        if (elapsedTime > 10f && changeResultPlanet == 0)
-        {
-            changeResultPlanet = 1;
         }
     }
 
