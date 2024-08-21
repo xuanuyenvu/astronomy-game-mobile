@@ -27,10 +27,10 @@ public class LevelButtonHandler : MonoBehaviour
         }
 
         TextMeshProUGUI ubText = unlockedButton.GetComponentInChildren<TextMeshProUGUI>();
-        ubText.text = level.ToString();
+        ubText.text = levelText;
 
         TextMeshProUGUI lbText = lockedButton.GetComponentInChildren<TextMeshProUGUI>();
-        lbText.text = level.ToString();
+        lbText.text = levelText;
     }
 
     public void LockThisButton()
