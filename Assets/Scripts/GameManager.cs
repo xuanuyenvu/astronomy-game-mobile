@@ -2,17 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManger : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     public IGamePlay[] gamePlays;
-    public Player player;
 
-    private int id  = 3;
+    [HideInInspector] public int id;
 
-    void Start()
+    public void Initialize(int levelId)
+    {
+        id = levelId;
+        Debug.Log("id : " + id);
+        OnStartGame();
+    }
+
+    private void OnStartGame()
     {
         var current = Instantiate(gamePlays[id]);
         IGamePlay iGamePlay = current.GetComponent<IGamePlay>();
+
+
         if (iGamePlay.cameraShake == null)
         {
             iGamePlay.cameraShake = FindObjectOfType<CameraShake>();
@@ -29,20 +37,12 @@ public class GameManger : MonoBehaviour
         {
             iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
         }
-        if (id == 1)
-        {
-            player.gameObject.SetActive(true);
-        }
-        else
+
+
+        if (id != 1)
         {
             iGamePlay.cardController.idGamePlay = id;
         }
         iGamePlay.Play();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

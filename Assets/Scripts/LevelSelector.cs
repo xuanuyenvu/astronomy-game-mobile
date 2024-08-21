@@ -31,7 +31,9 @@ public class LevelSelector : MonoBehaviour
 
     public void OpenLevel(int level)
     {
+        Debug.Log("openLevel-level : " + level);
         selectedLevel = level;
+        Debug.Log("openLevel : " + selectedLevel);
         SceneManager.LoadScene("game");
     }
 }
