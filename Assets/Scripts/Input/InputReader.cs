@@ -54,4 +54,20 @@ public class InputReader : ScriptableObject, GameInput.IPlayerActions
     {
         OnPointerDrag?.Invoke(context.ReadValue<Vector2>());
     }
+
+    public void OnTouch(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            OnPointerClicked?.Invoke();
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            OnPointerClickedRelease?.Invoke();
+        }
+    }
+    public void OnTouchPosition(InputAction.CallbackContext context)
+    {
+        OnPointerDrag?.Invoke(context.ReadValue<Vector2>());
+    }
 }

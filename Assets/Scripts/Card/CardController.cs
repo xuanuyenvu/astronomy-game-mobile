@@ -15,45 +15,68 @@ public class CardController : MonoBehaviour
     public List<GameObject> allPlanetSelection;
     private GameObject planetSelectionInstance;
 
-    [HideInInspector]
-    public CardWrapper selectedCard = null;
+    [HideInInspector] public CardWrapper selectedCard = null;
 
     [Header("Asset in Scene")]
     public GameObject darkMask;
-    public Button confirmButton;
 
     [Header("Constraints")]
-    [SerializeField]
-    private bool forceFitContainer;
+    [SerializeField] private bool forceFitContainer;
 
     [Header("Rotation")]
-    [SerializeField]
-    [Range(0f, 90f)]
-    private float maxCardRotation;
-    [SerializeField]
-    private float maxHeightDisplacement;
+    [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
+    [SerializeField] private float maxHeightDisplacement = 26;
 
-    [SerializeField]
-    private AnimationSpeedConfig animationSpeedConfig;
+    [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
     private RectTransform rectTransform;
+    private bool isListChanging = false;
+
+    [HideInInspector] public int idGamePlay = -1;
+    private bool isStart = false;
 
     void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
+        if (darkMask == null)
+        {
+            darkMask = GameObject.FindGameObjectWithTag("DarkMask");
+        }
     }
     void Start()
     {
         darkMask.SetActive(false);
-        confirmButton.gameObject.SetActive(false);
-        InitCards();
     }
 
     private void InitCards()
     {
-        ShuffleCards();
-        DisplayCards();
+        if (idGamePlay == 1)
+        {
+
+        }
+        else
+        {
+            ShuffleCards();
+            DisplayCards();
+        }
+
         SetUpCards();
         SetCardsAnchor();
+    }
+
+    public void DisplayACard(string planetName)
+    {
+        CardWrapper card = allCards.Find(c =>
+        {
+            string trimmedName = c.name.Substring(2, c.name.Length - 4);
+            return trimmedName == planetName;
+        });
+
+        if (card != null)
+        {
+            CardWrapper cardInstance = Instantiate(card, this.transform);
+            cardInstance.name = cardInstance.name.Replace("(Clone)", "");
+            allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
+        }
     }
 
     private void ShuffleCards()
@@ -69,7 +92,6 @@ public class CardController : MonoBehaviour
 
     private void DisplayCards()
     {
-        Transform canvasTransform = this.transform;
         foreach (CardWrapper card in allCards)
         {
             CardWrapper cardInstance = Instantiate(card, this.transform);
@@ -111,12 +133,21 @@ public class CardController : MonoBehaviour
 
     void Update()
     {
-        UpdateCards();
+        if (!isStart && idGamePlay != -1)
+        {
+            isStart = true;
+            InitCards();
+        }
+
+        if (isStart)
+        {
+            UpdateCards();
+        }
     }
 
     private void UpdateCards()
     {
-        if (transform.childCount != allCardInstances.Count)
+        if (transform.childCount != allCardInstances.Count && isListChanging)
         {
             InitCards();
         }
@@ -126,10 +157,65 @@ public class CardController : MonoBehaviour
             return;
         }
 
+        UpdateCardSizeAndProperties(allCardInstances.Count);
+
         SetCardsPosition();
         SetCardsRotation();
         SetCardsUILayers();
     }
+
+    private void UpdateCardSizeAndProperties(int cardCount)
+    {
+        Vector2 targetSize;
+
+        switch (cardCount)
+        {
+            case 7:
+                targetSize = new Vector2(870, rectTransform.sizeDelta.y);
+                break;
+            case 6:
+                targetSize = new Vector2(770, rectTransform.sizeDelta.y);
+                break;
+            case 5:
+                targetSize = new Vector2(670, rectTransform.sizeDelta.y);
+                break;
+            case 4:
+            case 1:
+                targetSize = new Vector2(600, rectTransform.sizeDelta.y);
+                maxHeightDisplacement = 0;
+                SetNoRotationForAllCards(true);
+
+                break;
+            default:
+                return;
+        }
+
+        StartCoroutine(SmoothResize(targetSize, 0.1f));
+    }
+
+    private void SetNoRotationForAllCards(bool noRotation)
+    {
+        foreach (CardWrapper card in allCardInstances)
+        {
+            card.NoRotation = noRotation;
+        }
+    }
+
+    private IEnumerator SmoothResize(Vector2 targetSize, float duration)
+    {
+        Vector2 initialSize = rectTransform.sizeDelta;
+        float timeElapsed = 0;
+
+        while (timeElapsed < duration)
+        {
+            rectTransform.sizeDelta = Vector2.Lerp(initialSize, targetSize, timeElapsed / duration);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        rectTransform.sizeDelta = targetSize;
+    }
+
 
     private void SetCardsUILayers()
     {
@@ -203,16 +289,16 @@ public class CardController : MonoBehaviour
 
     private float GetCardRotation(int index)
     {
-        if (allCards.Count < 3) return 0;
+        if (allCardInstances.Count < 3) return 0;
         else
-            return -maxCardRotation * (index - (allCardInstances.Count - 1) / 2f) / ((allCards.Count - 1) / 2f);
+            return -maxCardRotation * (index - (allCardInstances.Count - 1) / 2f) / ((allCardInstances.Count - 1) / 2f);
     }
 
     private float GetCardVerticalDisplacement(int index)
     {
         if (allCardInstances.Count < 3) return 0;
         else
-            return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCards.Count - 1) / 2f, 2) / Mathf.Pow((allCards.Count - 1) / 2f, 2));
+            return maxHeightDisplacement * (1 - Mathf.Pow(index - (allCardInstances.Count - 1) / 2f, 2) / Mathf.Pow((allCardInstances.Count - 1) / 2f, 2));
     }
 
     private GameObject GetPlanetFromCard(CardWrapper card)
@@ -228,7 +314,6 @@ public class CardController : MonoBehaviour
         return null;
     }
 
-
     public void OnCardDisplayPlanetSelection(CardWrapper card)
     {
         if (char.IsDigit(card.name[0]))
@@ -242,7 +327,6 @@ public class CardController : MonoBehaviour
 
             // Bật lớp phủ
             darkMask.SetActive(true);
-            confirmButton.gameObject.SetActive(true);
         }
         else
         {
@@ -254,28 +338,126 @@ public class CardController : MonoBehaviour
     {
         if (planetSelectionInstance != null)
         {
-            DestroyImmediate(planetSelectionInstance);
+            Destroy(planetSelectionInstance);
             darkMask.SetActive(false);
-            confirmButton.gameObject.SetActive(false); ;
+        }
+    }
+
+    public void HideACard()
+    {
+        foreach (CardWrapper cardInstance in allCardInstances)
+        {
+            cardInstance.gameObject.SetActive(false);
+            cardInstance.IsSelected = false;
+        }
+    }
+
+    public void ShowACard()
+    {
+        foreach (CardWrapper cardInstance in allCardInstances)
+        {
+            cardInstance.gameObject.SetActive(true);
+            cardInstance.IsSelected = false;
         }
     }
 
     public void ChangeSelectedCard(CardWrapper card)
     {
-        // Nếu đã có card được chọn từ trước thì gọi hàm Update() 
+        // Nếu đã có card được chọn từ trước thì gọi hàm ResetAllValues() 
         // để reset lại các giá trị Rotation, Position, Sorting
         if (selectedCard != null)
         {
             selectedCard.ResetAllValues();
         }
 
+        // Nếu tồn tại card dùng cho hiển thị animation thì hủy nó
+        if (selectedCardAnimation != null)
+        {
+            // Destroy(selectedCardAnimation.gameObject);
+        }
+
         // Gán thẻ được chọn vào biến selectedCard
         selectedCard = card;
+
+        // Spawn card mới và chạy animation
+        // SpawnSelectedCardForAnimation();
     }
 
-    public string GetSelectedPlanetName()
+    private void RemoveAndDestroyCardInstance(CardWrapper card)
     {
-        GameObject planet = GetPlanetFromCard(selectedCard);
-        return planet.name;
+        isListChanging = true;
+        if (card != null)
+        {
+            allCardInstances.Remove(card);
+            Destroy(card.gameObject);
+
+        }
+        if (selectedCardAnimation != null)
+        {
+            // Destroy(selectedCardAnimation.gameObject);
+        }
+        isListChanging = false;
+        StartCoroutine(SmoothUpdateCards());
     }
+
+    private IEnumerator SmoothUpdateCards()
+    {
+        yield return new WaitForEndOfFrame();
+        UpdateCards();
+    }
+
+    public GameObject GetSelectedPlanet()
+    {
+        // Tìm kiếm GameObject có script AstronomicalObject trong planetSelectionInstance
+        // Tức là truy cập đến hành tinh đang bay bên trên thẻ bài
+        AstronomicalObject astronomicalObject = planetSelectionInstance.GetComponentInChildren<AstronomicalObject>();
+
+        // Nếu selectedCard vẫn còn giá trị 
+        // Thì hủy instance của card đó và đặt lại giá trị null
+        if (selectedCard != null)
+        {
+            RemoveAndDestroyCardInstance(selectedCard);
+            selectedCard = null;
+        }
+
+        // Nếu tìm thấy planet ở dòng trên
+        // Thì hủy instance của thẻ, thẻ nghiêng, hành tinh, ...
+        if (astronomicalObject != null)
+        {
+            DestroyPlanetSelection();
+            return astronomicalObject.gameObject;
+        }
+
+        return null;
+    }
+
+    public void turnOffPointerHandler()
+    {
+        foreach (CardWrapper card in allCardInstances)
+        {
+            card.turnOnPointerDownAdnUp = false;
+        }
+    }
+
+    public void turnOnPointerHandler()
+    {
+        foreach (CardWrapper card in allCardInstances)
+        {
+            card.turnOnPointerDownAdnUp = true;
+        }
+    }
+
+    public int GetNumOfCards()
+    {
+        return allCardInstances.Count;
+    }
+
+    private CardWrapper selectedCardAnimation = null;
+    // private void SpawnSelectedCardForAnimation()
+    // {
+    //     selectedCardAnimation = Instantiate(selectedCard, this.transform.parent);
+    //     selectedCardAnimation.IsAnimation = true;
+    //     selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
+    //     StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
+    // }
 }

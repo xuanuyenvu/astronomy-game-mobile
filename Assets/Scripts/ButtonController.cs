@@ -5,10 +5,30 @@ using UnityEngine;
 public class ButtonController : MonoBehaviour
 {
     public CardController cardController;
-    // public PlanetSelectionSpwaner planetSelectionSpwaner;
+    // private IGamePlay current;
+    private PlanetSelectionSpawner planetSelectionSpawner;
+
+    void Start()
+    {  
+        if(planetSelectionSpawner == null)
+        {
+            planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
+        }
+        if (cardController == null)
+        {
+            cardController = FindObjectOfType<CardController>();
+        }
+    }
+
+    void Update(){
+        if(planetSelectionSpawner == null)
+        {
+            planetSelectionSpawner = FindObjectOfType<PlanetSelectionSpawner>();
+        }
+    }
     public void CallPlanetSelectionSpawner()
     {
-        var planetName = cardController.GetSelectedPlanetName();
-        Debug.Log("name: " + planetName);
+        GameObject selectedPlanet = cardController.GetSelectedPlanet();
+        planetSelectionSpawner.HandleConfirmButton(selectedPlanet.name, selectedPlanet.transform.position);
     }
 }

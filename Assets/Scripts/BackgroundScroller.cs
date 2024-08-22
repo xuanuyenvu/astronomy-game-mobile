@@ -4,13 +4,26 @@ using UnityEngine;
 
 public class BackgroundRotation : MonoBehaviour
 {
+    public Transform BG1;
+    public Transform BG2;
+    private Renderer spriteRenderer;
+    public float speed = -0.06f;
+    Vector3 size;
+    void Start(){
+        spriteRenderer = BG1.GetComponent<SpriteRenderer>();
+        size = spriteRenderer.bounds.size;
+    }
     void Update()
     {
-        transform.position += new Vector3(-0.06f * Time.deltaTime, 0);
-
-        if(transform.position.x < -20.18)
+        BG1.position += new Vector3(speed * Time.deltaTime, 0);
+        BG2.position += new Vector3(speed * Time.deltaTime, 0);
+        if(BG1.position.x <= -22)
         {
-            transform.position = new Vector3(20.18f, transform.position.y);
+           BG1.position = new Vector3(BG2.position.x + size.x, BG1.position.y);
+        }
+        if(BG2.position.x <= -22)
+        {
+           BG2.position = new Vector3(BG1.position.x + size.x, BG2.position.y);
         }
     }
 }

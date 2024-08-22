@@ -9,14 +9,25 @@ public class Player : MonoBehaviour
 
     private bool isDragging = false;
     private bool isSelected = false;
+    private bool hasExecuted = false;
     private AstronomicalObject draggedPlanet = null;
     private AstronomicalObject selectedPlanetCard = null;
 
     public CardController cardController;
+    private IGamePlay iGamePlay;
 
     void Start()
     {
         RegisterInputEvents();
+
+        if (cardController == null)
+        {
+            cardController = FindObjectOfType<CardController>();
+        }
+        if (iGamePlay == null)
+        {
+            iGamePlay = FindObjectOfType<IGamePlay>();
+        }
     }
 
     private void OnDestroy()
@@ -50,34 +61,43 @@ public class Player : MonoBehaviour
         if (isDragging)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(new Vector3(pointerPos.x, pointerPos.y, Camera.main.nearClipPlane));
-            // Bước 1: Tạo ra một tia từ vị trí của con trỏ trên màn hình
-            Ray ray = Camera.main.ScreenPointToRay(new Vector3(pointerPos.x, pointerPos.y, 0));
 
-            // Biến để lưu thông tin va chạm
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(pointerPos.x, pointerPos.y, 0));
             RaycastHit hit;
 
-            // Bước 2: Thực hiện raycast 3D
             if (Physics.Raycast(ray, out hit))
             {
-                // Bước 3: Kiểm tra va chạm và tag của đối tượng
+                // Kiểm tra va chạm và tag của đối tượng
                 if (hit.collider != null && hit.transform.CompareTag("PlanetSelection") && !isSelected)
                 {
-                    // In ra tên đối tượng và đặt isSelected thành true
-                    Debug.Log(hit.transform.name);
                     AstronomicalObject selectedPlanetCard = hit.transform.GetComponent<AstronomicalObject>();
-                    Debug.Log("name " + selectedPlanetCard.name);
+
                     if (selectedPlanetCard != null && !isSelected)
                     {
                         draggedPlanet = Instantiate(selectedPlanetCard, worldPosition, Quaternion.identity);
+                        draggedPlanet.name = draggedPlanet.name.Replace("(Clone)", "");
+                        if (draggedPlanet.name == "07_saturn")
+                        {
+                            Vector3 newRotation = draggedPlanet.transform.rotation.eulerAngles;
+                            newRotation.x = -10f;
+                            draggedPlanet.transform.rotation = Quaternion.Euler(newRotation);
+                        }
                     }
+                    selectedPlanetCard = null;
                     isSelected = true;
-
                 }
 
                 if (draggedPlanet != null && isSelected)
                 {
                     draggedPlanet.transform.position = new Vector3(worldPosition.x, worldPosition.y, -10);
-                    cardController.DestroyPlanetSelection();
+                    iGamePlay.CheckDragPosition(draggedPlanet.transform.position, draggedPlanet.name);
+                    // chỉ thực hiện gọi 1 lần
+                    if (!hasExecuted)
+                    {
+                        cardController.DestroyPlanetSelection();
+                        cardController.HideACard();
+                        hasExecuted = true;
+                    }
                 }
             }
         }
@@ -87,6 +107,12 @@ public class Player : MonoBehaviour
     {
         isDragging = false;
         isSelected = false;
-        DestroyImmediate(draggedPlanet);
+        if (draggedPlanet != null)
+        {
+            iGamePlay.HandleConfirmButton(draggedPlanet.name, draggedPlanet.transform.position);
+            Destroy(draggedPlanet.gameObject);
+            draggedPlanet = null;
+            hasExecuted = false;
+        }
     }
 }

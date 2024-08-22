@@ -4,15 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - 01_mercury
-  - 02_venus
-  - 03_earth
-  - 04_mars
-  - 06_jupiter
-  - 07_saturn
-  - 08_uranus
-  - 09_neptune
   - PlanetSelection
+  - Rocket
+  - Planet
+  - daskMask
+  - Bound
   layers:
   - Default
   - TransparentFX
