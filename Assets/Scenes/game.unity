@@ -596,10 +596,12 @@ MonoBehaviour:
   levels:
   - gamePlay1: 0
     gamePlay2: 1
-  - gamePlay1: 0
-    gamePlay2: 0
   - gamePlay1: 1
+    gamePlay2: 0
+  - gamePlay1: 2
     gamePlay2: 1
+  - gamePlay1: 3
+    gamePlay2: 0
   gameManager: {fileID: 7593904418531167455, guid: 18da2559339206e47be45e824f7875ae, type: 3}
   player: {fileID: 1991013590}
 --- !u!4 &738906221

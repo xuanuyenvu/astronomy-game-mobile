@@ -6,15 +6,21 @@ using UnityEngine.UI;
 
 public class LevelButtonHandler : MonoBehaviour
 {
-    private Button unlockedButton = null;
-    private Button lockedButton = null;
+    public Button unlockedButton;
+    public Button lockedButton;
 
     public int level;
 
     private void Awake()
     {
-        unlockedButton = transform.Find("unlockedLevel").GetComponent<Button>();
-        lockedButton = transform.Find("lockedLevel").GetComponent<Button>();
+        if (unlockedButton == null)
+        {
+            unlockedButton = transform.Find("unlockedLevel").GetComponent<Button>();
+        }
+        if (lockedButton == null)
+        {
+            lockedButton = transform.Find("lockedLevel").GetComponent<Button>();
+        }
 
         string levelText;
         if (level < 10)
