@@ -9,7 +9,7 @@ public class LevelSelector : MonoBehaviour
 {
     public static int selectedLevel;
 
-    public static int unlockedLevel = 3;
+    public static int unlockedLevel = 4;
 
     private void Awake()
     {
