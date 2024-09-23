@@ -5,7 +5,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class PositionSelectionSpawner : IGamePlay
+public class PositionSelectionSpawner_2 : IGamePlay
 {
     // public
     [Header("List of Planets")]
@@ -20,47 +20,41 @@ public class PositionSelectionSpawner : IGamePlay
     public GameObject winEffectPSPrefab;
 
 
-    // private
+    // protected
     // thành phần game
-    private AstronomicalObject planet1 = null;
-    private AstronomicalObject planet2 = null;
-    private AstronomicalObject planetAnswer = null;
-    private RocketController rocket = null;
-    private GameObject target1 = null;
-    private GameObject target2 = null;
-    private GameObject target3 = null;
-    private ParticleSystem boomInstance = null;
-    private ParticleSystem winEffectInstance = null;
+    protected AstronomicalObject planet1 = null;
+    protected AstronomicalObject planet2 = null;
+    protected AstronomicalObject planetAnswer = null;
+    protected RocketController rocket = null;
+    protected GameObject target1 = null;
+    protected GameObject target2 = null;
+    protected ParticleSystem boomInstance = null;
+    protected ParticleSystem winEffectInstance = null;
 
     // giá trị màn hình
-    private int screenWidth;
-    private int screenHeight;
-    private Vector2 screenCenter;
-    private bool isLeft;
+    protected int screenWidth;
+    protected int screenHeight;
+    protected Vector2 screenCenter;
+    protected bool isLeft;
 
     // biến bool
-    private bool animationStart = false;
-    private bool animationResult = false;
-    private bool playing;
+    protected bool animationStart = false;
+    protected bool animationResult = false;
+    protected bool playing;
 
     // lưu các phần trong màn hình
-    private List<float> partOfScreen;
+    protected List<float> partOfScreen;
     // --------------------------------------------
     // lưu giá trị bound cho từng target
-    private float xMargin = 0.6f;
-    private float target1XMin;
-    private float target1XMax;
-    private float target2XMin;
-    private float target2XMax;
-    private float target3XMin;
-    private float target3XMax;
-    private bool overlap12;
-    private bool overlap13;
-    private bool overlap23;
-    private Vector3 target1Position;
-    private Vector3 target2Position;
-    private Vector3 target3Position;
-    private int targetCloser = 0;
+    protected float xMargin = 0.6f;
+    protected float target1XMin;
+    protected float target1XMax;
+    protected float target2XMin;
+    protected float target2XMax;
+    protected bool overlap12;
+    protected Vector3 target1Position;
+    protected Vector3 target2Position;
+    protected int targetCloser = 0;
     // --------------------------------------------
 
     void Awake()
@@ -93,7 +87,7 @@ public class PositionSelectionSpawner : IGamePlay
         DestroyEffect();
     }
 
-    private void DestroyEffect()
+    protected void DestroyEffect()
     {
         // Hủy hiệu ứng sau khi hành tinh phát nổ
         if (cameraShake.IsShake == 0 && animationResult)
@@ -125,7 +119,7 @@ public class PositionSelectionSpawner : IGamePlay
         }
     }
 
-    private void ReSetUpGame()
+    protected void ReSetUpGame()
     {
         if (healthManager.health > 0)
         {
@@ -141,12 +135,11 @@ public class PositionSelectionSpawner : IGamePlay
         }
     }
 
-    private void RePlayGame()
+    protected virtual void RePlayGame()
     {
         planet1.gameObject.SetActive(true);
         target1.SetActive(true);
         target2.SetActive(true);
-        target3.SetActive(true);
 
         Destroy(planetAnswer.gameObject);
 
@@ -156,34 +149,32 @@ public class PositionSelectionSpawner : IGamePlay
 
     public void RandomizePosition()
     {
-        var id1 = UnityEngine.Random.Range(0, allPlanets.Count);
+        // var id1 = UnityEngine.Random.Range(0, allPlanets.Count);
+        var id1 = planets[0];
         planet1 = allPlanets[id1];
 
-        var id2 = 0;
-        if (id1 < 4)
-        {
-            do
-            {
-                id2 = Random.Range(0, 4);
-            } while (id1 == id2);
-        }
-        else
-        {
-            do
-            {
-                id2 = Random.Range(4, allPlanets.Count);
-            } while (id1 == id2);
-        }
+        var id2 = planets[1];
+        // if (id1 < 4)
+        // {
+        //     id2 = UnityEngine.Random.Range(0, 4);
+        // }
+        // else
+        // {
+        //     id2 = UnityEngine.Random.Range(4, allPlanets.Count);
+        // }
         planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
         planet1 = Clone(planet1, isLeft);
+        planet1.transform.SetParent(planetsGroupTransform);
         planet1.gameObject.SetActive(true);
 
         planet2 = Clone(planet2, !isLeft);
+        planet2.transform.SetParent(planetsGroupTransform);
         planet2.gameObject.SetActive(false);
 
         target1 = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
+        target1.transform.SetParent(planetsGroupTransform);
         // SetLocalScaleOfTarget(target1);
         target1.name = target1.name.Replace("(Clone)", "1");
         target1.SetActive(true);
@@ -205,12 +196,11 @@ public class PositionSelectionSpawner : IGamePlay
         return -1;
     }
 
-    private void FakeTargetSpawner()
+    protected virtual void FakeTargetSpawner()
     {
         int indexOfTarget1 = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(target1.transform.position).x);
         int indexOfRocket = GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(rocket.transform.position).x);
         int indexOfTarget2 = -1;
-        int indexOfTarget3 = -1;
 
         // Màn hình được chia làm 12 phần theo trục x
         // Quy tắc là chọn vị trí cho target 2 sao cho 
@@ -223,12 +213,6 @@ public class PositionSelectionSpawner : IGamePlay
                 indexOfTarget2 = Random.Range(indexOfRocket + 1, 13);
             } while (Mathf.Abs(indexOfTarget2 - indexOfRocket) < 2
                     || Mathf.Abs(indexOfTarget2 - indexOfTarget1) < 1);
-            do
-            {
-                indexOfTarget3 = Random.Range(indexOfRocket + 1, 13);
-            } while (Mathf.Abs(indexOfTarget3 - indexOfRocket) < 2
-                    || Mathf.Abs(indexOfTarget3 - indexOfTarget1) < 1
-                    || Mathf.Abs(indexOfTarget3 - indexOfTarget2) < 1);
         }
         else // target1 nằm bên trái màn hình
         {
@@ -239,35 +223,23 @@ public class PositionSelectionSpawner : IGamePlay
                 indexOfTarget2 = Random.Range(1, indexOfRocket - 1);
             } while (Mathf.Abs(indexOfTarget2 - indexOfRocket) < 2
                     || Mathf.Abs(indexOfTarget2 - indexOfTarget1) < 1);
-            do
-            {
-                indexOfTarget3 = Random.Range(1, indexOfRocket - 1);
-            } while (Mathf.Abs(indexOfTarget3 - indexOfRocket) < 2
-                    || Mathf.Abs(indexOfTarget3 - indexOfTarget1) < 1
-                    || Mathf.Abs(indexOfTarget3 - indexOfTarget2) < 1);
-
         }
-        Debug.Log("planet: " + GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(planet1.transform.position).x));
-        Debug.Log("rocket: " + indexOfRocket);
-        Debug.Log("target: " + indexOfTarget1);
-        Debug.Log("target2: " + indexOfTarget2);
-        Debug.Log("target3: " + indexOfTarget3);
+        // Debug.Log("planet: " + GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(planet1.transform.position).x));
+        // Debug.Log("rocket: " + indexOfRocket);
+        // Debug.Log("target: " + indexOfTarget1);
+        // Debug.Log("target2: " + indexOfTarget2);
 
         if (indexOfTarget2 > 0)
         {
             target2 = CloneFakeTarget(indexOfTarget2);
+            target2.transform.SetParent(planetsGroupTransform);
             target2.name = target2.name.Replace("(Clone)", "2");
-        }
-        if (indexOfTarget3 > 0)
-        {
-            target3 = CloneFakeTarget(indexOfTarget3);
-            target3.name = target3.name.Replace("(Clone)", "3");
         }
 
         CalculateTargetDistance();
     }
 
-    private GameObject CloneFakeTarget(int index)
+    protected GameObject CloneFakeTarget(int index)
     {
         float spawnX = (partOfScreen[index] + partOfScreen[index + 1]) / 2;
 
@@ -275,12 +247,13 @@ public class PositionSelectionSpawner : IGamePlay
         position.y = target1.transform.position.y;
         position.z = target1.transform.position.z;
         GameObject clonedTarget = Instantiate(targetPrefab, position, Quaternion.Euler(63, 0, 0));
+
         // SetLocalScaleOfTarget(clonedTarget);
         clonedTarget.SetActive(true);
         return clonedTarget;
     }
 
-    private AstronomicalObject Clone(AstronomicalObject origin, bool isLeftPart = true)
+    protected AstronomicalObject Clone(AstronomicalObject origin, bool isLeftPart = true)
     {
         float spawnY = screenHeight / 2;
         float spawnX = GetSpawnX(isLeftPart);
@@ -292,7 +265,7 @@ public class PositionSelectionSpawner : IGamePlay
         return clonedPlanet;
     }
 
-    private AstronomicalObject SpawnObject(AstronomicalObject origin, Vector3 spawnPosition)
+    protected AstronomicalObject SpawnObject(AstronomicalObject origin, Vector3 spawnPosition)
     {
         AstronomicalObject clonedPlanet = Instantiate(origin, spawnPosition, Quaternion.identity);
         // SetLocalScaleOfAstronimicalObject(clonedPlanet.gameObject);
@@ -308,7 +281,7 @@ public class PositionSelectionSpawner : IGamePlay
         return clonedPlanet;
     }
 
-    private float GetSpawnX(bool isLeftPart = true)
+    protected float GetSpawnX(bool isLeftPart = true)
     {
         float spawnX = 0;
         float padding = screenWidth / 6;
@@ -362,7 +335,7 @@ public class PositionSelectionSpawner : IGamePlay
         rocket.gameObject.SetActive(true);
     }
 
-    IEnumerator SetPositionBeforePlaying(float time)
+    protected IEnumerator SetPositionBeforePlaying(float time)
     {
         animationStart = true;
         var center = GetCenterPoint();
@@ -415,7 +388,7 @@ public class PositionSelectionSpawner : IGamePlay
     }
 
 
-    private void SetLocalScaleOfTarget(GameObject targetObject)
+    protected void SetLocalScaleOfTarget(GameObject targetObject)
     {
         targetObject.transform.localScale *= 0.8f;
         Transform particleSystemTransform = targetObject.transform.Find("Particle System");
@@ -425,7 +398,7 @@ public class PositionSelectionSpawner : IGamePlay
         }
     }
 
-    private void SetLocalScaleOfAstronimicalObject(GameObject _object)
+    protected void SetLocalScaleOfAstronimicalObject(GameObject _object)
     {
         _object.transform.localScale *= .85f;
     }
@@ -453,26 +426,20 @@ public class PositionSelectionSpawner : IGamePlay
                 case 1:
                     ChangePSColorAlpha(target1, 1f);
                     ChangePSColorAlpha(target2, 0.05f);
-                    ChangePSColorAlpha(target3, 0.05f);
                     IncreasePSShapeRadius(target1, radiusPS, 0f);
                     IncreasePSShapeRadius(target2, 1f, 63f);
-                    IncreasePSShapeRadius(target3, 1f, 63f);
                     break;
                 case 2:
                     ChangePSColorAlpha(target1, 0.05f);
                     ChangePSColorAlpha(target2, 1f);
-                    ChangePSColorAlpha(target3, 0.05f);
                     IncreasePSShapeRadius(target1, 1f, 63f);
                     IncreasePSShapeRadius(target2, radiusPS, 0f);
-                    IncreasePSShapeRadius(target3, 1f, 63f);
                     break;
                 case 3:
                     ChangePSColorAlpha(target1, 0.05f);
                     ChangePSColorAlpha(target2, 0.05f);
-                    ChangePSColorAlpha(target3, 1f);
                     IncreasePSShapeRadius(target1, 1f, 63f);
                     IncreasePSShapeRadius(target2, 1f, 63f);
-                    IncreasePSShapeRadius(target3, radiusPS, 0f);
                     break;
             }
         }
@@ -483,17 +450,15 @@ public class PositionSelectionSpawner : IGamePlay
         }
     }
 
-    private void ResetAllTarget()
+    protected virtual void ResetAllTarget()
     {
         ChangePSColorAlpha(target1, 1f);
         ChangePSColorAlpha(target2, 1f);
-        ChangePSColorAlpha(target3, 1f);
         IncreasePSShapeRadius(target1, 1f, 63f);
         IncreasePSShapeRadius(target2, 1f, 63f);
-        IncreasePSShapeRadius(target3, 1f, 63f);
     }
 
-    private void ChangePSColorAlpha(GameObject psObject, float _alpha)
+    protected void ChangePSColorAlpha(GameObject psObject, float _alpha)
     {
         ParticleSystem particleSystem = psObject.transform.Find("Particle System").GetComponent<ParticleSystem>();
         if (particleSystem != null)
@@ -519,12 +484,12 @@ public class PositionSelectionSpawner : IGamePlay
         }
     }
 
-    private bool IsOverlapping(float min1, float max1, float min2, float max2)
+    protected bool IsOverlapping(float min1, float max1, float min2, float max2)
     {
         return (min1 < max2 && max1 > min2);
     }
 
-    private void CalculateTargetDistance()
+    protected virtual void CalculateTargetDistance()
     {
         target1Position = target1.transform.position;
         target1XMin = target1Position.x - xMargin;
@@ -534,62 +499,23 @@ public class PositionSelectionSpawner : IGamePlay
         target2XMin = target2Position.x - xMargin;
         target2XMax = target2Position.x + xMargin;
 
-        target3Position = target3.transform.position;
-        target3XMin = target3Position.x - xMargin;
-        target3XMax = target3Position.x + xMargin;
-
         bool overlap12 = IsOverlapping(target1XMin, target1XMax, target2XMin, target2XMax);
-        bool overlap13 = IsOverlapping(target1XMin, target1XMax, target3XMin, target3XMax);
-        bool overlap23 = IsOverlapping(target2XMin, target2XMax, target3XMin, target3XMax);
     }
 
-    private int CheckIfDragIsInTargetArea(Vector3 dragPos)
+    protected virtual int CheckIfDragIsInTargetArea(Vector3 dragPos)
     {
-        if (overlap12 || overlap13 || overlap23)
+        if (overlap12)
         {
-            if (overlap12)
-            {
-                float distanceToTarget1 = Mathf.Abs(dragPos.x - target1Position.x);
-                float distanceToTarget2 = Mathf.Abs(dragPos.x - target2Position.x);
+            float distanceToTarget1 = Mathf.Abs(dragPos.x - target1Position.x);
+            float distanceToTarget2 = Mathf.Abs(dragPos.x - target2Position.x);
 
-                if (distanceToTarget1 < distanceToTarget2)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 2;
-                }
+            if (distanceToTarget1 < distanceToTarget2)
+            {
+                return 1;
             }
-
-            if (overlap13)
+            else
             {
-                float distanceToTarget1 = Mathf.Abs(dragPos.x - target1Position.x);
-                float distanceToTarget3 = Mathf.Abs(dragPos.x - target3Position.x);
-
-                if (distanceToTarget1 < distanceToTarget3)
-                {
-                    return 1;
-                }
-                else
-                {
-                    return 3;
-                }
-            }
-
-            if (overlap23)
-            {
-                float distanceToTarget2 = Mathf.Abs(dragPos.x - target2Position.x);
-                float distanceToTarget3 = Mathf.Abs(dragPos.x - target3Position.x);
-
-                if (distanceToTarget2 < distanceToTarget3)
-                {
-                    return 2;
-                }
-                else
-                {
-                    return 3;
-                }
+                return 2;
             }
         }
 
@@ -601,10 +527,6 @@ public class PositionSelectionSpawner : IGamePlay
         else if (dragPos.x >= target2XMin && dragPos.x <= target2XMax)
         {
             return 2;
-        }
-        else if (dragPos.x >= target3XMin && dragPos.x <= target3XMax)
-        {
-            return 3;
         }
         return 0;
     }
@@ -628,7 +550,7 @@ public class PositionSelectionSpawner : IGamePlay
         StartCoroutine(CoroutineExcutesequentially());
     }
 
-    private float CheckPlanetName(string planetName)
+    protected float CheckPlanetName(string planetName)
     {
         if (planetName == "01_mercury" || planetName == "04_mars")
         {
@@ -648,17 +570,18 @@ public class PositionSelectionSpawner : IGamePlay
         }
     }
 
-    private AstronomicalObject DisplaySelectedPlanet(string planetName, Vector3 planetPosition)
+    protected AstronomicalObject DisplaySelectedPlanet(string planetName, Vector3 planetPosition)
     {
         // Tìm hành tinh đã chọn trong danh sách
         AstronomicalObject selectedPlanet = allPlanets.Find(planet => planet.name == planetName);
         // Khởi tạo hành tinh này trên màn hình
         AstronomicalObject clonedPlanet = SpawnObject(selectedPlanet, planetPosition);
+        clonedPlanet.transform.SetParent(effectsGroupTransform);
 
         return clonedPlanet;
     }
 
-    private IEnumerator CoroutineExcutesequentially()
+    protected IEnumerator CoroutineExcutesequentially()
     {
         // Cho hành tinh bay đến vị trí
         yield return StartCoroutine(FlySelectedPlanetToTarget());
@@ -667,7 +590,7 @@ public class PositionSelectionSpawner : IGamePlay
         RocketFlyAnimation();
     }
 
-    private IEnumerator FlySelectedPlanetToTarget()
+    protected virtual IEnumerator FlySelectedPlanetToTarget()
     {
         Vector3 startingPos = planetAnswer.transform.position;
         Vector3 finalPos;
@@ -675,13 +598,9 @@ public class PositionSelectionSpawner : IGamePlay
         {
             finalPos = target1.transform.position;
         }
-        else if (targetCloser == 2)
-        {
-            finalPos = target2.transform.position;
-        }
         else
         {
-            finalPos = target3.transform.position;
+            finalPos = target2.transform.position;
         }
 
         // Tính chiều dài quãng đường
@@ -708,13 +627,9 @@ public class PositionSelectionSpawner : IGamePlay
         {
             target2.SetActive(false);
         }
-        if (target3 != null)
-        {
-            target3.SetActive(false);
-        }
     }
 
-    private void RocketFlyAnimation()
+    protected void RocketFlyAnimation()
     {
         // Nếu kết quả đúng thì xoay rocket
         if (targetCloser == 1)
@@ -750,7 +665,7 @@ public class PositionSelectionSpawner : IGamePlay
         FindBoomMatchPlanet(planet);
     }
 
-    private void FindBoomMatchPlanet(AstronomicalObject planet)
+    protected void FindBoomMatchPlanet(AstronomicalObject planet)
     {
         foreach (ParticleSystem boomPS in boomPSPrefab)
         {
@@ -759,6 +674,7 @@ public class PositionSelectionSpawner : IGamePlay
                 boomInstance = Instantiate(boomPS, planet.transform.position, Quaternion.identity);
                 var mainModule = boomInstance.main;
                 mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+                boomInstance.transform.SetParent(effectsGroupTransform);
                 boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
                 break;
             }
@@ -769,7 +685,7 @@ public class PositionSelectionSpawner : IGamePlay
         }
     }
 
-    private IEnumerator PlayBoomAndShake()
+    protected IEnumerator PlayBoomAndShake()
     {
         boomInstance.gameObject.SetActive(true);
         boomInstance.Play();
@@ -780,7 +696,7 @@ public class PositionSelectionSpawner : IGamePlay
         yield return null;
     }
 
-    private IEnumerator CoroutineCorrectAnwser()
+    protected IEnumerator CoroutineCorrectAnwser()
     {
         yield return StartCoroutine(rocket.ShakeRocket());
 
@@ -791,6 +707,7 @@ public class PositionSelectionSpawner : IGamePlay
         winEffectInstance = Instantiate(winEffectPSPrefab, planetAnswer.transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<ParticleSystem>();
         var mainModule = winEffectInstance.main;
         mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+        winEffectInstance.transform.SetParent(effectsGroupTransform);
         winEffectInstance.gameObject.SetActive(false);
 
         // Chỉnh lại giá trị scale
@@ -808,7 +725,7 @@ public class PositionSelectionSpawner : IGamePlay
         StartCoroutine(PlayWinEffect(winEffectInstance));
     }
 
-    private IEnumerator PlayWinEffect(ParticleSystem winEffect)
+    protected IEnumerator PlayWinEffect(ParticleSystem winEffect)
     {
         if (winEffect != null)
         {
@@ -818,7 +735,7 @@ public class PositionSelectionSpawner : IGamePlay
         yield return null;
     }
 
-    private void GameOver()
+    protected void GameOver()
     {
         Debug.Log("gameOver");
     }

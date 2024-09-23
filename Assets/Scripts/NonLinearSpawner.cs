@@ -134,18 +134,19 @@ public class NonLinearSpawner : IGamePlay
 
     public void RandomizePosition()
     {
-        var id1 = UnityEngine.Random.Range(0, allPlanets.Count);
+        // var id1 = UnityEngine.Random.Range(0, allPlanets.Count);
+        var id1 = planets[0];
         planet1 = allPlanets[id1];
 
-        var id2 = 0;
-        if (id1 < 4)
-        {
-            id2 = UnityEngine.Random.Range(0, 4);
-        }
-        else
-        {
-            id2 = UnityEngine.Random.Range(4, allPlanets.Count);
-        }
+        var id2 = planets[1];
+        // if (id1 < 4)
+        // {
+        //     id2 = UnityEngine.Random.Range(0, 4);
+        // }
+        // else
+        // {
+        //     id2 = UnityEngine.Random.Range(4, allPlanets.Count);
+        // }
         planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;

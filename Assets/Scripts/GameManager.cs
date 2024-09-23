@@ -4,29 +4,12 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Thuộc tính singleton
-    // public static GameManager Instance { get; private set; }
-
     public IGamePlay[] gamePlays;
-
-    [HideInInspector] public int el;
+    private int el;
 
     public void Initialize(int levelId, int[] planets)
     {
-        switch (levelId)
-        {
-            case 1:
-                el = levelId - 1;
-                break;
-            case 2:
-            case 3:
-                el = 1;
-                break;
-            default:
-                el = levelId - 2;
-                break;
-        }
-
+        el = levelId - 1;
         OnStartGame(planets);
     }
 
@@ -37,26 +20,22 @@ public class GameManager : MonoBehaviour
 
         iGamePlay.planets = planets;
 
-        if (iGamePlay.cameraShake == null)
-        {
-            iGamePlay.cameraShake = FindObjectOfType<CameraShake>();
-        }
-        if (iGamePlay.cardController == null)
-        {
-            iGamePlay.cardController = FindObjectOfType<CardController>();
-        }
-        if (iGamePlay.healthManager == null)
-        {
-            iGamePlay.healthManager = FindObjectOfType<HealthManager>();
-        }
-        if (iGamePlay.scoreManager == null)
-        {
-            iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
-        }
+        // object rỗng để chứa các spawnedObject trong game
+        GameObject planetsGroupObject = GameObject.Find("spawnedPlanetsGroup");
+        iGamePlay.planetsGroupTransform = planetsGroupObject.transform;
 
-        if (el != 1)
+        GameObject effectsGroupObject = GameObject.Find("spawnedEffectsGroup");
+        iGamePlay.effectsGroupTransform = effectsGroupObject.transform;
+
+        // thành phần game
+        iGamePlay.cameraShake = FindObjectOfType<CameraShake>();
+        iGamePlay.cardController = FindObjectOfType<CardController>();
+        iGamePlay.healthManager = FindObjectOfType<HealthManager>();
+        iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
+
+        if (el == 1 || el == 2)
         {
-            iGamePlay.cardController.idGamePlay = (el);
+            iGamePlay.cardController.idGamePlay = 1;
         }
         iGamePlay.Play();
     }

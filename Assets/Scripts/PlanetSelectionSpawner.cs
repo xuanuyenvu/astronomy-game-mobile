@@ -145,13 +145,16 @@ public class PlanetSelectionSpawner : IGamePlay
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
         planet1 = Clone(planet1, isLeft);
+        planet1.transform.SetParent(planetsGroupTransform);
         planet1.gameObject.SetActive(true);
 
         planet2 = Clone(planet2, !isLeft);
+        planet2.transform.SetParent(planetsGroupTransform);
         planet2.gameObject.SetActive(false);
 
         target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
         target.name = target.name.Replace("(Clone)", "");
+        target.transform.SetParent(planetsGroupTransform);
         target.SetActive(true);
     }
 
@@ -209,6 +212,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
         rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
         rocket.name = rocket.name.Replace("(Clone)", "");
+        rocket.transform.SetParent(planetsGroupTransform);
         rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
     }
@@ -274,6 +278,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
         // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
         planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
+        planetAnswer.transform.SetParent(effectsGroupTransform);
 
         // Hàm thực hiện bay hành tinh và bay rocket
         StartCoroutine(CoroutineExcutesequentially());
@@ -375,6 +380,7 @@ public class PlanetSelectionSpawner : IGamePlay
                 boomInstance = Instantiate(boomPS, planet.transform.position, Quaternion.identity);
                 var mainModule = boomInstance.main;
                 mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+                boomInstance.transform.SetParent(effectsGroupTransform);
                 boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
                 break;
             }
@@ -407,6 +413,7 @@ public class PlanetSelectionSpawner : IGamePlay
         winEffectInstance = Instantiate(winEffectPSPrefab, planetAnswer.transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<ParticleSystem>();
         var mainModule = winEffectInstance.main;
         mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+        winEffectInstance.transform.SetParent(effectsGroupTransform);
         winEffectInstance.gameObject.SetActive(false);
 
         // Chỉnh lại giá trị scale
