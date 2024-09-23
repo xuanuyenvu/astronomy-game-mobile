@@ -9,7 +9,14 @@ public abstract class IGamePlay : MonoBehaviour
      [HideInInspector] public HealthManager healthManager;
      [HideInInspector] public ScoreManager scoreManager;
 
+
+     [HideInInspector] public Transform planetsGroupTransform;
+     [HideInInspector] public Transform effectsGroupTransform;
+
+
+     // dùng để lưu các planet thuộc 1 level 
      [HideInInspector] public int[] planets;
+
      public abstract void Play();
 
      public abstract void ExecuteAfterCollision(AstronomicalObject planet);

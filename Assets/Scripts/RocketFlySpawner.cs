@@ -55,11 +55,6 @@ public class RocketFlySpawner : IGamePlay
         screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);
     }
 
-    void Start()
-    {
-        //Play();
-    }
-
     void Update()
     {
         if (playing && !isChangePlanet)

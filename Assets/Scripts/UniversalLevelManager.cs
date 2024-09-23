@@ -54,7 +54,7 @@ public class UniversalLevelManager : MonoBehaviour
 
     private void StartStage(int id, int[] planets)
     {
-        if (id == 1)
+        if (id == 2 || id == 3)
         {
             player.gameObject.SetActive(true);
         }
