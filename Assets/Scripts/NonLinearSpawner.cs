@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class NonLinearSpawner : IGamePlay
 {
+    // public 
     [Header("List of Planets")]
     public List<AstronomicalObject> allPlanets;
 
@@ -13,30 +14,33 @@ public class NonLinearSpawner : IGamePlay
     public RocketController rocketPrefab;
     public GameObject targetPrefab;
 
+    [Header("List Particle System Boom")]
+    public List<ParticleSystem> boomPSPrefab;
+    public GameObject winEffectPSPrefab;
+
+    // private
+    // thành phần game
     private AstronomicalObject planet1 = null;
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planetAnswer = null;
     private RocketController rocket = null;
     private GameObject target = null;
+    private ParticleSystem boomInstance = null;
+    private ParticleSystem winEffectInstance = null;
 
-    [Header("List Particle System Boom")]
-    public List<ParticleSystem> boomPSPrefab;
-    public GameObject winEffectPSPrefab;
-
-
+    // giá trị màn hình
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
     private bool isLeft;
     private bool isTop;
 
+    // biến bool
     private bool animationStart = false;
     private bool animationResult = false;
     private bool playing;
 
-    private ParticleSystem boomInstance = null;
-    private ParticleSystem winEffectInstance = null;
-
+    // các biến khác
     RocketController destinationRocket = null;
     private Vector3 spawnRocketPosition = Vector3.zero;
     private bool isHealthReduced = true;
@@ -47,11 +51,6 @@ public class NonLinearSpawner : IGamePlay
         screenHeight = Screen.height;
 
         screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);
-    }
-
-    void Start()
-    {
-        //Play();
     }
 
     void Update()

@@ -593,17 +593,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b590a13db8a890643b2e8a66e0a60816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levels:
-  - gamePlay1: 0
-    gamePlay2: 1
-  - gamePlay1: 1
-    gamePlay2: 0
-  - gamePlay1: 2
-    gamePlay2: 1
-  - gamePlay1: 3
-    gamePlay2: 0
-  gameManager: {fileID: 7593904418531167455, guid: 18da2559339206e47be45e824f7875ae, type: 3}
+  level:
+    level: 0
+    total_stages: 0
+    stages: []
+    lives: 0
+    total_time: 
   player: {fileID: 1991013590}
+  gameManager: {fileID: 7593904418531167455, guid: 18da2559339206e47be45e824f7875ae, type: 3}
 --- !u!4 &738906221
 Transform:
   m_ObjectHideFlags: 0

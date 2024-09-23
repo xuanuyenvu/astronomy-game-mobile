@@ -4,22 +4,38 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    // Thuộc tính singleton
+    // public static GameManager Instance { get; private set; }
+
     public IGamePlay[] gamePlays;
 
-    [HideInInspector] public int id;
+    [HideInInspector] public int el;
 
-    public void Initialize(int levelId)
+    public void Initialize(int levelId, int[] planets)
     {
-        id = levelId;
-        Debug.Log("id : " + id);
-        OnStartGame();
+        switch (levelId)
+        {
+            case 1:
+                el = levelId - 1;
+                break;
+            case 2:
+            case 3:
+                el = 1;
+                break;
+            default:
+                el = levelId - 2;
+                break;
+        }
+
+        OnStartGame(planets);
     }
 
-    private void OnStartGame()
+    private void OnStartGame(int[] planets)
     {
-        var current = Instantiate(gamePlays[id]);
+        var current = Instantiate(gamePlays[el]);
         IGamePlay iGamePlay = current.GetComponent<IGamePlay>();
 
+        iGamePlay.planets = planets;
 
         if (iGamePlay.cameraShake == null)
         {
@@ -38,10 +54,9 @@ public class GameManager : MonoBehaviour
             iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
         }
 
-
-        if (id != 1)
+        if (el != 1)
         {
-            iGamePlay.cardController.idGamePlay = id;
+            iGamePlay.cardController.idGamePlay = (el);
         }
         iGamePlay.Play();
     }

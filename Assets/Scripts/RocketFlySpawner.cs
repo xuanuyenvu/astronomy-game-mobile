@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class RocketFlySpawner : IGamePlay
 {
+    // public
     [Header("List of Planets")]
     public List<AstronomicalObject> allPlanets;
 
@@ -14,6 +15,13 @@ public class RocketFlySpawner : IGamePlay
     public RocketController rocketPrefab;
     public GameObject targetPrefab;
 
+    [Header("List Particle System Boom")]
+    public List<ParticleSystem> boomPSPrefab;
+    public GameObject winEffectPSPrefab;
+
+    // private
+    // thành phần game
+    
     private AstronomicalObject planet1 = null;
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planet3 = null;
@@ -21,23 +29,21 @@ public class RocketFlySpawner : IGamePlay
     private AstronomicalObject planetAnswer = null;
     private RocketController rocket = null;
     private GameObject target = null;
+    private ParticleSystem boomInstance = null;
+    private ParticleSystem winEffectInstance = null;
 
-    [Header("List Particle System Boom")]
-    public List<ParticleSystem> boomPSPrefab;
-    public GameObject winEffectPSPrefab;
-
-
+    // giá trị màn hình
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
     private bool isLeft;
 
+    // biến bool
     private bool animationStart = false;
     private bool animationResult = false;
     private bool playing = false;
 
-    private ParticleSystem boomInstance = null;
-    private ParticleSystem winEffectInstance = null;
+    // giá trị thay đổi kết quả
     private float elapsedTime = 0f;
     private bool isChangePlanet = false;
 
