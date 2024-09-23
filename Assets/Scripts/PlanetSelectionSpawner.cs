@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class PlanetSelectionSpawner : IGamePlay
 {
+    // public
     [Header("List of Planets")]
     public List<AstronomicalObject> allPlanets;
 
@@ -14,28 +15,31 @@ public class PlanetSelectionSpawner : IGamePlay
     public RocketController rocketPrefab;
     public GameObject targetPrefab;
 
+    [Header("List Particle System Boom")]
+    public List<ParticleSystem> boomPSPrefab;
+    public GameObject winEffectPSPrefab;
+
+    
+    // private
+    // thành phần game
     private AstronomicalObject planet1 = null;
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planetAnswer = null;
     private RocketController rocket = null;
     private GameObject target = null;
+    private ParticleSystem boomInstance = null;
+    private ParticleSystem winEffectInstance = null;
 
-    [Header("List Particle System Boom")]
-    public List<ParticleSystem> boomPSPrefab;
-    public GameObject winEffectPSPrefab;
-
-
+    // giá trị màn hình
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
     private bool isLeft;
 
+    // biến bool
     private bool animationStart = false;
     private bool animationResult = false;
     private bool playing;
-
-    private ParticleSystem boomInstance = null;
-    private ParticleSystem winEffectInstance = null;
 
     void Awake()
     {
@@ -43,11 +47,6 @@ public class PlanetSelectionSpawner : IGamePlay
         screenHeight = Screen.height;
 
         screenCenter = new Vector2(screenWidth / 2, screenHeight / 2);
-    }
-
-    void Start()
-    {
-        //Play();
     }
 
     void Update()
@@ -129,18 +128,19 @@ public class PlanetSelectionSpawner : IGamePlay
 
     public void RandomizePosition()
     {
-        var id1 = UnityEngine.Random.Range(0, allPlanets.Count);
+        // var id1 = UnityEngine.Random.Range(0, allPlanets.Count);
+        var id1 = planets[0];
         planet1 = allPlanets[id1];
 
-        var id2 = 0;
-        if (id1 < 4)
-        {
-            id2 = UnityEngine.Random.Range(0, 4);
-        }
-        else
-        {
-            id2 = UnityEngine.Random.Range(4, allPlanets.Count);
-        }
+        var id2 = planets[1];
+        // if (id1 < 4)
+        // {
+        //     id2 = UnityEngine.Random.Range(0, 4);
+        // }
+        // else
+        // {
+        //     id2 = UnityEngine.Random.Range(4, allPlanets.Count);
+        // }
         planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
@@ -300,6 +300,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private IEnumerator FlySelectedPlanetToTarget()
     {
+        animationStart = true;
         Vector3 startingPos = planetAnswer.transform.position;
         Vector3 finalPos = target.transform.position;
 
@@ -320,12 +321,14 @@ public class PlanetSelectionSpawner : IGamePlay
         // Ẩn target 
         if (target != null)
         {
+            animationStart = false;
             target.SetActive(false);
         }
     }
 
     private void RocketFlyAnimation()
     {
+
         // Nếu kết quả đúng thì xoay rocket
         if (planetAnswer.name == planet2.name)
         {

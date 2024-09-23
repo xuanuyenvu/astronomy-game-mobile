@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 
 public class PositionSelectionSpawner : IGamePlay
 {
+    // public
     [Header("List of Planets")]
     public List<AstronomicalObject> allPlanets;
 
@@ -14,6 +15,13 @@ public class PositionSelectionSpawner : IGamePlay
     public RocketController rocketPrefab;
     public GameObject targetPrefab;
 
+    [Header("List Particle System Boom")]
+    public List<ParticleSystem> boomPSPrefab;
+    public GameObject winEffectPSPrefab;
+
+
+    // private
+    // thành phần game
     private AstronomicalObject planet1 = null;
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planetAnswer = null;
@@ -21,26 +29,22 @@ public class PositionSelectionSpawner : IGamePlay
     private GameObject target1 = null;
     private GameObject target2 = null;
     private GameObject target3 = null;
+    private ParticleSystem boomInstance = null;
+    private ParticleSystem winEffectInstance = null;
 
-    [Header("List Particle System Boom")]
-    public List<ParticleSystem> boomPSPrefab;
-    public GameObject winEffectPSPrefab;
-
-
+    // giá trị màn hình
     private int screenWidth;
     private int screenHeight;
     private Vector2 screenCenter;
     private bool isLeft;
 
+    // biến bool
     private bool animationStart = false;
     private bool animationResult = false;
     private bool playing;
 
-    private ParticleSystem boomInstance = null;
-    private ParticleSystem winEffectInstance = null;
-
+    // lưu các phần trong màn hình
     private List<float> partOfScreen;
-
     // --------------------------------------------
     // lưu giá trị bound cho từng target
     private float xMargin = 0.6f;
@@ -73,11 +77,6 @@ public class PositionSelectionSpawner : IGamePlay
         {
             partOfScreen.Add(partWidth * i);
         }
-    }
-
-    void Start()
-    {
-        //Play();
     }
 
     void Update()

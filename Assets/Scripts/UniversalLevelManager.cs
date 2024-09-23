@@ -3,37 +3,71 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[System.Serializable]
-public class LevelData
-{
-    public int gamePlay1;
-    public int gamePlay2;
-}
-
 public class UniversalLevelManager : MonoBehaviour
 {
-    public List<LevelData> levels;
-    public GameManager gameManager = null;
-
+    public Level level = null;
     public Player player;
+    public GameManager gameManager;
 
     void Start()
     {
-        int level = LevelSelector.selectedLevel - 1;
-        gameManager = Instantiate(gameManager);
+        // nhận giá trị level từ nút bấm
+        int selectedLevel = LevelSelector.selectedLevel;
 
-        int id1 = levels[level].gamePlay1;
-        if (id1 == 1)
+        if (loadJson(selectedLevel))
+        {
+            SetUpLevel();
+        }
+    }
+
+    private bool loadJson(int _selectedLevel)
+    {
+        // load JSON từ Resources
+        TextAsset jsonFile = Resources.Load<TextAsset>("levels");
+
+        if (jsonFile != null)
+        {
+            // phân tích file JSON thành LevelsData object
+            LevelsData levelsData = JsonUtility.FromJson<LevelsData>(jsonFile.text);
+
+            // gán các thông tin vào biến level
+            level = levelsData.levels[_selectedLevel - 1];
+
+            if(level != null)
+            {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private void SetUpLevel()
+    {
+        StartStage(level.stages[0].stage, level.stages[0].elements);
+    }
+
+    private void StartStage(int id, int[] planets)
+    {
+        if (id == 1)
         {
             player.gameObject.SetActive(true);
         }
-        else {
+        else
+        {
             player.gameObject.SetActive(false);
         }
-        gameManager.Initialize(id1);
+
+        // Gọi phương thức Initialize trên thể hiện gameManager
+        gameManager.Initialize(id, planets);
     }
 
-    public void GoBackToLevelSelection()
+    public void GoBackToMap()
     {
         SceneManager.LoadScene("level");
     }
