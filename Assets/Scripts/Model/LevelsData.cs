@@ -17,6 +17,7 @@ public class Level
     public Stage[] stages;
     public int lives;
     public string total_time;
+    public int cards_displayed;
 }
 
 [System.Serializable]

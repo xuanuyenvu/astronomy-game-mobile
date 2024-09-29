@@ -16,7 +16,7 @@ public class UniversalLevelManager : MonoBehaviour
 
         if (loadJson(selectedLevel))
         {
-            SetUpLevel();
+            SetUpLevel(0);
         }
     }
 
@@ -47,24 +47,38 @@ public class UniversalLevelManager : MonoBehaviour
         }
     }
 
-    private void SetUpLevel()
+    private void SetUpLevel(int st)
     {
-        StartStage(level.stages[0].stage, level.stages[0].elements);
+        StartStage(level.stages[st].stage, level.stages[st].elements, level.cards_displayed);
     }
 
-    private void StartStage(int id, int[] planets)
+    private void StartStage(int id, int[] planets, int cardsDisplayed)
     {
         if (id == 2 || id == 3)
         {
-            player.gameObject.SetActive(true);
+            player.RegisterInputEvents();
         }
         else
         {
-            player.gameObject.SetActive(false);
+            player.UnregisterInputEvents();
         }
 
         // Gọi phương thức Initialize trên thể hiện gameManager
-        gameManager.Initialize(id, planets);
+        gameManager.Initialize(id, planets, cardsDisplayed);
+    }
+
+    public void EndStage()
+    {
+        gameManager.DestroyCurrentGamePlay();
+        if (level.total_stages == 1)
+        {
+            GoBackToMap();
+        }
+        else
+        {
+            level.total_stages--;
+            SetUpLevel(1);
+        }
     }
 
     public void GoBackToMap()

@@ -1349,14 +1349,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   allCards:
+  - {fileID: 7612842471484761107, guid: 138a2d85262df9449b5d80ecbc918ba6, type: 3}
   - {fileID: 5729788283866150833, guid: ce25e0f8f37da7d4fae5186fa566e29e, type: 3}
   - {fileID: 2462513237678882519, guid: 610e91dda7105194594fffa6adaf220d, type: 3}
-  - {fileID: 7612842471484761107, guid: 138a2d85262df9449b5d80ecbc918ba6, type: 3}
   - {fileID: 6827322045150281432, guid: 03cda9b2811a8ed49bc16544c4ab0f9c, type: 3}
-  - {fileID: 1574396055257405837, guid: 2f60ae727928d1042b04d261a7b2f4c5, type: 3}
-  - {fileID: 2477768933720269096, guid: 5269ea1fff3679f4395a464c0f6bfb7b, type: 3}
-  - {fileID: 1238577568112090700, guid: 0cefd9ef48988b64a93b3df95eb99b57, type: 3}
   - {fileID: 1589432434959478845, guid: 8500aae34b056e243809e53df8e98f80, type: 3}
+  - {fileID: 1238577568112090700, guid: 0cefd9ef48988b64a93b3df95eb99b57, type: 3}
+  - {fileID: 2477768933720269096, guid: 5269ea1fff3679f4395a464c0f6bfb7b, type: 3}
+  - {fileID: 1574396055257405837, guid: 2f60ae727928d1042b04d261a7b2f4c5, type: 3}
   allPlanetSelection:
   - {fileID: 3552773675309807632, guid: 5450f87cf1042a44e8f5be487a9d5296, type: 3}
   - {fileID: 1751794173997682043, guid: 3a5d3d7afb9ba2a4c81ea44415f25bd3, type: 3}

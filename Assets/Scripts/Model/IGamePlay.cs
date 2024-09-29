@@ -8,6 +8,7 @@ public abstract class IGamePlay : MonoBehaviour
      [HideInInspector] public CardController cardController;
      [HideInInspector] public HealthManager healthManager;
      [HideInInspector] public ScoreManager scoreManager;
+     [HideInInspector] public UniversalLevelManager universalLevelManager;
 
 
      [HideInInspector] public Transform planetsGroupTransform;

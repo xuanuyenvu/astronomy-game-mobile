@@ -40,19 +40,19 @@ public class InputReader : ScriptableObject, GameInput.IPlayerActions
 
     public void OnPointerClick(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started)
-        {
-            OnPointerClicked?.Invoke();
-        }
-        else if (context.phase == InputActionPhase.Canceled)
-        {
-            OnPointerClickedRelease?.Invoke();
-        }
+        // if (context.phase == InputActionPhase.Started)
+        // {
+        //     OnPointerClicked?.Invoke();
+        // }
+        // else if (context.phase == InputActionPhase.Canceled)
+        // {
+        //     OnPointerClickedRelease?.Invoke();
+        // }
     }
 
     public void OnPointerPosition(InputAction.CallbackContext context)
     {
-        OnPointerDrag?.Invoke(context.ReadValue<Vector2>());
+        // OnPointerDrag?.Invoke(context.ReadValue<Vector2>());
     }
 
     public void OnTouch(InputAction.CallbackContext context)

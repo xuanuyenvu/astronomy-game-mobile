@@ -6,37 +6,47 @@ public class GameManager : MonoBehaviour
 {
     public IGamePlay[] gamePlays;
     private int el;
+    private IGamePlay currentGamePlay;
 
-    public void Initialize(int levelId, int[] planets)
+    public void Initialize(int levelId, int[] planets, int cardsDisplayed)
     {
         el = levelId - 1;
-        OnStartGame(planets);
+        OnStartGame(planets, cardsDisplayed);
     }
 
-    private void OnStartGame(int[] planets)
+    private void OnStartGame(int[] planets, int cardsDisplayed)
     {
         var current = Instantiate(gamePlays[el]);
-        IGamePlay iGamePlay = current.GetComponent<IGamePlay>();
+        currentGamePlay = current.GetComponent<IGamePlay>();
 
-        iGamePlay.planets = planets;
+        currentGamePlay.planets = planets;
 
         // object rỗng để chứa các spawnedObject trong game
         GameObject planetsGroupObject = GameObject.Find("spawnedPlanetsGroup");
-        iGamePlay.planetsGroupTransform = planetsGroupObject.transform;
+        currentGamePlay.planetsGroupTransform = planetsGroupObject.transform;
 
         GameObject effectsGroupObject = GameObject.Find("spawnedEffectsGroup");
-        iGamePlay.effectsGroupTransform = effectsGroupObject.transform;
+        currentGamePlay.effectsGroupTransform = effectsGroupObject.transform;
 
         // thành phần game
-        iGamePlay.cameraShake = FindObjectOfType<CameraShake>();
-        iGamePlay.cardController = FindObjectOfType<CardController>();
-        iGamePlay.healthManager = FindObjectOfType<HealthManager>();
-        iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
+        currentGamePlay.cameraShake = FindObjectOfType<CameraShake>();
+        currentGamePlay.cardController = FindObjectOfType<CardController>();
+        currentGamePlay.healthManager = FindObjectOfType<HealthManager>();
+        currentGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
+        currentGamePlay.universalLevelManager = FindObjectOfType<UniversalLevelManager>();
 
-        if (el == 1 || el == 2)
+        currentGamePlay.cardController.cardsDisplayed = cardsDisplayed;
+        currentGamePlay.cardController.gamePlayId = el;
+
+        currentGamePlay.Play();
+    }
+
+    public void DestroyCurrentGamePlay()
+    {
+        if (currentGamePlay != null)
         {
-            iGamePlay.cardController.idGamePlay = 1;
+            Destroy(currentGamePlay.gameObject); 
+            currentGamePlay = null; 
         }
-        iGamePlay.Play();
     }
 }
