@@ -438,7 +438,28 @@ public class PlanetSelectionSpawner : IGamePlay
             winEffect.gameObject.SetActive(true);
             winEffect.Play();
         }
-        yield return null;
+        yield return new WaitForSeconds(2f);
+        DestroyAllPlanetsInGroup();
+    }
+
+    protected void DestroyAllPlanetsInGroup()
+    {
+        if (planetsGroupTransform != null)
+        {
+            foreach (Transform child in planetsGroupTransform)
+            {
+                Destroy(child.gameObject); 
+            }
+        }
+        if (effectsGroupTransform != null)
+        {
+            foreach (Transform child in effectsGroupTransform)
+            {
+                Destroy(child.gameObject); 
+            }
+        }
+        cardController.ResetCards();
+        universalLevelManager.EndStage();
     }
 
     private void GameOver()

@@ -9,7 +9,7 @@ public class CardController : MonoBehaviour
 {
     [Header("List of Cards")]
     public List<CardWrapper> allCards;
-    private List<CardWrapper> allCardInstances;
+    private List<CardWrapper> allCardInstances = null;
 
     [Header("List of selected planets")]
     public List<GameObject> allPlanetSelection;
@@ -31,8 +31,10 @@ public class CardController : MonoBehaviour
     private RectTransform rectTransform;
     private bool isListChanging = false;
 
-    [HideInInspector] public int idGamePlay = -1;
+    [HideInInspector] public int gamePlayId = -1; // -1: default
     private bool isStart = false;
+
+    [HideInInspector] public int cardsDisplayed = 0;
 
     void Awake()
     {
@@ -48,12 +50,8 @@ public class CardController : MonoBehaviour
     }
 
     private void InitCards()
-    {
-        if (idGamePlay == 1)
-        {
-
-        }
-        else
+    {   
+        if (gamePlayId != 1 && gamePlayId != 2)
         {
             ShuffleCards();
             DisplayCards();
@@ -81,7 +79,7 @@ public class CardController : MonoBehaviour
 
     private void ShuffleCards()
     {
-        for (int i = allCards.Count - 1; i > 0; i--)
+        for (int i = cardsDisplayed; i > 0; i--)
         {
             int randomIndex = Random.Range(0, i + 1);
             CardWrapper temp = allCards[i];
@@ -92,12 +90,12 @@ public class CardController : MonoBehaviour
 
     private void DisplayCards()
     {
-        foreach (CardWrapper card in allCards)
+        for (int i = 0; i <= cardsDisplayed; i++)
         {
-            CardWrapper cardInstance = Instantiate(card, this.transform);
+            CardWrapper cardInstance = Instantiate(allCards[i], this.transform);
             cardInstance.name = cardInstance.name.Replace("(Clone)", "");
         }
-
+        
         allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
     }
 
@@ -133,7 +131,7 @@ public class CardController : MonoBehaviour
 
     void Update()
     {
-        if (!isStart && idGamePlay != -1)
+        if (!isStart && gamePlayId != -1)
         {
             isStart = true;
             InitCards();
@@ -453,11 +451,20 @@ public class CardController : MonoBehaviour
     }
 
     private CardWrapper selectedCardAnimation = null;
-    // private void SpawnSelectedCardForAnimation()
-    // {
-    //     selectedCardAnimation = Instantiate(selectedCard, this.transform.parent);
-    //     selectedCardAnimation.IsAnimation = true;
-    //     selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
-    //     StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
-    // }
+
+    public void ResetCards()
+    {
+        if (allCardInstances != null)
+        {
+            foreach (var card in allCardInstances)
+            {
+                DestroyImmediate(card.gameObject);
+            }
+            allCardInstances.Clear();
+            allCardInstances = null;
+        }
+        gamePlayId = -1;
+        isStart = false;
+    }
+
 }

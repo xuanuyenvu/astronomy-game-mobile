@@ -226,8 +226,8 @@ public class PositionSelectionSpawner_2 : IGamePlay
         }
         // Debug.Log("planet: " + GetScreenSegmentIndex(Camera.main.WorldToScreenPoint(planet1.transform.position).x));
         // Debug.Log("rocket: " + indexOfRocket);
-        // Debug.Log("target: " + indexOfTarget1);
-        // Debug.Log("target2: " + indexOfTarget2);
+        Debug.Log("target: " + indexOfTarget1);
+        Debug.Log("target2: " + indexOfTarget2);
 
         if (indexOfTarget2 > 0)
         {
@@ -331,6 +331,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
         rocket = Instantiate(rocketPrefab, answer, Quaternion.identity);
         // SetLocalScaleOfAstronimicalObject(rocket.gameObject);
         rocket.name = rocket.name.Replace("(Clone)", "");
+        rocket.transform.SetParent(planetsGroupTransform);
         rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
     }
@@ -377,7 +378,6 @@ public class PositionSelectionSpawner_2 : IGamePlay
         RandomizePosition();
         FindMeanAndSetRocket();
 
-        cardController.idGamePlay = 1;
         cardController.DisplayACard(planet2.name);
 
         FakeTargetSpawner();
@@ -406,7 +406,6 @@ public class PositionSelectionSpawner_2 : IGamePlay
     public override void CheckDragPosition(Vector3 dragPos, string planetName)
     {
         float radiusPS = CheckPlanetName(planetName);
-        Debug.Log("_ " + planetName + " " + radiusPS);
         float validDragRange = screenHeight / 8;
 
         Vector3 screenDragPos = Camera.main.WorldToScreenPoint(dragPos);
@@ -452,6 +451,19 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     protected virtual void ResetAllTarget()
     {
+        if (target1 == null)
+        {
+            Debug.Log("target1 is null. It might have been destroyed.");
+            target1 = GameObject.Find("target1");
+            target1.name = "target11";
+        }
+        if (target2 == null)
+        {
+            Debug.Log("target2 is null. It might have been destroyed.");
+            target2 = GameObject.Find("target2");
+            target2.name = "target21";
+        
+        }
         ChangePSColorAlpha(target1, 1f);
         ChangePSColorAlpha(target2, 1f);
         IncreasePSShapeRadius(target1, 1f, 63f);
@@ -732,7 +744,29 @@ public class PositionSelectionSpawner_2 : IGamePlay
             winEffect.gameObject.SetActive(true);
             winEffect.Play();
         }
-        yield return null;
+        yield return new WaitForSeconds(2f);
+        DestroyAllPlanetsInGroup();
+    }
+
+    protected void DestroyAllPlanetsInGroup()
+    {
+        if (planetsGroupTransform != null)
+        {
+            foreach (Transform child in planetsGroupTransform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        if (effectsGroupTransform != null)
+        {
+            foreach (Transform child in effectsGroupTransform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        cardController.ResetCards();
+        new WaitForSeconds(3f);
+        universalLevelManager.EndStage();
     }
 
     protected void GameOver()

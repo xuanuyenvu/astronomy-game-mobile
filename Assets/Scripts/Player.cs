@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
 
     public CardController cardController;
     private IGamePlay iGamePlay;
+    private bool areEventsRegistered = false;
 
     void Start()
     {
@@ -35,20 +36,30 @@ public class Player : MonoBehaviour
         UnregisterInputEvents();
     }
 
-    private void RegisterInputEvents()
+    public void RegisterInputEvents()
     {
+        Debug.Log(inputReader.OnPointerClicked + " - " + inputReader.OnPointerClickedRelease  + " - " + inputReader.OnPointerDrag);
+        if (areEventsRegistered) return; 
+
         // Đăng ký các sự kiện đầu vào
+        Debug.Log("Rregister Input Events");
         inputReader.OnPointerClicked += OnDragStart;
         inputReader.OnPointerClickedRelease += OnDragEnd;
         inputReader.OnPointerDrag += OnDrag;
+        Debug.Log(inputReader.OnPointerClicked + " - " + inputReader.OnPointerClickedRelease  + " - " + inputReader.OnPointerDrag);
+        areEventsRegistered = true;
     }
 
-    private void UnregisterInputEvents()
+    public void UnregisterInputEvents()
     {
+        if (!areEventsRegistered) return;
+
         // Hủy đăng ký các sự kiện đầu vào
+        Debug.Log("Unregister Input Events");
         inputReader.OnPointerClicked -= OnDragStart;
         inputReader.OnPointerClickedRelease -= OnDragEnd;
         inputReader.OnPointerDrag -= OnDrag;
+        areEventsRegistered = false;
     }
 
     private void OnDragStart()
@@ -114,5 +125,11 @@ public class Player : MonoBehaviour
             draggedPlanet = null;
             hasExecuted = false;
         }
+    }
+    
+    public void ResetPlayer()
+    {
+        cardController = null;
+        iGamePlay = null;
     }
 }
