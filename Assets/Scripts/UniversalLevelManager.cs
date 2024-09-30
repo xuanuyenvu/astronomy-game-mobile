@@ -12,7 +12,8 @@ public class UniversalLevelManager : MonoBehaviour
     void Start()
     {
         // nhận giá trị level từ nút bấm
-        int selectedLevel = LevelSelector.selectedLevel;
+        // int selectedLevel = LevelSelector.selectedLevel;
+        int selectedLevel = 1;
 
         if (loadJson(selectedLevel))
         {
