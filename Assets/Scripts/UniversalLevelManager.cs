@@ -9,6 +9,7 @@ public class UniversalLevelManager : MonoBehaviour
     public Player player;
     public GameManager gameManager;
 
+    public HealthManager healthManager;
     public TimerManager timerManager;
 
     void Start()
@@ -35,8 +36,8 @@ public class UniversalLevelManager : MonoBehaviour
 
             // gán các thông tin vào biến level
             level = levelsData.levels[_selectedLevel - 1];
-            Debug.Log("Level: " + ConvertTimeToSeconds(level.total_time));
             timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
+            healthManager.SetUp(level.lives);
 
             if (level != null)
             {
