@@ -9,6 +9,11 @@ public class HealthManager : MonoBehaviour
     public int health = 5;
     public Sprite heart;
     public List<Image> hearts;
+
+    public void SetUp(int _health)
+    {
+        health = _health;
+    }
     void Update()
     {
         foreach (var heart in hearts)
