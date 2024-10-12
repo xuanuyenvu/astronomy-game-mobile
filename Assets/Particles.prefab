@@ -1,0 +1,108 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1414263115866929970
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 862268853873503477}
+  - component: {fileID: 5797542546584901101}
+  - component: {fileID: 830939079921608688}
+  - component: {fileID: 2894419343814669467}
+  m_Layer: 0
+  m_Name: Particles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &862268853873503477
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414263115866929970}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.07633887, z: -0, w: 0.997082}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5797542546584901101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414263115866929970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d15f3029cf58b83469969f2bd7451c5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numParticles: 456000
+  updateShader: {fileID: 7200000, guid: 29fc9d4d20af589409eebf6b63b5ebc5, type: 3}
+  renderShader: {fileID: 4800000, guid: 4163112cc3582d64d9d9da470396e3b9, type: 3}
+  velocitySmoothing: 1.48
+  colorSmoothing: 0.84
+  speed: 0.114
+  lifetime: 3.5
+  fieldPower: 0.18
+  orbitMotion: 0.756
+  fieldMotion: 0.67
+  spawnRadiusMin: 0.009
+  spawnRadiusMax: 0.09
+  colorMin: {r: 0.054498263, g: 0.21677783, b: 0.5294118, a: 0.078}
+  colorMax: {r: 0.47794116, g: 0.06325692, b: 0.088995926, a: 0.122}
+  velocityToColor: 0.85
+  sizeMin: 0.006
+  sizeMax: 0.069
+  sizeContrast: 0
+  sizeDistribution: 0
+  smoothWithSize: 0.487
+  sizeToSmoothExpMul: 5.7
+  sizeSmoothOffset: 1
+  particleTex: {fileID: 10300, guid: 0000000000000000f000000000000000, type: 0}
+  axisSpread: 0.173
+  velocityField: {fileID: 0}
+  paused: 0
+--- !u!114 &830939079921608688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414263115866929970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec88cb942dd76bc4ea6820b234381944, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 128
+  layers:
+  - scale: 5
+    mul: 1
+    offset: {x: 3.64, y: 1.53, z: -8.95}
+  - scale: 18
+    mul: 0.35
+    offset: {x: 0.99, y: -4.15, z: 2.25}
+  autoApply: 0
+--- !u!114 &2894419343814669467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1414263115866929970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87aa9c1628828c048bfe2e9f98435ff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.2
