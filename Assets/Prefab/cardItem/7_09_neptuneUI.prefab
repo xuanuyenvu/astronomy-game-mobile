@@ -69,7 +69,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 803739fa6a46fea4ab6c28021b58a58c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d069527d6dd1b5e46a02870efc9da7f6, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -134,11 +134,14 @@ MonoBehaviour:
   targetPosition: {x: 357.94, y: 27.782288}
   targetRotation: 15
   targetVerticalDisplacement: 0
+  cardContainer: {fileID: 0}
   animationSpeedConfig:
     rotation: 60
     position: 500
     releasePosition: 2000
     zoom: 0.3
+  uiLayer: 0
+  turnOnPointerDownAdnUp: 1
 --- !u!1 &4525953073641537636
 GameObject:
   m_ObjectHideFlags: 0

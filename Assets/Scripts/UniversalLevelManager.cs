@@ -9,11 +9,13 @@ public class UniversalLevelManager : MonoBehaviour
     public Player player;
     public GameManager gameManager;
 
+    public TimerManager timerManager;
+
     void Start()
     {
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 1;
+        int selectedLevel = 14;
 
         if (loadJson(selectedLevel))
         {
@@ -33,12 +35,15 @@ public class UniversalLevelManager : MonoBehaviour
 
             // gán các thông tin vào biến level
             level = levelsData.levels[_selectedLevel - 1];
+            Debug.Log("Level: " + ConvertTimeToSeconds(level.total_time));
+            timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
 
-            if(level != null)
+            if (level != null)
             {
                 return true;
             }
-            else {
+            else
+            {
                 return false;
             }
         }
@@ -85,5 +90,18 @@ public class UniversalLevelManager : MonoBehaviour
     public void GoBackToMap()
     {
         SceneManager.LoadScene("level");
+    }
+
+    private int ConvertTimeToSeconds(string total_time)
+    {
+        // Split the string by colon
+        string[] timeParts = total_time.Split(':');
+
+        // Parse minutes and seconds
+        int minutes = int.Parse(timeParts[0]);
+        int seconds = int.Parse(timeParts[1]);
+
+        // Calculate total seconds
+        return (minutes * 60) + seconds;
     }
 }
