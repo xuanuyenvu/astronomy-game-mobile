@@ -16,7 +16,7 @@ public class UniversalLevelManager : MonoBehaviour
     {
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 14;
+        int selectedLevel = 12;
 
         if (loadJson(selectedLevel))
         {
@@ -69,7 +69,6 @@ public class UniversalLevelManager : MonoBehaviour
         {
             player.UnregisterInputEvents();
         }
-
         // Gọi phương thức Initialize trên thể hiện gameManager
         gameManager.Initialize(id, planets, cardsDisplayed);
     }

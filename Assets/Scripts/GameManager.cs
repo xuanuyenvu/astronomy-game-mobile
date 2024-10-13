@@ -34,9 +34,12 @@ public class GameManager : MonoBehaviour
         currentGamePlay.healthManager = FindObjectOfType<HealthManager>();
         currentGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
         currentGamePlay.universalLevelManager = FindObjectOfType<UniversalLevelManager>();
+        currentGamePlay.energyManager = FindObjectOfType<EnergyManager>();
+        currentGamePlay.timerManager = FindObjectOfType<TimerManager>();
 
         currentGamePlay.cardController.cardsDisplayed = cardsDisplayed;
         currentGamePlay.cardController.gamePlayId = el;
+        currentGamePlay.timerManager.StartTimer();
 
         currentGamePlay.Play();
     }

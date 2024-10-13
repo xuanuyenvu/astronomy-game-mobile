@@ -745,6 +745,13 @@ public class PositionSelectionSpawner_2 : IGamePlay
             winEffect.Play();
         }
         yield return new WaitForSeconds(2f);
+        timerManager.StopTimer();
+        StartCoroutine(IncreaseEnergyAndDestroyPlanets());
+    }
+
+    protected IEnumerator IncreaseEnergyAndDestroyPlanets()
+    {
+        yield return StartCoroutine(energyManager.ChangeEnergy(30));
         DestroyAllPlanetsInGroup();
     }
 

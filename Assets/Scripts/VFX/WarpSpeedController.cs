@@ -1,0 +1,65 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.VFX;
+
+public class WarpSpeedController : MonoBehaviour
+{
+    public VisualEffect warpSpeedVFX;
+    public float rate = 0.02f;
+    public CameraShake cameraShake;
+    private bool warpActive;
+    void Start()
+    {
+        cameraShake = FindObjectOfType<CameraShake>();
+        warpSpeedVFX.Stop();
+        warpSpeedVFX.SetFloat("WarpAmount", 0);
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            warpActive = true;
+            StartCoroutine(ActivateParticles());
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            warpActive = false;
+            StartCoroutine(DeactivateParticles());
+        }
+    }
+
+    IEnumerator ActivateParticles()
+    {
+        warpSpeedVFX.Play();
+
+        float amount = warpSpeedVFX.GetFloat("WarpAmount");
+        while (amount < 1 & warpActive)
+        {
+            amount += rate;
+            warpSpeedVFX.SetFloat("WarpAmount", amount);
+            cameraShake.ShakeCamera(1.6f);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    IEnumerator DeactivateParticles()
+    {
+        float amount = warpSpeedVFX.GetFloat("WarpAmount");
+        while (amount > 0 & !warpActive)
+        {
+            amount -= rate;
+            warpSpeedVFX.SetFloat("WarpAmount", amount);
+            yield return new WaitForSeconds(0.1f);
+
+            if (amount <= 0 + rate)
+            {
+                amount = 0;
+                warpSpeedVFX.SetFloat("WarpAmount", amount);
+                warpSpeedVFX.Stop();
+            }
+        }
+    }
+}

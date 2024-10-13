@@ -20,6 +20,7 @@ public class TimerManager : MonoBehaviour
 
     public void StartTimer()
     {
+        stopeTimer = false;
         StartCoroutine(StartTheTimerTicker());
     }
 
@@ -44,12 +45,6 @@ public class TimerManager : MonoBehaviour
     public void StopTimer()
     {
         stopeTimer = true;
-    }
-
-    public void ResumeTimer()
-    {
-        stopeTimer = false;
-        StartCoroutine(StartTheTimerTicker());
     }
 
 }
