@@ -19,7 +19,7 @@ public class PlanetSelectionSpawner : IGamePlay
     public List<ParticleSystem> boomPSPrefab;
     public GameObject winEffectPSPrefab;
 
-    
+
     // private
     // thành phần game
     private AstronomicalObject planet1 = null;
@@ -439,8 +439,16 @@ public class PlanetSelectionSpawner : IGamePlay
             winEffect.Play();
         }
         yield return new WaitForSeconds(2f);
+        timerManager.StopTimer();
+        StartCoroutine(IncreaseEnergyAndDestroyPlanets());
+    }
+
+    private IEnumerator IncreaseEnergyAndDestroyPlanets()
+    {
+        yield return StartCoroutine(energyManager.ChangeEnergy(30));
         DestroyAllPlanetsInGroup();
     }
+
 
     protected void DestroyAllPlanetsInGroup()
     {
@@ -448,14 +456,14 @@ public class PlanetSelectionSpawner : IGamePlay
         {
             foreach (Transform child in planetsGroupTransform)
             {
-                Destroy(child.gameObject); 
+                Destroy(child.gameObject);
             }
         }
         if (effectsGroupTransform != null)
         {
             foreach (Transform child in effectsGroupTransform)
             {
-                Destroy(child.gameObject); 
+                Destroy(child.gameObject);
             }
         }
         cardController.ResetCards();
