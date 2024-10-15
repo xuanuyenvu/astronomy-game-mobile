@@ -39,6 +39,10 @@ public class GameManager : MonoBehaviour
 
         currentGamePlay.cardController.cardsDisplayed = cardsDisplayed;
         currentGamePlay.cardController.gamePlayId = el;
+        
+        Player _player = FindObjectOfType<Player>();
+        _player.SetPlayer(currentGamePlay);
+
         currentGamePlay.timerManager.StartTimer();
 
         currentGamePlay.Play();
@@ -48,6 +52,7 @@ public class GameManager : MonoBehaviour
     {
         if (currentGamePlay != null)
         {
+            Debug.Log("Destroying current game play " + currentGamePlay);
             Destroy(currentGamePlay.gameObject); 
             currentGamePlay = null; 
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 
 public class PlanetSelectionSpawner : IGamePlay
@@ -74,8 +75,11 @@ public class PlanetSelectionSpawner : IGamePlay
         if (cameraShake.IsShake == 0 && animationResult)
         {
             // Hủy boom instance
-            Destroy(boomInstance.gameObject);
-            boomInstance = null;
+            if (boomInstance != null)
+            {
+                Destroy(boomInstance.gameObject);
+                boomInstance = null;
+            }
 
             // Đặt lại giá trị
             animationResult = false;
@@ -440,13 +444,14 @@ public class PlanetSelectionSpawner : IGamePlay
         }
         yield return new WaitForSeconds(2f);
         timerManager.StopTimer();
-        StartCoroutine(IncreaseEnergyAndDestroyPlanets());
+        StartCoroutine(IncreaseEnergyAndDestroyPlanetsCoroutine());
     }
 
-    private IEnumerator IncreaseEnergyAndDestroyPlanets()
+    private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
     {
-        yield return StartCoroutine(energyManager.ChangeEnergy(30));
-        DestroyAllPlanetsInGroup();
+        energyManager.ChangeEnergy(30); 
+        yield return new WaitForSeconds(1f);
+        DestroyAllPlanetsInGroup(); 
     }
 
 

@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        RegisterInputEvents();
+        // RegisterInputEvents();
 
         if (cardController == null)
         {
@@ -36,9 +36,13 @@ public class Player : MonoBehaviour
         UnregisterInputEvents();
     }
 
+    public void SetPlayer(IGamePlay _iGamePlay)
+    {
+        iGamePlay = _iGamePlay;
+    }
+
     public void RegisterInputEvents()
     {
-        Debug.Log(inputReader.OnPointerClicked + " - " + inputReader.OnPointerClickedRelease  + " - " + inputReader.OnPointerDrag);
         if (areEventsRegistered) return; 
 
         // Đăng ký các sự kiện đầu vào
@@ -46,7 +50,6 @@ public class Player : MonoBehaviour
         inputReader.OnPointerClicked += OnDragStart;
         inputReader.OnPointerClickedRelease += OnDragEnd;
         inputReader.OnPointerDrag += OnDrag;
-        Debug.Log(inputReader.OnPointerClicked + " - " + inputReader.OnPointerClickedRelease  + " - " + inputReader.OnPointerDrag);
         areEventsRegistered = true;
     }
 
@@ -82,7 +85,6 @@ public class Player : MonoBehaviour
                 if (hit.collider != null && hit.transform.CompareTag("PlanetSelection") && !isSelected)
                 {
                     AstronomicalObject selectedPlanetCard = hit.transform.GetComponent<AstronomicalObject>();
-
                     if (selectedPlanetCard != null && !isSelected)
                     {
                         draggedPlanet = Instantiate(selectedPlanetCard, worldPosition, Quaternion.identity);
@@ -120,6 +122,7 @@ public class Player : MonoBehaviour
         isSelected = false;
         if (draggedPlanet != null)
         {
+            Debug.Log("Dragged planet: " + draggedPlanet.name);
             iGamePlay.HandleConfirmButton(draggedPlanet.name, draggedPlanet.transform.position);
             Destroy(draggedPlanet.gameObject);
             draggedPlanet = null;
