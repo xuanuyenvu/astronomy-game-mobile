@@ -11,12 +11,13 @@ public class UniversalLevelManager : MonoBehaviour
 
     public HealthManager healthManager;
     public TimerManager timerManager;
+    public WarpSpeedController wrapSpeedController;
 
     void Start()
     {
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 12;
+        int selectedLevel = 8;
 
         if (loadJson(selectedLevel))
         {
@@ -36,8 +37,15 @@ public class UniversalLevelManager : MonoBehaviour
 
             // gán các thông tin vào biến level
             level = levelsData.levels[_selectedLevel - 1];
-            timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
             healthManager.SetUp(level.lives);
+            if (level.level > 6)
+            {
+                timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
+            }
+            else
+            {
+                timerManager.timerSlider.gameObject.SetActive(false);
+            }
 
             if (level != null)
             {
@@ -83,9 +91,17 @@ public class UniversalLevelManager : MonoBehaviour
         else
         {
             level.total_stages--;
-            SetUpLevel(1);
+            StartCoroutine(HandleStageCompletion());
         }
     }
+
+    private IEnumerator HandleStageCompletion()
+    {
+        yield return StartCoroutine(wrapSpeedController.ActivateForThreeSeconds());
+        SetUpLevel(1);
+    }
+
+
 
     public void GoBackToMap()
     {

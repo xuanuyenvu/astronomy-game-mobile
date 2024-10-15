@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 
 public class PositionSelectionSpawner_2 : IGamePlay
@@ -93,8 +94,11 @@ public class PositionSelectionSpawner_2 : IGamePlay
         if (cameraShake.IsShake == 0 && animationResult)
         {
             // Hủy boom instance
-            Destroy(boomInstance.gameObject);
-            boomInstance = null;
+            if (boomInstance != null)
+            {
+                Destroy(boomInstance.gameObject);
+                boomInstance = null;
+            }
 
             // Đặt lại giá trị
             animationResult = false;
@@ -453,16 +457,14 @@ public class PositionSelectionSpawner_2 : IGamePlay
     {
         if (target1 == null)
         {
-            Debug.Log("target1 is null. It might have been destroyed.");
             target1 = GameObject.Find("target1");
             target1.name = "target11";
         }
         if (target2 == null)
         {
-            Debug.Log("target2 is null. It might have been destroyed.");
             target2 = GameObject.Find("target2");
             target2.name = "target21";
-        
+
         }
         ChangePSColorAlpha(target1, 1f);
         ChangePSColorAlpha(target2, 1f);
@@ -545,6 +547,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
+        Debug.Log("HandleConfirmButton");
         if (targetCloser == 0)
         {
             cardController.ShowACard();
@@ -555,9 +558,10 @@ public class PositionSelectionSpawner_2 : IGamePlay
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 
+        Debug.Log("Planet name: " + planetName);
         // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
         planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
-
+        Debug.Log("Planet answer-----: " + planetAnswer.name);
         // Hàm thực hiện bay hành tinh và bay rocket
         StartCoroutine(CoroutineExcutesequentially());
     }
@@ -605,7 +609,9 @@ public class PositionSelectionSpawner_2 : IGamePlay
     protected virtual IEnumerator FlySelectedPlanetToTarget()
     {
         Vector3 startingPos = planetAnswer.transform.position;
+        Debug.Log("Starting position: " + startingPos + " - " + planetAnswer.name);
         Vector3 finalPos;
+
         if (targetCloser == 1)
         {
             finalPos = target1.transform.position;
@@ -615,10 +621,12 @@ public class PositionSelectionSpawner_2 : IGamePlay
             finalPos = target2.transform.position;
         }
 
+
         // Tính chiều dài quãng đường
         float distance = Vector3.Distance(startingPos, finalPos);
         // Đường bay càng xa thì thời gian càng chậm
         // Ví dụ: bay 1km --> 2s, thì 2km phải bay lâu hơn
+
         float time = distance / 9f;
 
         for (float t = 0f; t <= 1f; t += Time.deltaTime / time)
@@ -746,13 +754,14 @@ public class PositionSelectionSpawner_2 : IGamePlay
         }
         yield return new WaitForSeconds(2f);
         timerManager.StopTimer();
-        StartCoroutine(IncreaseEnergyAndDestroyPlanets());
+        StartCoroutine(IncreaseEnergyAndDestroyPlanetsCoroutine());
     }
 
-    protected IEnumerator IncreaseEnergyAndDestroyPlanets()
+    private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
     {
-        yield return StartCoroutine(energyManager.ChangeEnergy(30));
-        DestroyAllPlanetsInGroup();
+        energyManager.ChangeEnergy(30); 
+        yield return new WaitForSeconds(1f);
+        DestroyAllPlanetsInGroup(); 
     }
 
     protected void DestroyAllPlanetsInGroup()
