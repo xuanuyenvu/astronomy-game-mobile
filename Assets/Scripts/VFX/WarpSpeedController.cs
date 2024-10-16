@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public class WarpSpeedController : MonoBehaviour
 {
+    public BackgroundScroller backgroundScroller;
     public VisualEffect warpSpeedVFX;
     public float rate = 0.1f;
     public CameraShake cameraShake;
@@ -67,15 +68,18 @@ public class WarpSpeedController : MonoBehaviour
     public IEnumerator ActivateForThreeSeconds()
     {
         warpSpeedVFX.Play();
+        var bgSpeed = backgroundScroller.speed;
 
+        cameraShake.ShakeCamera(6f);
         float amount = warpSpeedVFX.GetFloat("WarpAmount");
         while (amount < 1)
         {
             amount += rate;
             warpSpeedVFX.SetFloat("WarpAmount", amount);
-            cameraShake.ShakeCamera(1.2f);
+            backgroundScroller.speed = -2f;
             yield return new WaitForSeconds(0.1f);
         }
+        // cameraShake.StopShake(0);
         // warpSpeedVFX.DOFloat(1, "WarpAmount", 1.5f)
         //     .OnUpdate(() =>
         //         {
@@ -95,6 +99,8 @@ public class WarpSpeedController : MonoBehaviour
         warpSpeedVFX.SetFloat("WarpAmount", amount);
 
         warpSpeedVFX.Stop();
+        backgroundScroller.speed = bgSpeed;
+        cameraShake.StopShake();
         yield return null;
     }
 }

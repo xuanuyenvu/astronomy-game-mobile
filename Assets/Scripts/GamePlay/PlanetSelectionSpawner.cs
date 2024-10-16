@@ -337,7 +337,6 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private void RocketFlyAnimation()
     {
-
         // Nếu kết quả đúng thì xoay rocket
         if (planetAnswer.name == planet2.name)
         {
@@ -450,7 +449,7 @@ public class PlanetSelectionSpawner : IGamePlay
     private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
     {
         energyManager.ChangeEnergy(30); 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         DestroyAllPlanetsInGroup(); 
     }
 

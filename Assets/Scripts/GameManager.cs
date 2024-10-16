@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour
 
         currentGamePlay.cardController.cardsDisplayed = cardsDisplayed;
         currentGamePlay.cardController.gamePlayId = el;
+
+        currentGamePlay.cameraShake.IsShake = -1;
         
         Player _player = FindObjectOfType<Player>();
         _player.SetPlayer(currentGamePlay);

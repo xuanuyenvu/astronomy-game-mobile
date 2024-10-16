@@ -30,12 +30,11 @@ public class EnergyManager : MonoBehaviour
 
         currentValue += increment;
 
-        return energySlider.DOValue(currentValue, increment / 30)
+        return energySlider.DOValue(currentValue, (float)(increment / 8))
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
                 particleSystem.Stop();
-                Debug.Log("PS" + particleSystem.gameObject.name);
                 particleSystem.gameObject.SetActive(false);
 
                 isFullEnergy = currentValue >= 100;
