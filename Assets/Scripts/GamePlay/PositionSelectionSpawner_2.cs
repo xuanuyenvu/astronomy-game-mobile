@@ -760,7 +760,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
     private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
     {
         energyManager.ChangeEnergy(30); 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
         DestroyAllPlanetsInGroup(); 
     }
 

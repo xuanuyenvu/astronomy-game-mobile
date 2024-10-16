@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BackgroundRotation : MonoBehaviour
+public class BackgroundScroller : MonoBehaviour
 {
     public Transform BG1;
     public Transform BG2;

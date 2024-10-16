@@ -34,7 +34,7 @@ public class CameraShake : MonoBehaviour
         _cbmcp.m_AmplitudeGain = shakeIntensity;
         timer = (_shakeTime == 0 ? shakeTime : _shakeTime);
     }
-    void StopShake(int valueIsShake = 0)
+    public void StopShake(int valueIsShake = 0)
     {
         _cbmcp = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmcp.m_AmplitudeGain = 0f;

@@ -25,7 +25,8 @@ public class CardController : MonoBehaviour
 
     [Header("Rotation")]
     [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
-    [SerializeField] private float maxHeightDisplacement = 26;
+    [SerializeField] private float maxHeight = 20;
+    private float maxHeightDisplacement;
 
     [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
     private RectTransform rectTransform;
@@ -47,10 +48,13 @@ public class CardController : MonoBehaviour
     void Start()
     {
         darkMask.SetActive(false);
+        maxHeight = Screen.height / 20;
     }
 
     private void InitCards()
     {   
+        maxHeightDisplacement = maxHeight;
+        
         if (gamePlayId != 1 && gamePlayId != 2)
         {
             ShuffleCards();
@@ -165,28 +169,36 @@ public class CardController : MonoBehaviour
     private void UpdateCardSizeAndProperties(int cardCount)
     {
         Vector2 targetSize;
-
-        switch (cardCount)
+        float cardsGroupSize = (float)(allCardInstances[0].Width) * cardCount;
+        if (cardCount < 4)
         {
-            case 7:
-                targetSize = new Vector2(870, rectTransform.sizeDelta.y);
-                break;
-            case 6:
-                targetSize = new Vector2(770, rectTransform.sizeDelta.y);
-                break;
-            case 5:
-                targetSize = new Vector2(670, rectTransform.sizeDelta.y);
-                break;
-            case 4:
-            case 1:
-                targetSize = new Vector2(600, rectTransform.sizeDelta.y);
-                maxHeightDisplacement = 0;
-                SetNoRotationForAllCards(true);
-
-                break;
-            default:
-                return;
+            targetSize = new Vector2((float)(allCardInstances[0].Width * 3.3), rectTransform.sizeDelta.y);
+            maxHeightDisplacement = 0;
+            SetNoRotationForAllCards(true);
         }
+        else 
+        {
+            targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
+        }
+        // switch (cardCount)
+        // {
+        //     case 7:
+                
+        //         break;
+        //     case 6:
+        //         targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
+        //         break;
+        //     case 5:
+        //         targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
+        //         break;
+        //     case 4:
+        //     case 1:
+                
+
+        //         break;
+        //     default:
+        //         return;
+        // }
 
         StartCoroutine(SmoothResize(targetSize, 0.1f));
     }
