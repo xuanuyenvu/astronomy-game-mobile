@@ -9,6 +9,7 @@ public class HealthManager : MonoBehaviour
     public int health = 5;
     public Sprite heart;
     public List<Image> hearts;
+    public Image star;
 
     public void SetUp(int _health)
     {
@@ -25,4 +26,16 @@ public class HealthManager : MonoBehaviour
             hearts[i].enabled = true;
         }
     }
+
+    // public void AddToEngergy()
+    // {
+    //     health--;
+    //     Vector3[] path = new Vector3[]
+    //     {
+    //         hearts[health].transform.position, 
+    //         (hearts[health].transform.position + star.transform.position) / 2 + (Vector3.up * 10), 
+    //         star.transform.position
+    //     };
+    //     hearts[health - 1].DOPath(path, 1f, PathType.CatmullRom);
+    // }
 }

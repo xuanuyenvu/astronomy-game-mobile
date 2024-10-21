@@ -2,16 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class TimerManager : MonoBehaviour
 {
     public Slider timerSlider;
-    public float sliderTimer;
+    private float maxSliderTimer;
+    private float sliderTimer;
     public bool stopeTimer = false;
 
     public void SetUp(int time)
     {
-        sliderTimer = (float) time;
+        maxSliderTimer = (float)time;
+        sliderTimer = (float)time;
         timerSlider.maxValue = sliderTimer;
         timerSlider.value = sliderTimer;
         stopeTimer = false;
@@ -22,6 +25,7 @@ public class TimerManager : MonoBehaviour
     {
         stopeTimer = false;
         StartCoroutine(StartTheTimerTicker());
+        // StartTheTimerTickerByDotween();
     }
 
     IEnumerator StartTheTimerTicker()
@@ -35,7 +39,7 @@ public class TimerManager : MonoBehaviour
             {
                 stopeTimer = true;
             }
-            if(!stopeTimer)
+            if (!stopeTimer)
             {
                 timerSlider.value = sliderTimer;
             }
@@ -47,4 +51,31 @@ public class TimerManager : MonoBehaviour
         stopeTimer = true;
     }
 
+    public void StartTheTimerTickerByDotween()
+    {
+        DOTween.To(() => sliderTimer, x => sliderTimer = x, 0, sliderTimer).OnUpdate(() =>
+        {
+            if (!stopeTimer)
+            {
+                timerSlider.value = sliderTimer;
+            }
+        }).OnComplete(() =>
+        {
+            stopeTimer = true;
+        });
+    }
+
+    public float GetRemainingTimePercentage()
+    {
+        return sliderTimer / maxSliderTimer;
+    }
+
+    public void AddToEnergy()
+    {
+        stopeTimer = true;
+        while (sliderTimer > 0)
+        {
+            
+        }
+    }
 }

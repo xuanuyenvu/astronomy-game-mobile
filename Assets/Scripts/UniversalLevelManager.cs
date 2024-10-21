@@ -17,7 +17,7 @@ public class UniversalLevelManager : MonoBehaviour
     {
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 8;
+        int selectedLevel = 7;
 
         if (loadJson(selectedLevel))
         {
@@ -83,13 +83,15 @@ public class UniversalLevelManager : MonoBehaviour
 
     public void EndStage()
     {
-        gameManager.DestroyCurrentGamePlay();
         if (level.total_stages == 1)
         {
-            GoBackToMap();
+            gameManager.UpdateFinalEnergy();
+            // gameManager.DestroyCurrentGamePlay();
+            // GoBackToMap();
         }
         else
         {
+            gameManager.DestroyCurrentGamePlay();
             level.total_stages--;
             StartCoroutine(HandleStageCompletion());
         }
