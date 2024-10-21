@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public IGamePlay[] gamePlays;
+    // public EndGamePlay endGamePlay;
     private int el;
     private IGamePlay currentGamePlay;
 
@@ -58,5 +59,17 @@ public class GameManager : MonoBehaviour
             Destroy(currentGamePlay.gameObject); 
             currentGamePlay = null; 
         }
+    }
+
+    public void UpdateFinalEnergy()
+    {
+        int health = currentGamePlay.healthManager.health; // * 10
+        for (int i = 0; i < health; i++)
+        {
+            currentGamePlay.energyManager.ChangeEnergy(10);
+        }
+
+        float time = currentGamePlay.timerManager.GetRemainingTimePercentage(); // * 10
+        currentGamePlay.energyManager.ChangeEnergy(time * 50);
     }
 }

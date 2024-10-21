@@ -7,15 +7,18 @@ using DG.Tweening;
 public class WarpSpeedController : MonoBehaviour
 {
     public BackgroundScroller backgroundScroller;
-    public VisualEffect warpSpeedVFX;
-    public float rate = 0.1f;
+    public VisualEffect warpSpeedVFX1;
+    public VisualEffect warpSpeedVFX2;
+    public float rate = 0.9f;
     public CameraShake cameraShake;
     private bool warpActive;
     void Start()
     {
         cameraShake = FindObjectOfType<CameraShake>();
-        warpSpeedVFX.Stop();
-        warpSpeedVFX.SetFloat("WarpAmount", 0);
+        warpSpeedVFX1.Stop();
+        warpSpeedVFX1.SetFloat("WarpAmount", 0);
+        warpSpeedVFX2.Stop();
+        warpSpeedVFX2.SetFloat("WarpAmount", 0);
     }
 
     void Update()
@@ -35,13 +38,13 @@ public class WarpSpeedController : MonoBehaviour
 
     private IEnumerator ActivateParticles()
     {
-        warpSpeedVFX.Play();
+        warpSpeedVFX1.Play();
 
-        float amount = warpSpeedVFX.GetFloat("WarpAmount");
-        while (amount < 1 & warpActive)
+        float amount1 = warpSpeedVFX1.GetFloat("WarpAmount");
+        while (amount1 < 1 & warpActive)
         {
-            amount += rate;
-            warpSpeedVFX.SetFloat("WarpAmount", amount);
+            amount1 += rate;
+            warpSpeedVFX1.SetFloat("WarpAmount", amount1);
             cameraShake.ShakeCamera(1.6f);
             yield return new WaitForSeconds(0.1f);
         }
@@ -49,57 +52,53 @@ public class WarpSpeedController : MonoBehaviour
 
     private IEnumerator DeactivateParticles()
     {
-        float amount = warpSpeedVFX.GetFloat("WarpAmount");
-        while (amount > 0 & !warpActive)
+        float amount1 = warpSpeedVFX1.GetFloat("WarpAmount");
+        while (amount1 > 0 & !warpActive)
         {
-            amount -= rate;
-            warpSpeedVFX.SetFloat("WarpAmount", amount);
+            amount1 -= rate;
+            warpSpeedVFX1.SetFloat("WarpAmount", amount1);
             yield return new WaitForSeconds(0.1f);
 
-            if (amount <= 0 + rate)
+            if (amount1 <= 0 + rate)
             {
-                amount = 0;
-                warpSpeedVFX.SetFloat("WarpAmount", amount);
-                warpSpeedVFX.Stop();
+                amount1 = 0;
+                warpSpeedVFX1.SetFloat("WarpAmount", amount1);
+                warpSpeedVFX1.Stop();
             }
         }
     }
 
     public IEnumerator ActivateForThreeSeconds()
     {
-        warpSpeedVFX.Play();
+        warpSpeedVFX1.Play();
+        warpSpeedVFX2.Play();
         var bgSpeed = backgroundScroller.speed;
 
         cameraShake.ShakeCamera(6f);
-        float amount = warpSpeedVFX.GetFloat("WarpAmount");
-        while (amount < 1)
+        float amount1 = warpSpeedVFX1.GetFloat("WarpAmount");
+        float amount2 = warpSpeedVFX2.GetFloat("WarpAmount");
+        while (amount1 < 1)
         {
-            amount += rate;
-            warpSpeedVFX.SetFloat("WarpAmount", amount);
+            amount1 += rate;
+            amount2 += rate / 9;
+
+            warpSpeedVFX1.SetFloat("WarpAmount", amount1);
+            warpSpeedVFX2.SetFloat("WarpAmount", amount2);
+
             backgroundScroller.speed = -2f;
             yield return new WaitForSeconds(0.1f);
         }
-        // cameraShake.StopShake(0);
-        // warpSpeedVFX.DOFloat(1, "WarpAmount", 1.5f)
-        //     .OnUpdate(() =>
-        //         {
-        //             cameraShake.ShakeCamera(1.5f);
-        //         })
-        //     .SetEase(Ease.OutCubic);
+        
+        amount1 = 0;
+        amount2 = 0;
 
-        // yield return new WaitForSeconds(0.5f);
+        warpSpeedVFX1.SetFloat("WarpAmount", amount1);
+        warpSpeedVFX2.SetFloat("WarpAmount", amount2);
 
-        // while (amount > 0)
-        // {
-        //     amount -= rate;
-        //     warpSpeedVFX.SetFloat("WarpAmount", amount);
-        //     yield return new WaitForSeconds(0.1f);
-        // }
-        amount = 0;
-        warpSpeedVFX.SetFloat("WarpAmount", amount);
-
-        warpSpeedVFX.Stop();
+        warpSpeedVFX2.Stop();
+        warpSpeedVFX1.Stop();
         backgroundScroller.speed = bgSpeed;
+        yield return new WaitForSeconds(2f);
         cameraShake.StopShake();
         yield return null;
     }
