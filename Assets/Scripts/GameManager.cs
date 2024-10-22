@@ -5,44 +5,71 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public IGamePlay[] gamePlays;
+    // public EndGamePlay endGamePlay;
+    private int el;
+    private IGamePlay currentGamePlay;
 
-    [HideInInspector] public int id;
-
-    public void Initialize(int levelId)
+    public void Initialize(int levelId, int[] planets, int cardsDisplayed)
     {
-        id = levelId;
-        Debug.Log("id : " + id);
-        OnStartGame();
+        el = levelId - 1;
+        OnStartGame(planets, cardsDisplayed);
     }
 
-    private void OnStartGame()
+    private void OnStartGame(int[] planets, int cardsDisplayed)
     {
-        var current = Instantiate(gamePlays[id]);
-        IGamePlay iGamePlay = current.GetComponent<IGamePlay>();
+        var current = Instantiate(gamePlays[el]);
+        currentGamePlay = current.GetComponent<IGamePlay>();
 
+        currentGamePlay.planets = planets;
 
-        if (iGamePlay.cameraShake == null)
+        // object rỗng để chứa các spawnedObject trong game
+        GameObject planetsGroupObject = GameObject.Find("spawnedPlanetsGroup");
+        currentGamePlay.planetsGroupTransform = planetsGroupObject.transform;
+
+        GameObject effectsGroupObject = GameObject.Find("spawnedEffectsGroup");
+        currentGamePlay.effectsGroupTransform = effectsGroupObject.transform;
+
+        // thành phần game
+        currentGamePlay.cameraShake = FindObjectOfType<CameraShake>();
+        currentGamePlay.cardController = FindObjectOfType<CardController>();
+        currentGamePlay.healthManager = FindObjectOfType<HealthManager>();
+        currentGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
+        currentGamePlay.universalLevelManager = FindObjectOfType<UniversalLevelManager>();
+        currentGamePlay.energyManager = FindObjectOfType<EnergyManager>();
+        currentGamePlay.timerManager = FindObjectOfType<TimerManager>();
+
+        currentGamePlay.cardController.cardsDisplayed = cardsDisplayed;
+        currentGamePlay.cardController.gamePlayId = el;
+
+        currentGamePlay.cameraShake.IsShake = -1;
+        
+        Player _player = FindObjectOfType<Player>();
+        _player.SetPlayer(currentGamePlay);
+
+        currentGamePlay.timerManager.StartTimer();
+
+        currentGamePlay.Play();
+    }
+
+    public void DestroyCurrentGamePlay()
+    {
+        if (currentGamePlay != null)
         {
-            iGamePlay.cameraShake = FindObjectOfType<CameraShake>();
+            Debug.Log("Destroying current game play " + currentGamePlay);
+            Destroy(currentGamePlay.gameObject); 
+            currentGamePlay = null; 
         }
-        if (iGamePlay.cardController == null)
+    }
+
+    public void UpdateFinalEnergy()
+    {
+        int health = currentGamePlay.healthManager.health; // * 10
+        for (int i = 0; i < health; i++)
         {
-            iGamePlay.cardController = FindObjectOfType<CardController>();
-        }
-        if (iGamePlay.healthManager == null)
-        {
-            iGamePlay.healthManager = FindObjectOfType<HealthManager>();
-        }
-        if (iGamePlay.scoreManager == null)
-        {
-            iGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
+            currentGamePlay.energyManager.ChangeEnergy(10);
         }
 
-
-        if (id != 1)
-        {
-            iGamePlay.cardController.idGamePlay = id;
-        }
-        iGamePlay.Play();
+        float time = currentGamePlay.timerManager.GetRemainingTimePercentage(); // * 10
+        currentGamePlay.energyManager.ChangeEnergy(time * 50);
     }
 }
