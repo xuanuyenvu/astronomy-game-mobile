@@ -6,7 +6,7 @@ using Cinemachine;
 public class CameraShake : MonoBehaviour
 {
     private CinemachineVirtualCamera cinemachineVirtualCamera;
-    private float shakeIntensity = 3f;
+    private float shakeIntensity = 3.9f;
     private float shakeTime = 0.9f;
     private float timer;
     private int isShake = -1; // ban đầu = -1, start = 1, stop = 0
@@ -24,7 +24,7 @@ public class CameraShake : MonoBehaviour
         StopShake(-1);
     }
 
-    public void ShakeCamera()
+    public void ShakeCamera(float _shakeTime = 0)
     {
         if(IsShake != 1)
         {
@@ -32,13 +32,14 @@ public class CameraShake : MonoBehaviour
         }
         _cbmcp = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmcp.m_AmplitudeGain = shakeIntensity;
-        timer = shakeTime;
+        timer = (_shakeTime == 0 ? shakeTime : _shakeTime);
     }
-    void StopShake(int valueIsShake = 0)
+    public void StopShake(int valueIsShake = 0)
     {
         _cbmcp = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         _cbmcp.m_AmplitudeGain = 0f;
-        timer = shakeTime;
+        // timer = shakeTime;
+        timer = 0;
         IsShake = valueIsShake;
     }
     void Update()

@@ -15,10 +15,11 @@ public class Player : MonoBehaviour
 
     public CardController cardController;
     private IGamePlay iGamePlay;
+    private bool areEventsRegistered = false;
 
     void Start()
     {
-        RegisterInputEvents();
+        // RegisterInputEvents();
 
         if (cardController == null)
         {
@@ -35,20 +36,33 @@ public class Player : MonoBehaviour
         UnregisterInputEvents();
     }
 
-    private void RegisterInputEvents()
+    public void SetPlayer(IGamePlay _iGamePlay)
     {
+        iGamePlay = _iGamePlay;
+    }
+
+    public void RegisterInputEvents()
+    {
+        if (areEventsRegistered) return; 
+
         // Đăng ký các sự kiện đầu vào
+        Debug.Log("Rregister Input Events");
         inputReader.OnPointerClicked += OnDragStart;
         inputReader.OnPointerClickedRelease += OnDragEnd;
         inputReader.OnPointerDrag += OnDrag;
+        areEventsRegistered = true;
     }
 
-    private void UnregisterInputEvents()
+    public void UnregisterInputEvents()
     {
+        if (!areEventsRegistered) return;
+
         // Hủy đăng ký các sự kiện đầu vào
+        Debug.Log("Unregister Input Events");
         inputReader.OnPointerClicked -= OnDragStart;
         inputReader.OnPointerClickedRelease -= OnDragEnd;
         inputReader.OnPointerDrag -= OnDrag;
+        areEventsRegistered = false;
     }
 
     private void OnDragStart()
@@ -71,7 +85,6 @@ public class Player : MonoBehaviour
                 if (hit.collider != null && hit.transform.CompareTag("PlanetSelection") && !isSelected)
                 {
                     AstronomicalObject selectedPlanetCard = hit.transform.GetComponent<AstronomicalObject>();
-
                     if (selectedPlanetCard != null && !isSelected)
                     {
                         draggedPlanet = Instantiate(selectedPlanetCard, worldPosition, Quaternion.identity);
@@ -109,10 +122,17 @@ public class Player : MonoBehaviour
         isSelected = false;
         if (draggedPlanet != null)
         {
+            Debug.Log("Dragged planet: " + draggedPlanet.name);
             iGamePlay.HandleConfirmButton(draggedPlanet.name, draggedPlanet.transform.position);
             Destroy(draggedPlanet.gameObject);
             draggedPlanet = null;
             hasExecuted = false;
         }
+    }
+    
+    public void ResetPlayer()
+    {
+        cardController = null;
+        iGamePlay = null;
     }
 }

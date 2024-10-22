@@ -9,7 +9,7 @@ public class CardController : MonoBehaviour
 {
     [Header("List of Cards")]
     public List<CardWrapper> allCards;
-    private List<CardWrapper> allCardInstances;
+    private List<CardWrapper> allCardInstances = null;
 
     [Header("List of selected planets")]
     public List<GameObject> allPlanetSelection;
@@ -25,14 +25,17 @@ public class CardController : MonoBehaviour
 
     [Header("Rotation")]
     [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
-    [SerializeField] private float maxHeightDisplacement = 26;
+    [SerializeField] private float maxHeight = 20;
+    private float maxHeightDisplacement;
 
     [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
     private RectTransform rectTransform;
     private bool isListChanging = false;
 
-    [HideInInspector] public int idGamePlay = -1;
+    [HideInInspector] public int gamePlayId = -1; // -1: default
     private bool isStart = false;
+
+    [HideInInspector] public int cardsDisplayed = 0;
 
     void Awake()
     {
@@ -45,15 +48,14 @@ public class CardController : MonoBehaviour
     void Start()
     {
         darkMask.SetActive(false);
+        maxHeight = Screen.height / 20;
     }
 
     private void InitCards()
-    {
-        if (idGamePlay == 1)
-        {
-
-        }
-        else
+    {   
+        maxHeightDisplacement = maxHeight;
+        
+        if (gamePlayId != 1 && gamePlayId != 2)
         {
             ShuffleCards();
             DisplayCards();
@@ -81,7 +83,7 @@ public class CardController : MonoBehaviour
 
     private void ShuffleCards()
     {
-        for (int i = allCards.Count - 1; i > 0; i--)
+        for (int i = cardsDisplayed; i > 0; i--)
         {
             int randomIndex = Random.Range(0, i + 1);
             CardWrapper temp = allCards[i];
@@ -92,12 +94,12 @@ public class CardController : MonoBehaviour
 
     private void DisplayCards()
     {
-        foreach (CardWrapper card in allCards)
+        for (int i = 0; i <= cardsDisplayed; i++)
         {
-            CardWrapper cardInstance = Instantiate(card, this.transform);
+            CardWrapper cardInstance = Instantiate(allCards[i], this.transform);
             cardInstance.name = cardInstance.name.Replace("(Clone)", "");
         }
-
+        
         allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
     }
 
@@ -133,7 +135,7 @@ public class CardController : MonoBehaviour
 
     void Update()
     {
-        if (!isStart && idGamePlay != -1)
+        if (!isStart && gamePlayId != -1)
         {
             isStart = true;
             InitCards();
@@ -167,28 +169,36 @@ public class CardController : MonoBehaviour
     private void UpdateCardSizeAndProperties(int cardCount)
     {
         Vector2 targetSize;
-
-        switch (cardCount)
+        float cardsGroupSize = (float)(allCardInstances[0].Width) * cardCount;
+        if (cardCount < 4)
         {
-            case 7:
-                targetSize = new Vector2(870, rectTransform.sizeDelta.y);
-                break;
-            case 6:
-                targetSize = new Vector2(770, rectTransform.sizeDelta.y);
-                break;
-            case 5:
-                targetSize = new Vector2(670, rectTransform.sizeDelta.y);
-                break;
-            case 4:
-            case 1:
-                targetSize = new Vector2(600, rectTransform.sizeDelta.y);
-                maxHeightDisplacement = 0;
-                SetNoRotationForAllCards(true);
-
-                break;
-            default:
-                return;
+            targetSize = new Vector2((float)(allCardInstances[0].Width * 3.3), rectTransform.sizeDelta.y);
+            maxHeightDisplacement = 0;
+            SetNoRotationForAllCards(true);
         }
+        else 
+        {
+            targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
+        }
+        // switch (cardCount)
+        // {
+        //     case 7:
+                
+        //         break;
+        //     case 6:
+        //         targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
+        //         break;
+        //     case 5:
+        //         targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
+        //         break;
+        //     case 4:
+        //     case 1:
+                
+
+        //         break;
+        //     default:
+        //         return;
+        // }
 
         StartCoroutine(SmoothResize(targetSize, 0.1f));
     }
@@ -435,7 +445,7 @@ public class CardController : MonoBehaviour
     {
         foreach (CardWrapper card in allCardInstances)
         {
-            card.turnOnPointerDownAdnUp = false;
+            card.turnOnPointerDownAndUp = false;
         }
     }
 
@@ -443,7 +453,7 @@ public class CardController : MonoBehaviour
     {
         foreach (CardWrapper card in allCardInstances)
         {
-            card.turnOnPointerDownAdnUp = true;
+            card.turnOnPointerDownAndUp = true;
         }
     }
 
@@ -453,11 +463,20 @@ public class CardController : MonoBehaviour
     }
 
     private CardWrapper selectedCardAnimation = null;
-    // private void SpawnSelectedCardForAnimation()
-    // {
-    //     selectedCardAnimation = Instantiate(selectedCard, this.transform.parent);
-    //     selectedCardAnimation.IsAnimation = true;
-    //     selectedCardAnimation.AsignValueRecTransformAndSetCanvas(selectedCard);
-    //     StartCoroutine(selectedCardAnimation.CoroutineCardAnimation(selectedCard));
-    // }
+
+    public void ResetCards()
+    {
+        if (allCardInstances != null)
+        {
+            foreach (var card in allCardInstances)
+            {
+                DestroyImmediate(card.gameObject);
+            }
+            allCardInstances.Clear();
+            allCardInstances = null;
+        }
+        gamePlayId = -1;
+        isStart = false;
+    }
+
 }
