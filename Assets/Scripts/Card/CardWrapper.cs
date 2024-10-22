@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 using config;
 
 public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
@@ -23,9 +24,10 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private float width;
 
     private bool noRotation = false;
-    [HideInInspector] public bool turnOnPointerDownAdnUp = true;
+    [HideInInspector] public bool turnOnPointerDownAndUp = true;
 
     private bool isAnimation = false;
+    private GameObject cardAnimation = null;
 
     public global::System.Single Width { get => width; set => width = value; }
     public global::System.Boolean NoRotation { get => noRotation; set => noRotation = value; }
@@ -118,7 +120,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        if (!isSelected && turnOnPointerDownAdnUp)
+        if (!isSelected && turnOnPointerDownAndUp)
         {
             isSelected = true;
 
@@ -129,6 +131,8 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             cardContainer.OnCardDisplayPlanetSelection(this);
             // Đặt độ ưu tiên = 100
             canvas.sortingOrder = zoomedSortOrder;
+
+            AnimateCard();
         }
         else
         {
@@ -138,6 +142,29 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             // Xóa instance đang hiển thị (nếu có)
             cardContainer.DestroyPlanetSelection();
         }
+    }
+
+    private void AnimateCard()
+    {
+        cardAnimation = Instantiate(this.gameObject, this.rectTransform.position, Quaternion.identity);
+        CardWrapper cardWrapper = cardAnimation.GetComponent<CardWrapper>();
+        if (cardWrapper != null)
+        {
+            Destroy(cardWrapper);
+        }
+        Transform uiParent = GameObject.Find("UI").transform;  // Tìm parent có tên "UI"
+        cardAnimation.transform.SetParent(uiParent, false);
+        RectTransform cardAnimationRectTransform = cardAnimation.GetComponent<RectTransform>();
+        cardAnimationRectTransform.position = this.rectTransform.position;
+
+
+        // // Sử dụng DOAnchorPosY cho đối tượng UI (RectTransform) thay vì DOMoveY
+        RectTransform rectTransform = cardAnimation.GetComponent<RectTransform>();
+        rectTransform.DOAnchorPosY(rectTransform.anchoredPosition.y + 300f, 0.5f)
+            .SetEase(Ease.OutQuad);
+        // Tạo hiệu ứng xoay
+        cardAnimation.transform.DORotate(new Vector3(70f, 0f, 0f), 0.5f, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutQuad);
     }
 
     public void ResetAllValues()

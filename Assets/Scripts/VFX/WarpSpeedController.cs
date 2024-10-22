@@ -97,6 +97,7 @@ public class WarpSpeedController : MonoBehaviour
 
         warpSpeedVFX2.Stop();
         warpSpeedVFX1.Stop();
+
         backgroundScroller.speed = bgSpeed;
         yield return new WaitForSeconds(2f);
         cameraShake.StopShake();

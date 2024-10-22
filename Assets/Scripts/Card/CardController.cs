@@ -445,7 +445,7 @@ public class CardController : MonoBehaviour
     {
         foreach (CardWrapper card in allCardInstances)
         {
-            card.turnOnPointerDownAdnUp = false;
+            card.turnOnPointerDownAndUp = false;
         }
     }
 
@@ -453,7 +453,7 @@ public class CardController : MonoBehaviour
     {
         foreach (CardWrapper card in allCardInstances)
         {
-            card.turnOnPointerDownAdnUp = true;
+            card.turnOnPointerDownAndUp = true;
         }
     }
 
