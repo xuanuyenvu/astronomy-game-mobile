@@ -10,11 +10,13 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [HideInInspector] public Vector2 targetPosition;
     [HideInInspector] public float targetRotation;
     [HideInInspector] public float targetVerticalDisplacement;
+    public string planetName;
+    private GameObject cardAnimation;
     private const float EPS = 0.01f;
     private RectTransform rectTransform;
     private Canvas canvas;
     private bool isSelected = false;
-    public CardController cardContainer;
+    public CardController cardController;
 
     public AnimationSpeedConfig animationSpeedConfig;
     private float overrideYPosition = 9;
@@ -27,7 +29,6 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [HideInInspector] public bool turnOnPointerDownAndUp = true;
 
     private bool isAnimation = false;
-    private GameObject cardAnimation = null;
 
     public global::System.Single Width { get => width; set => width = value; }
     public global::System.Boolean NoRotation { get => noRotation; set => noRotation = value; }
@@ -43,6 +44,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         Width = rectTransform.rect.width * rectTransform.localScale.x;
         canvas = GetComponent<Canvas>();
+        cardAnimation = GameObject.Find(planetName + "CA");
     }
 
     public void SetAnchor(Vector2 min, Vector2 max)
@@ -124,47 +126,67 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             isSelected = true;
 
-            cardContainer.ChangeSelectedCard(this);
+            cardController.ChangeSelectedCard(this);
             // Xóa instance đang hiển thị (nếu có)
-            cardContainer.DestroyPlanetSelection();
-            // Gọi hiển thị instance theo hành tình trên thẻ
-            cardContainer.OnCardDisplayPlanetSelection(this);
+            cardController.DestroyPlanetSelection();
+            // Chạy hiệu ứng thẻ bài
+            DisplayCardWithAnimation();
             // Đặt độ ưu tiên = 100
             canvas.sortingOrder = zoomedSortOrder;
 
-            AnimateCard();
         }
         else
         {
             isSelected = false;
 
-            cardContainer.ChangeSelectedCard(null);
-            // Xóa instance đang hiển thị (nếu có)
-            cardContainer.DestroyPlanetSelection();
+            // Destroy the planet selection if it is displayed
+            cardController.ChangeSelectedCard(null);
+            cardController.DestroyPlanetSelection();
+            ConcealCardWithAnimation();
         }
     }
 
-    private void AnimateCard()
+    private void DisplayCardWithAnimation()
     {
-        cardAnimation = Instantiate(this.gameObject, this.rectTransform.position, Quaternion.identity);
-        CardWrapper cardWrapper = cardAnimation.GetComponent<CardWrapper>();
-        if (cardWrapper != null)
-        {
-            Destroy(cardWrapper);
-        }
-        Transform uiParent = GameObject.Find("UI").transform;  // Tìm parent có tên "UI"
-        cardAnimation.transform.SetParent(uiParent, false);
-        RectTransform cardAnimationRectTransform = cardAnimation.GetComponent<RectTransform>();
-        cardAnimationRectTransform.position = this.rectTransform.position;
+        // Set the card to the correct position
+        Vector3 position = Camera.main.ScreenToWorldPoint(new Vector3(this.rectTransform.position.x, this.rectTransform.position.y, Camera.main.nearClipPlane));
+        position.z = -7;
+        cardAnimation.transform.position = position;
 
+        // Set animation for the card
+        cardAnimation.transform.DOMove(new Vector3(0f, -1.5f, cardAnimation.transform.position.z), 0.16f)
+            .SetEase(Ease.OutQuad);
+        // cardAnimation.transform.DOScale(new Vector3(0.033f, 0.033f, 0.033f), 0.3f)
+        //     .SetEase(Ease.OutQuad);
+        cardAnimation.transform.DORotate(new Vector3(70f, 0f, 0f), 0.16f, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                // Call the function to display the planet selection
+                cardController.OnCardDisplayPlanetSelection(this);
+                cardAnimation.transform.position = new Vector3(0, 0, 1);
+            });
+    }
 
-        // // Sử dụng DOAnchorPosY cho đối tượng UI (RectTransform) thay vì DOMoveY
-        RectTransform rectTransform = cardAnimation.GetComponent<RectTransform>();
-        rectTransform.DOAnchorPosY(rectTransform.anchoredPosition.y + 300f, 0.5f)
+    private void ConcealCardWithAnimation()
+    {
+        // Set the card to the correct position
+        Vector3 startPos = new Vector3(0f, -1.5f, -7);
+        cardAnimation.transform.position = startPos;
+
+        Vector3 desPos = Camera.main.ScreenToWorldPoint(new Vector3(this.rectTransform.position.x, this.rectTransform.position.y, Camera.main.nearClipPlane));
+        desPos.z = -7;
+        // Set animation for the card
+        cardAnimation.transform.DOMove(desPos, 0.16f)
             .SetEase(Ease.OutQuad);
-        // Tạo hiệu ứng xoay
-        cardAnimation.transform.DORotate(new Vector3(70f, 0f, 0f), 0.5f, RotateMode.FastBeyond360)
-            .SetEase(Ease.OutQuad);
+        // cardAnimation.transform.DOScale(new Vector3(0.033f, 0.033f, 0.033f), 0.3f)
+        //     .SetEase(Ease.OutQuad);
+        cardAnimation.transform.DORotate(new Vector3(0f, 0f, 0f), 0.16f, RotateMode.FastBeyond360)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                cardAnimation.transform.position = new Vector3(0, 0, 1);
+            });
     }
 
     public void ResetAllValues()
