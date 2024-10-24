@@ -25,7 +25,7 @@ public class CardController : MonoBehaviour
 
     [Header("Rotation")]
     [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
-    [SerializeField] private float maxHeight = 20;
+    [SerializeField] private float maxHeight = 30;
     private float maxHeightDisplacement;
 
     [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
@@ -52,9 +52,9 @@ public class CardController : MonoBehaviour
     }
 
     private void InitCards()
-    {   
+    {
         maxHeightDisplacement = maxHeight;
-        
+
         if (gamePlayId != 1 && gamePlayId != 2)
         {
             ShuffleCards();
@@ -99,7 +99,7 @@ public class CardController : MonoBehaviour
             CardWrapper cardInstance = Instantiate(allCards[i], this.transform);
             cardInstance.name = cardInstance.name.Replace("(Clone)", "");
         }
-        
+
         allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
     }
 
@@ -121,7 +121,7 @@ public class CardController : MonoBehaviour
             }
 
             card.animationSpeedConfig = animationSpeedConfig;
-            card.cardContainer = this;
+            card.cardController = this;
         }
     }
 
@@ -176,14 +176,14 @@ public class CardController : MonoBehaviour
             maxHeightDisplacement = 0;
             SetNoRotationForAllCards(true);
         }
-        else 
+        else
         {
             targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
         }
         // switch (cardCount)
         // {
         //     case 7:
-                
+
         //         break;
         //     case 6:
         //         targetSize = new Vector2((cardsGroupSize / 6) * 5, rectTransform.sizeDelta.y);
@@ -193,7 +193,7 @@ public class CardController : MonoBehaviour
         //         break;
         //     case 4:
         //     case 1:
-                
+
 
         //         break;
         //     default:
@@ -348,6 +348,7 @@ public class CardController : MonoBehaviour
     {
         if (planetSelectionInstance != null)
         {
+            Debug.Log("destroy planet selection " + planetSelectionInstance.name);
             Destroy(planetSelectionInstance);
             darkMask.SetActive(false);
         }
@@ -380,12 +381,6 @@ public class CardController : MonoBehaviour
             selectedCard.ResetAllValues();
         }
 
-        // Nếu tồn tại card dùng cho hiển thị animation thì hủy nó
-        if (selectedCardAnimation != null)
-        {
-            // Destroy(selectedCardAnimation.gameObject);
-        }
-
         // Gán thẻ được chọn vào biến selectedCard
         selectedCard = card;
 
@@ -402,10 +397,7 @@ public class CardController : MonoBehaviour
             Destroy(card.gameObject);
 
         }
-        if (selectedCardAnimation != null)
-        {
-            // Destroy(selectedCardAnimation.gameObject);
-        }
+
         isListChanging = false;
         StartCoroutine(SmoothUpdateCards());
     }
@@ -462,8 +454,6 @@ public class CardController : MonoBehaviour
         return allCardInstances.Count;
     }
 
-    private CardWrapper selectedCardAnimation = null;
-
     public void ResetCards()
     {
         if (allCardInstances != null)
@@ -478,5 +468,4 @@ public class CardController : MonoBehaviour
         gamePlayId = -1;
         isStart = false;
     }
-
 }
