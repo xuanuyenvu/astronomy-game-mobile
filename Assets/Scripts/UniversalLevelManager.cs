@@ -12,12 +12,13 @@ public class UniversalLevelManager : MonoBehaviour
     public HealthManager healthManager;
     public TimerManager timerManager;
     public WarpSpeedController wrapSpeedController;
+    public GameOverUIController gameOverUiController;
 
     void Start()
     {
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 5;
+        int selectedLevel = 18;
 
         if (loadJson(selectedLevel))
         {
@@ -64,6 +65,7 @@ public class UniversalLevelManager : MonoBehaviour
 
     private void SetUpLevel(int st)
     {
+        // gameOverUiController.StartUI();
         StartStage(level.stages[st].stage, level.stages[st].elements, level.cards_displayed);
     }
 
