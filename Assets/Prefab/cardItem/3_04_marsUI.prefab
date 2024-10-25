@@ -134,14 +134,16 @@ MonoBehaviour:
   targetPosition: {x: 357.94, y: 27.782288}
   targetRotation: 10.714286
   targetVerticalDisplacement: 19.591837
-  cardContainer: {fileID: 0}
+  planetName: mars
+  dissolveMaterial: {fileID: 2100000, guid: 0f7a929ab7c288547b94186787fc400f, type: 2}
+  cardController: {fileID: 0}
   animationSpeedConfig:
     rotation: 60
     position: 500
     releasePosition: 2000
     zoom: 0.3
   uiLayer: 0
-  turnOnPointerDownAdnUp: 1
+  turnOnPointerDownAndUp: 1
 --- !u!1 &4603919198223090255
 GameObject:
   m_ObjectHideFlags: 0

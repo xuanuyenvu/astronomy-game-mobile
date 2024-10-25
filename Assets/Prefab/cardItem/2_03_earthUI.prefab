@@ -209,11 +209,13 @@ MonoBehaviour:
   targetPosition: {x: 358, y: 27.782288}
   targetRotation: 6.428571
   targetVerticalDisplacement: 32.65306
-  cardContainer: {fileID: 0}
+  planetName: earth
+  dissolveMaterial: {fileID: 2100000, guid: 0f7a929ab7c288547b94186787fc400f, type: 2}
+  cardController: {fileID: 0}
   animationSpeedConfig:
     rotation: 60
     position: 500
     releasePosition: 2000
     zoom: 0.3
   uiLayer: 0
-  turnOnPointerDownAdnUp: 1
+  turnOnPointerDownAndUp: 1

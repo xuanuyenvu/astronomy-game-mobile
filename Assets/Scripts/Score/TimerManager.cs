@@ -48,6 +48,10 @@ public class TimerManager : MonoBehaviour
 
     public void StopTimer()
     {
+        if (stopeTimer)
+        {
+            return;
+        }
         stopeTimer = true;
     }
 
