@@ -12,6 +12,7 @@ public class UniversalLevelManager : MonoBehaviour
     public HealthManager healthManager;
     public TimerManager timerManager;
     public WarpSpeedController wrapSpeedController;
+    public GameOverUIController gameOverUiController;
 
     void Start()
     {
@@ -64,7 +65,8 @@ public class UniversalLevelManager : MonoBehaviour
 
     private void SetUpLevel(int st)
     {
-        StartStage(level.stages[st].stage, level.stages[st].elements, level.cards_displayed);
+        gameOverUiController.StartUI();
+        // StartStage(level.stages[st].stage, level.stages[st].elements, level.cards_displayed);
     }
 
     private void StartStage(int id, int[] planets, int cardsDisplayed)
