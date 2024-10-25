@@ -65,8 +65,8 @@ public class UniversalLevelManager : MonoBehaviour
 
     private void SetUpLevel(int st)
     {
-        gameOverUiController.StartUI();
-        // StartStage(level.stages[st].stage, level.stages[st].elements, level.cards_displayed);
+        // gameOverUiController.StartUI();
+        StartStage(level.stages[st].stage, level.stages[st].elements, level.cards_displayed);
     }
 
     private void StartStage(int id, int[] planets, int cardsDisplayed)

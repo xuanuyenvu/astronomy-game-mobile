@@ -11,41 +11,55 @@ public class GameOverUIController : MonoBehaviour
     public GameObject energyUI;
     public GameObject background;
     public ParticleSystem brokenStarPS;
+    public CameraShake cameraShake;
 
     private RectTransform starRectTransform;
+    private RectTransform titleBtnGroupRectTransform;
 
     void Awake()
     {
         brokenStarPS.Stop();
-        background.SetActive(false);
+        GetChildByName(this.gameObject, "backgroundGO").SetActive(false);
+        titleBtnGroupRectTransform = GetChildByName(this.gameObject, "titleBtnGroup").GetComponent<RectTransform>();
+        titleBtnGroupRectTransform.localScale = Vector3.zero;
     }
 
     public void StartUI()
     {
+        timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
         healthContainerUI.SetActive(false);
 
         InitializeEnergyUIChildren();
-        
-        background.SetActive(true);
+        GetChildByName(this.gameObject, "backgroundGO").SetActive(true);
 
         Vector3 targetPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);
         starRectTransform.DOMove(targetPosition, 1f)
             .SetEase(Ease.OutQuad);
 
-        Vector3 targetScale = new Vector3(2.5f, 2.5f, 1);
+        Vector3 targetScale = new Vector3(3f, 3f, 1);
         starRectTransform.DOScale(targetScale, 1f)
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>
             {
                 brokenStarPS.Play();
-                StartCoroutine(WaitAndDeactivatestarUI());
+                StartCoroutine(PlayShakeAndShowTitle());
             });
     }
 
-    private IEnumerator WaitAndDeactivatestarUI()
+    private IEnumerator PlayShakeAndShowTitle()
     {
+        StartCoroutine(WaitAndDeactivateStarUI());
+        yield return new WaitForSeconds(1.6f);
+        titleBtnGroupRectTransform.DOScale(Vector3.one, 0.6f)
+            .SetEase(Ease.OutBounce);
+    }
+
+    private IEnumerator WaitAndDeactivateStarUI()
+    {
+        brokenStarPS.Play();
         yield return new WaitForSeconds(0.7f);
+        cameraShake.ShakeCamera(0.3f);
         starRectTransform.gameObject.SetActive(false);
     }
 
@@ -66,12 +80,10 @@ public class GameOverUIController : MonoBehaviour
     public void InitializeEnergyUIChildren()
     {
         GameObject energyStar = GetChildByName(energyUI, "star");
-        GameObject energyFill = GetChildByName(energyUI, "fill");
         GameObject energyBorder = GetChildByName(energyUI, "border");
         GameObject energyBackground = GetChildByName(energyUI, "background");
 
         if (energyStar != null) starRectTransform = energyStar.GetComponent<RectTransform>();
-        if (energyFill != null) energyFill.SetActive(false);
         if (energyBorder != null) energyBorder.SetActive(false);
         if (energyBackground != null) energyBackground.SetActive(false);
     }
