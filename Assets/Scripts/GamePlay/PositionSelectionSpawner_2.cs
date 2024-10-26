@@ -40,7 +40,6 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     // biến bool
     protected bool animationStart = false;
-    protected bool animationResult = false;
     protected bool playing;
 
     // lưu các phần trong màn hình
@@ -84,43 +83,22 @@ public class PositionSelectionSpawner_2 : IGamePlay
         {
             rocket.TurnOnCollider = false;
         }
-
-        DestroyEffect();
     }
 
     protected void DestroyEffect()
     {
-        // Hủy hiệu ứng sau khi hành tinh phát nổ
-        if (cameraShake.IsShake == 0 && animationResult)
+        // Hủy boom instance
+        if (boomInstance != null)
         {
-            // Hủy boom instance
-            if (boomInstance != null)
-            {
-                Destroy(boomInstance.gameObject);
-                boomInstance = null;
-            }
-
-            // Đặt lại giá trị
-            animationResult = false;
-            cameraShake.IsShake = -1;
-
-            // Thiết lập lại game
-            ReSetUpGame();
+            Destroy(boomInstance.gameObject);
+            boomInstance = null;
         }
-        if (winEffectInstance != null)
-        {
-            if (!winEffectInstance.isPlaying && animationResult)
-            {
-                // Hủy win effect
-                Destroy(winEffectInstance.gameObject);
-                winEffectInstance = null;
 
-                // Đặt lại giá trị
-                animationResult = false;
+        // Đặt lại giá trị
+        cameraShake.IsShake = -1;
 
-                // Thắng hoặc qua màn sau
-            }
-        }
+        // Thiết lập lại game
+        ReSetUpGame();
     }
 
     protected void ReSetUpGame()
@@ -386,9 +364,6 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
         FakeTargetSpawner();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
-
-        // Bắt đầu tính thời gian
-        scoreManager.StartGame();
     }
 
 
@@ -553,7 +528,6 @@ public class PositionSelectionSpawner_2 : IGamePlay
             cardController.ShowACard();
             return;
         }
-        animationResult = true;
 
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
@@ -656,7 +630,6 @@ public class PositionSelectionSpawner_2 : IGamePlay
         {
             // Lắc rocket và hiển thị hiệu ứng correct
             StartCoroutine(CoroutineCorrectAnwser());
-            scoreManager.FinalScore(healthManager.health);
             return;
         }
 
@@ -713,7 +686,8 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
         // Mất 1 mạng
         healthManager.health--;
-        yield return null;
+        yield return new WaitForSeconds(2f);
+        DestroyEffect();
     }
 
     protected IEnumerator CoroutineCorrectAnwser()
@@ -759,9 +733,10 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
     {
-        energyManager.ChangeEnergy(30); 
+        energyManager.ChangeEnergy(30);
         yield return new WaitForSeconds(2f);
-        DestroyAllPlanetsInGroup(); 
+        DestroyAllPlanetsInGroup();
+        universalLevelManager.EndStage();
     }
 
     protected void DestroyAllPlanetsInGroup()
@@ -781,12 +756,11 @@ public class PositionSelectionSpawner_2 : IGamePlay
             }
         }
         cardController.ResetCards();
-        new WaitForSeconds(3f);
-        universalLevelManager.EndStage();
     }
 
-    protected void GameOver()
+    private void GameOver()
     {
-        Debug.Log("gameOver");
+        DestroyAllPlanetsInGroup();
+        universalLevelManager.GameOver();
     }
 }

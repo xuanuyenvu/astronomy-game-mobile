@@ -28,7 +28,7 @@ public class EnergyManager : MonoBehaviour
 
         currentValue = 0;
         energySlider.maxValue = 100;
-        energySlider.value = 70;
+        energySlider.value = currentValue;
 
         isFullEnergy = false;
     }

@@ -39,7 +39,6 @@ public class PlanetSelectionSpawner : IGamePlay
 
     // biến bool
     private bool animationStart = false;
-    private bool animationResult = false;
     private bool playing;
 
     void Awake()
@@ -60,47 +59,26 @@ public class PlanetSelectionSpawner : IGamePlay
         {
             rocket.TurnOnCollider = false;
         }
-
-        if (cardController.GetNumOfCards() == 0)
-        {
-            GameOver();
-        }
-
-        DestroyEffect();
     }
 
     private void DestroyEffect()
     {
-        // Hủy hiệu ứng sau khi hành tinh phát nổ
-        if (cameraShake.IsShake == 0 && animationResult)
+        // Hủy boom instance
+        // if (boomInstance != null)
+        // {
+        //     Destroy(boomInstance.gameObject);
+        //     boomInstance = null;
+        // }
+
+        // Đặt lại giá trị
+        cameraShake.IsShake = -1;
+        if (cardController.GetNumOfCards() == 0)
         {
-            // Hủy boom instance
-            if (boomInstance != null)
-            {
-                Destroy(boomInstance.gameObject);
-                boomInstance = null;
-            }
-
-            // Đặt lại giá trị
-            animationResult = false;
-            cameraShake.IsShake = -1;
-
-            // Thiết lập lại game
-            ReSetUpGame();
+            GameOver();
         }
-        if (winEffectInstance != null)
+        else
         {
-            if (!winEffectInstance.isPlaying && animationResult)
-            {
-                // Hủy win effect
-                Destroy(winEffectInstance.gameObject);
-                winEffectInstance = null;
-
-                // Đặt lại giá trị
-                animationResult = false;
-
-                // Thắng hoặc qua màn sau
-            }
+            ReSetUpGame();
         }
     }
 
@@ -263,9 +241,6 @@ public class PlanetSelectionSpawner : IGamePlay
         RandomizePosition();
         FindMeanAndSetRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
-
-        // Bắt đầu tính thời gian
-        scoreManager.StartGame();
     }
 
     public override void CheckDragPosition(Vector3 dragPos, string planetName)
@@ -275,8 +250,6 @@ public class PlanetSelectionSpawner : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
-        animationResult = true;
-
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 
@@ -342,7 +315,6 @@ public class PlanetSelectionSpawner : IGamePlay
         {
             // Lắc rocket và hiển thị hiệu ứng correct
             StartCoroutine(CoroutineCorrectAnwser());
-            scoreManager.FinalScore(healthManager.health);
             return;
         }
 
@@ -396,13 +368,26 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private IEnumerator PlayBoomAndShake()
     {
+        if(boomInstance == null)
+        {
+            Debug.Log("Boom instance is null");
+        }
+        if(cameraShake == null)
+        {
+            Debug.Log("cameraShake instance is null");
+        }
+        if(healthManager == null)
+        {
+            Debug.Log("healthManager instance is null");
+        }
         boomInstance.gameObject.SetActive(true);
         boomInstance.Play();
         cameraShake.ShakeCamera();
-
+        
         // Mất 1 mạng
         healthManager.health--;
-        yield return null;
+        yield return new WaitForSeconds(2f);
+        DestroyEffect();
     }
 
     private IEnumerator CoroutineCorrectAnwser()
@@ -448,9 +433,10 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
     {
-        energyManager.ChangeEnergy(30); 
+        energyManager.ChangeEnergy(30);
         yield return new WaitForSeconds(2f);
-        DestroyAllPlanetsInGroup(); 
+        DestroyAllPlanetsInGroup();
+        universalLevelManager.EndStage();
     }
 
 
@@ -471,11 +457,11 @@ public class PlanetSelectionSpawner : IGamePlay
             }
         }
         cardController.ResetCards();
-        universalLevelManager.EndStage();
     }
 
     private void GameOver()
     {
-        Debug.Log("gameOver");
+        DestroyAllPlanetsInGroup();
+        universalLevelManager.GameOver();
     }
 }

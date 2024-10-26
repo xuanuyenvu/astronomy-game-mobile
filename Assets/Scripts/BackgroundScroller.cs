@@ -26,21 +26,4 @@ public class BackgroundScroller : MonoBehaviour
            BG2.position = new Vector3(BG1.position.x + size.x, BG2.position.y);
         }
     }
-
-    // void Update()
-    // {
-    //     BG1.position += new Vector3(speed * Time.deltaTime, 0);
-    //     BG2.position += new Vector3(speed * Time.deltaTime, 0);
-        
-    //     if (BG1.position.x <= -25)
-    //     {
-    //         Debug.Log("BG1");
-    //         BG1.position = new Vector3(BG2.position.x + 25, BG1.position.y);
-    //     }
-    //     if (BG2.position.x <= -25)
-    //     {
-    //         Debug.Log("BG2");
-    //         BG2.position = new Vector3(BG1.position.x + 25, BG2.position.y);
-    //     }
-    // }
 }

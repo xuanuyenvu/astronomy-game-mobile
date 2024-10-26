@@ -392,9 +392,6 @@ public class NonLinearSpawner : IGamePlay
         SwapPlanetsByMetrics();
         SetDestinationOfRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
-
-        // Bắt đầu tính thời gian
-        scoreManager.StartGame();
     }
 
     public override void CheckDragPosition(Vector3 dragPos, string planetName)
@@ -486,7 +483,6 @@ public class NonLinearSpawner : IGamePlay
             // Lắc rocket và hiển thị hiệu ứng correct
             destinationRocket.TurnOnCollider = true;
             StartCoroutine(CoroutineCorrectAnwser());
-            scoreManager.FinalScore(healthManager.health);
             return;
         }
 
