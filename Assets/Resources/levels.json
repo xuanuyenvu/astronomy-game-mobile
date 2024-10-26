@@ -258,7 +258,7 @@
                     ]
                 }
             ],
-            "lives": 4,
+            "lives": 3,
             "total_time": "02:00",
             "cards_displayed": 5
         },
@@ -281,7 +281,7 @@
                     ]
                 }
             ],
-            "lives": 4,
+            "lives": 3,
             "total_time": "02:00",
             "cards_displayed": 5
         },
@@ -396,7 +396,7 @@
                     ]
                 }
             ],
-            "lives": 5,
+            "lives": 4,
             "total_time": "02:30",
             "cards_displayed": 7
         },
