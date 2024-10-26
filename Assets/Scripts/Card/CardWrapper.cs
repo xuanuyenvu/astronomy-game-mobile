@@ -137,12 +137,17 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         else
         {
-            isSelected = false;
-
+            if (isSelected)
+            {
+                ConcealCardWithAnimation();
+            }
+            else
+            {
+                isSelected = false;
+            }
             // Destroy the planet selection if it is displayed
             cardController.ChangeSelectedCard(null);
             cardController.DestroyPlanetSelection();
-            ConcealCardWithAnimation();
         }
     }
 
