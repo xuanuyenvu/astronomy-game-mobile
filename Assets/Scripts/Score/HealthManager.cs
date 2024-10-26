@@ -5,11 +5,9 @@ using UnityEngine.UI;
 
 public class HealthManager : MonoBehaviour
 {
-    [HideInInspector]
-    public int health = 5;
+    [HideInInspector] public int health = 5;
     public Sprite heart;
     public List<Image> hearts;
-    public Image star;
 
     public void SetUp(int _health)
     {

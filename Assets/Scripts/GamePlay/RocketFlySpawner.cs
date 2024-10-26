@@ -78,12 +78,6 @@ public class RocketFlySpawner : IGamePlay
             rocket.TurnOnCollider = false;
         }
 
-        // if (scoreManager.changeResultPlanet == 1)
-        // {
-        //     scoreManager.changeResultPlanet = -1;
-        //     ChangeResultPlanet();
-        // }
-
         if (cardController.GetNumOfCards() == 0)
         {
             GameOver();
@@ -356,9 +350,6 @@ public class RocketFlySpawner : IGamePlay
         RandomizePosition();
         FindMeanAndSetRocket();
         StartCoroutine(SetPositionBeforePlaying(0.5f));
-
-        // Bắt đầu tính thời gian
-        scoreManager.StartGame();
     }
 
     public override void CheckDragPosition(Vector3 dragPos, string planetName)
@@ -432,7 +423,6 @@ public class RocketFlySpawner : IGamePlay
         {
             // Lắc rocket và hiển thị hiệu ứng correct
             StartCoroutine(CoroutineCorrectAnwser());
-            scoreManager.FinalScore(healthManager.health);
             return;
         }
 

@@ -9,7 +9,11 @@ public class TimerManager : MonoBehaviour
     public Slider timerSlider;
     private float maxSliderTimer;
     private float sliderTimer;
-    public bool stopeTimer = false;
+    private bool stopeTimer = false;
+
+    private bool isTimeOver = false;
+
+    public global::System.Boolean IsTimeOver { get => isTimeOver; set => isTimeOver = value; }
 
     public void SetUp(int time)
     {
@@ -18,7 +22,6 @@ public class TimerManager : MonoBehaviour
         timerSlider.maxValue = sliderTimer;
         timerSlider.value = sliderTimer;
         stopeTimer = false;
-        StartTimer();
     }
 
     public void StartTimer()
@@ -37,6 +40,7 @@ public class TimerManager : MonoBehaviour
 
             if (sliderTimer <= 0)
             {
+                isTimeOver = true;
                 stopeTimer = true;
             }
             if (!stopeTimer)

@@ -33,21 +33,23 @@ public class GameManager : MonoBehaviour
         currentGamePlay.cameraShake = FindObjectOfType<CameraShake>();
         currentGamePlay.cardController = FindObjectOfType<CardController>();
         currentGamePlay.healthManager = FindObjectOfType<HealthManager>();
-        currentGamePlay.scoreManager = FindObjectOfType<ScoreManager>();
         currentGamePlay.universalLevelManager = FindObjectOfType<UniversalLevelManager>();
         currentGamePlay.energyManager = FindObjectOfType<EnergyManager>();
         currentGamePlay.timerManager = FindObjectOfType<TimerManager>();
 
         currentGamePlay.cardController.cardsDisplayed = cardsDisplayed;
         currentGamePlay.cardController.gamePlayId = el;
-
+        
         currentGamePlay.cameraShake.IsShake = -1;
         
         Player _player = FindObjectOfType<Player>();
         _player.SetPlayer(currentGamePlay);
 
-        currentGamePlay.timerManager.StartTimer();
-
+        if (currentGamePlay.timerManager != null)
+        {
+            currentGamePlay.timerManager.StartTimer();
+        }
+        
         currentGamePlay.Play();
     }
 

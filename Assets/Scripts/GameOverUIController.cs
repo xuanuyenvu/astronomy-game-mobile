@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class GameOverUIController : MonoBehaviour
 {
     public GameObject timeBarUI;
-    public GameObject healthContainerUI;
+    public HealthManager healthManager;
     public GameObject energyUI;
     public GameObject background;
     public ParticleSystem brokenStarPS;
@@ -21,23 +21,24 @@ public class GameOverUIController : MonoBehaviour
         brokenStarPS.Stop();
         GetChildByName(this.gameObject, "backgroundGO").SetActive(false);
         titleBtnGroupRectTransform = GetChildByName(this.gameObject, "titleBtnGroup").GetComponent<RectTransform>();
-        titleBtnGroupRectTransform.localScale = Vector3.zero;
+        starRectTransform = GetChildByName(energyUI, "star").GetComponent<RectTransform>();
     }
 
     public void StartUI()
     {
         timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
-        healthContainerUI.SetActive(false);
+        healthManager.SetUp(0);
 
-        InitializeEnergyUIChildren();
+        GetChildByName(energyUI, "border").SetActive(false);
+        GetChildByName(energyUI, "background").SetActive(false);
         GetChildByName(this.gameObject, "backgroundGO").SetActive(true);
 
         Vector3 targetPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);
         starRectTransform.DOMove(targetPosition, 1f)
             .SetEase(Ease.OutQuad);
 
-        Vector3 targetScale = new Vector3(3f, 3f, 1);
+        Vector3 targetScale = starRectTransform.localScale * 3.3f;
         starRectTransform.DOScale(targetScale, 1f)
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>
@@ -51,14 +52,26 @@ public class GameOverUIController : MonoBehaviour
     {
         StartCoroutine(WaitAndDeactivateStarUI());
         yield return new WaitForSeconds(1.6f);
+        ShowTitleButtonGroup();
+    }
+
+    private void ShowTitleButtonGroup()
+    {
         titleBtnGroupRectTransform.DOScale(Vector3.one, 0.6f)
             .SetEase(Ease.OutBounce);
+    }
+
+    private void HideTitleButtonGroup(TweenCallback onComplete = null)
+    {
+        titleBtnGroupRectTransform.DOScale(Vector3.zero, 0.2f)
+            .SetEase(Ease.Linear)
+            .OnComplete(onComplete);
     }
 
     private IEnumerator WaitAndDeactivateStarUI()
     {
         brokenStarPS.Play();
-        yield return new WaitForSeconds(0.7f);
+        yield return new WaitForSeconds(0.8f);
         cameraShake.ShakeCamera(0.3f);
         starRectTransform.gameObject.SetActive(false);
     }
@@ -77,14 +90,26 @@ public class GameOverUIController : MonoBehaviour
         }
     }
 
-    public void InitializeEnergyUIChildren()
+    public void StopUI(bool isShowTimerSlider = true)
     {
-        GameObject energyStar = GetChildByName(energyUI, "star");
-        GameObject energyBorder = GetChildByName(energyUI, "border");
-        GameObject energyBackground = GetChildByName(energyUI, "background");
+        HideTitleButtonGroup(() =>
+        {
+            brokenStarPS.Stop();
+            if (isShowTimerSlider)
+            {
+                timeBarUI.SetActive(true);
+            }
+            if (starRectTransform != null)
+            {
+                starRectTransform.localScale = new Vector3(0.55f, 0.45f, 1f);
+                starRectTransform.anchoredPosition = Vector2.zero;
+            }
+            GetChildByName(energyUI, "border").SetActive(true);
+            GetChildByName(energyUI, "background").SetActive(true);
+            GetChildByName(energyUI, "star").SetActive(true);
+            GetChildByName(this.gameObject, "backgroundGO").SetActive(false);
 
-        if (energyStar != null) starRectTransform = energyStar.GetComponent<RectTransform>();
-        if (energyBorder != null) energyBorder.SetActive(false);
-        if (energyBackground != null) energyBackground.SetActive(false);
+
+        });
     }
 }

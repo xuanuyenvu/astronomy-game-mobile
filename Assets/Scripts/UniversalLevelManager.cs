@@ -18,15 +18,20 @@ public class UniversalLevelManager : MonoBehaviour
     {
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 18;
+        int selectedLevel = 13;
+        LoadAndSetUpLevel(selectedLevel);
+    }
 
-        if (loadJson(selectedLevel))
+    private void LoadAndSetUpLevel(int level)
+    {
+        if (IsJsonLoaded(level))
         {
             SetUpLevel(0);
         }
     }
 
-    private bool loadJson(int _selectedLevel)
+
+    private bool IsJsonLoaded(int _selectedLevel)
     {
         // load JSON từ Resources
         TextAsset jsonFile = Resources.Load<TextAsset>("levels");
@@ -38,6 +43,7 @@ public class UniversalLevelManager : MonoBehaviour
 
             // gán các thông tin vào biến level
             level = levelsData.levels[_selectedLevel - 1];
+            Debug.Log("Level: " + level);
             healthManager.SetUp(level.lives);
             if (level.level > 6)
             {
@@ -45,7 +51,7 @@ public class UniversalLevelManager : MonoBehaviour
             }
             else
             {
-                timerManager.timerSlider.gameObject.SetActive(false);
+                timerManager.gameObject.SetActive(false);
             }
 
             if (level != null)
@@ -65,7 +71,6 @@ public class UniversalLevelManager : MonoBehaviour
 
     private void SetUpLevel(int st)
     {
-        // gameOverUiController.StartUI();
         StartStage(level.stages[st].stage, level.stages[st].elements, level.cards_displayed);
     }
 
@@ -105,11 +110,9 @@ public class UniversalLevelManager : MonoBehaviour
         SetUpLevel(1);
     }
 
-
-
     public void GoBackToMap()
     {
-        SceneManager.LoadScene("level");
+        SceneManager.LoadScene("chapter1");
     }
 
     private int ConvertTimeToSeconds(string total_time)
@@ -123,5 +126,57 @@ public class UniversalLevelManager : MonoBehaviour
 
         // Calculate total seconds
         return (minutes * 60) + seconds;
+    }
+
+    public void LoadGame()
+    {
+        Debug.Log("Load Game");
+        // TO DO : EFFECT FADE
+        gameOverUiController.StopUI(level.level > 6);
+        gameManager.DestroyCurrentGamePlay();
+        LoadAndSetUpLevel(level.level);
+    }
+
+    public void Retry()
+    {
+        Debug.Log("Retry");
+        gameOverUiController.StopUI(level.level > 6);
+        gameManager.DestroyCurrentGamePlay();
+
+        if (level.level > 6)
+        {
+            if (healthManager.health == 0 && timerManager.IsTimeOver)
+            {
+                healthManager.SetUp(1);
+
+                timerManager.SetUp(15);
+                timerManager.IsTimeOver = false;
+            }
+            else if (healthManager.health == 0)
+            {
+                healthManager.SetUp(2);
+            }
+            else //(timerManager.IsTimeOver == true)
+            {
+                timerManager.SetUp(25);
+                timerManager.IsTimeOver = false;
+            }
+        }
+        else if (level.level > 2)
+        {
+            healthManager.SetUp(2);
+        }
+        else
+        {
+            healthManager.SetUp(1);
+        }
+
+        SetUpLevel(level.total_stages == 1 ? 1 : 0);
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over");
+        gameOverUiController.StartUI();
     }
 }
