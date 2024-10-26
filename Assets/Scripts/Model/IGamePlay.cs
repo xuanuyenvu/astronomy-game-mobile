@@ -7,7 +7,6 @@ public abstract class IGamePlay : MonoBehaviour
      [HideInInspector] public CameraShake cameraShake;
      [HideInInspector] public CardController cardController;
      [HideInInspector] public HealthManager healthManager;
-     [HideInInspector] public ScoreManager scoreManager;
      [HideInInspector] public UniversalLevelManager universalLevelManager;
      [HideInInspector] public EnergyManager energyManager;
      [HideInInspector] public TimerManager timerManager;
