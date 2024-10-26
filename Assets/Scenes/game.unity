@@ -23036,7 +23036,6 @@ MonoBehaviour:
   - {fileID: 1051872240}
   - {fileID: 1060962340}
   - {fileID: 751683807}
-  star: {fileID: 0}
 --- !u!1 &1794376767
 GameObject:
   m_ObjectHideFlags: 0
@@ -24089,7 +24088,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeBarUI: {fileID: 2108130374}
-  healthContainerUI: {fileID: 1746316028}
+  healthManager: {fileID: 1746316031}
   energyUI: {fileID: 2089459076}
   background: {fileID: 930833645}
   brokenStarPS: {fileID: 3063057555058137670}

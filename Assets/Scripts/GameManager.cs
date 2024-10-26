@@ -63,15 +63,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void UpdateFinalEnergy()
-    {
-        int health = currentGamePlay.healthManager.health; // * 10
-        for (int i = 0; i < health; i++)
-        {
-            currentGamePlay.energyManager.ChangeEnergy(10);
-        }
+    // public void UpdateFinalEnergy()
+    // {
+    //     int health = currentGamePlay.healthManager.health; // * 10
+    //     for (int i = 0; i < health; i++)
+    //     {
+    //         currentGamePlay.energyManager.ChangeEnergy(10);
+    //     }
 
-        float time = currentGamePlay.timerManager.GetRemainingTimePercentage(); // * 10
-        currentGamePlay.energyManager.ChangeEnergy(time * 50);
-    }
+    //     float time = currentGamePlay.timerManager.GetRemainingTimePercentage(); // * 10
+    //     currentGamePlay.energyManager.ChangeEnergy(time * 50);
+    // }
 }
