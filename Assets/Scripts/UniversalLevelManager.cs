@@ -18,7 +18,7 @@ public class UniversalLevelManager : MonoBehaviour
     {
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 2;
+        int selectedLevel = 13;
         LoadAndSetUpLevel(selectedLevel);
     }
 
@@ -131,6 +131,9 @@ public class UniversalLevelManager : MonoBehaviour
     public void LoadGame()
     {
         Debug.Log("Load Game");
+        // TO DO : EFFECT FADE
+        gameOverUiController.StopUI(level.level > 6);
+        gameManager.DestroyCurrentGamePlay();
         LoadAndSetUpLevel(level.level);
     }
 
@@ -168,7 +171,7 @@ public class UniversalLevelManager : MonoBehaviour
             healthManager.SetUp(1);
         }
 
-        SetUpLevel(level.total_stages == 1 ? 0 : 1);
+        SetUpLevel(level.total_stages == 1 ? 1 : 0);
     }
 
     public void GameOver()
