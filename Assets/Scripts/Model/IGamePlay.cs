@@ -19,10 +19,9 @@ public abstract class IGamePlay : MonoBehaviour
      [HideInInspector] public int[] planets;
 
      public abstract void Play();
-
      public abstract void ExecuteAfterCollision(AstronomicalObject planet);
-
      public abstract void HandleConfirmButton(string planetName, Vector3 planetPosition);
-
      public abstract void CheckDragPosition(Vector3 dragPos, string planetName);
+     public abstract void OnTimeOver();
+     public abstract void OnFullEnergy();
 }

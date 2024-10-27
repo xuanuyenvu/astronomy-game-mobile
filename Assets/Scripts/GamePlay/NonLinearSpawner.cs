@@ -591,5 +591,13 @@ public class NonLinearSpawner : IGamePlay
         Debug.Log("gameOver");
     }
 
+    public override void OnTimeOver()
+    {
 
+    }
+
+    public override void OnFullEnergy()
+    {
+
+    }
 }

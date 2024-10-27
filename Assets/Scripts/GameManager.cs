@@ -4,10 +4,30 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance { get; private set; }
     public IGamePlay[] gamePlays;
-    // public EndGamePlay endGamePlay;
     private int el;
     private IGamePlay currentGamePlay;
+
+    public IGamePlay CurrentGamePlay
+    {
+        get { return currentGamePlay; }
+        private set { currentGamePlay = value; } 
+    }
+
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
 
     public void Initialize(int levelId, int[] planets, int cardsDisplayed)
     {
@@ -17,6 +37,11 @@ public class GameManager : MonoBehaviour
 
     private void OnStartGame(int[] planets, int cardsDisplayed)
     {
+        if (currentGamePlay != null)
+        {
+            DestroyCurrentGamePlay();
+        }
+
         var current = Instantiate(gamePlays[el]);
         currentGamePlay = current.GetComponent<IGamePlay>();
 
@@ -39,17 +64,17 @@ public class GameManager : MonoBehaviour
 
         currentGamePlay.cardController.cardsDisplayed = cardsDisplayed;
         currentGamePlay.cardController.gamePlayId = el;
-        
+
         currentGamePlay.cameraShake.IsShake = -1;
-        
-        Player _player = FindObjectOfType<Player>();
-        _player.SetPlayer(currentGamePlay);
+
+        // Player _player = FindObjectOfType<Player>();
+        // _player.SetPlayer(currentGamePlay);
 
         if (currentGamePlay.timerManager != null)
         {
             currentGamePlay.timerManager.StartTimer();
         }
-        
+
         currentGamePlay.Play();
     }
 
@@ -58,20 +83,8 @@ public class GameManager : MonoBehaviour
         if (currentGamePlay != null)
         {
             Debug.Log("Destroying current game play " + currentGamePlay);
-            Destroy(currentGamePlay.gameObject); 
-            currentGamePlay = null; 
+            Destroy(currentGamePlay.gameObject);
+            currentGamePlay = null;
         }
     }
-
-    // public void UpdateFinalEnergy()
-    // {
-    //     int health = currentGamePlay.healthManager.health; // * 10
-    //     for (int i = 0; i < health; i++)
-    //     {
-    //         currentGamePlay.energyManager.ChangeEnergy(10);
-    //     }
-
-    //     float time = currentGamePlay.timerManager.GetRemainingTimePercentage(); // * 10
-    //     currentGamePlay.energyManager.ChangeEnergy(time * 50);
-    // }
 }

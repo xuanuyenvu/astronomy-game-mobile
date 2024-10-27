@@ -12,14 +12,18 @@ public class WinGameUIController : MonoBehaviour
 
     void Awake()
     {
-        
-        GetChildByName(this.gameObject, "backgroundGO").SetActive(false);
-        titleBtnGroupRectTransform = GetChildByName(this.gameObject, "titleBtnGroup").GetComponent<RectTransform>();
-        starRectTransform = GetChildByName(energyUI, "star").GetComponent<RectTransform>();
+        // GetChildByName(this.gameObject, "backgroundWin").SetActive(false);
     }
 
-    private void UpdateFinalEnergy()
-    {
+    // private void UpdateFinalEnergy()
+    // {
+    //     int health = currentGamePlay.healthManager.health; // * 10
+    //     for (int i = 0; i < health; i++)
+    //     {
+    //         currentGamePlay.energyManager.ChangeEnergy(10);
+    //     }
 
-    }
+    //     float time = currentGamePlay.timerManager.GetRemainingTimePercentage(); // * 10
+    //     currentGamePlay.energyManager.ChangeEnergy(time * 50);
+    // }
 }

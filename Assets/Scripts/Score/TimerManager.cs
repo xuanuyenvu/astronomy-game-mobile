@@ -42,6 +42,7 @@ public class TimerManager : MonoBehaviour
             {
                 isTimeOver = true;
                 stopeTimer = true;
+                GameManager.Instance.CurrentGamePlay.OnTimeOver();
             }
             if (!stopeTimer)
             {

@@ -50,6 +50,10 @@ public class EnergyManager : MonoBehaviour
                 particleSystem.gameObject.SetActive(false);
 
                 isFullEnergy = currentValue >= 100;
+                if (isFullEnergy)
+                {
+                    GameManager.Instance.CurrentGamePlay.OnFullEnergy();
+                }
             });
 
         return energyTween;
