@@ -90,10 +90,8 @@ public class TimerManager : MonoBehaviour
     }
 
 
-    public IEnumerator StartAddToEnergy()
+    public void StartAddToEnergy()
     {
-        yield return new WaitForSeconds(2f);
-
         // Tìm các trái tim có enabled = true
         ParticleSystem particle = Instantiate(psPrefab, uiCanvas.transform);
 
@@ -111,6 +109,8 @@ public class TimerManager : MonoBehaviour
         starRect.position
         };
 
+        particle.Play();
+
         // Tìm đối tượng "fill" và đảm bảo nó không null
         var fillObject = this.transform.Find("fill");
         if (fillObject != null)
@@ -125,11 +125,8 @@ public class TimerManager : MonoBehaviour
             {
                 particle.Stop();
                 Destroy(particle.gameObject, particle.main.duration);
-                energyManager.ChangeEnergy(10);
+                // energyManager.ChangeEnergy(GetRemainingTimePercentage() * 50);
             });
-
-        // Bắt đầu chơi ParticleSystem nếu cần
-        particle.Play();
     }
 
 }

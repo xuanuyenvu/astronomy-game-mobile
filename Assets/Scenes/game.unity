@@ -11075,6 +11075,7 @@ MonoBehaviour:
   energyManager: {fileID: 2089459079}
   wrapSpeedController: {fileID: 485746712}
   gameOverUiController: {fileID: 2099959582}
+  winGameUiController: {fileID: 1831175217}
 --- !u!4 &738906221
 Transform:
   m_ObjectHideFlags: 0
@@ -12701,7 +12702,7 @@ RectTransform:
   m_GameObject: {fileID: 1221502723}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.065, y: 0.065, z: 0.065}
+  m_LocalScale: {x: 0.07, y: 0.07, z: 0.07}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4757344997122590157}
@@ -17530,13 +17531,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: be92c96514533e6438d7cc46ee7b8955, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  fixedTime: 1
+  fixedTime: 0
 --- !u!1 &1233786266
 GameObject:
   m_ObjectHideFlags: 0
@@ -17706,7 +17707,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.15
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -22533,7 +22534,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.05
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -22593,7 +22594,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.3
+      scalar: 0.4
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -32975,7 +32976,7 @@ MonoBehaviour:
   star: {fileID: 1689537798}
   psPrefab: {fileID: 8264120825534711122, guid: ae2da715385d30a4ab130208fc494a0d, type: 3}
   uiCanvas: {fileID: 1848164147}
-  energyManager: {fileID: 0}
+  energyManager: {fileID: 2089459079}
 --- !u!1 &1794376767
 GameObject:
   m_ObjectHideFlags: 0
@@ -34224,6 +34225,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerSlider: {fileID: 2108130376}
+  star: {fileID: 1689537798}
+  psPrefab: {fileID: 8264120825534711122, guid: ae2da715385d30a4ab130208fc494a0d, type: 3}
+  uiCanvas: {fileID: 1848164147}
+  energyManager: {fileID: 2089459079}
 --- !u!1 &49196696868933387
 GameObject:
   m_ObjectHideFlags: 0
@@ -44203,7 +44208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!198 &3164019693382224597
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -44212,14 +44217,14 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3164019693382224596}
   serializedVersion: 8
-  lengthInSec: 0.5
+  lengthInSec: 0.4
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
-  looping: 0
+  looping: 1
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
@@ -49125,7 +49130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 0762aad6c86c7184482fd5c0cdea3b0e, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -49299,7 +49304,7 @@ RectTransform:
   m_GameObject: {fileID: 5441415469151851721}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 70, y: 70, z: 70}
+  m_LocalScale: {x: 73, y: 73, z: 73}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1221502724}
@@ -49727,13 +49732,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 41e018a6cf0c896418fc0b89dda748c6, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  fixedTime: 1
+  fixedTime: 0
 --- !u!222 &5441415469151851723
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -49914,13 +49919,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: 41e018a6cf0c896418fc0b89dda748c6, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  fixedTime: 1
+  fixedTime: 0
 --- !u!222 &6963991436777754858
 CanvasRenderer:
   m_ObjectHideFlags: 0

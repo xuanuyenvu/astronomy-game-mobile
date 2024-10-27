@@ -15,23 +15,22 @@ public class WinGameUIController : MonoBehaviour
     void Awake()
     {
         energyManager = energyUI.GetComponent<EnergyManager>();
+        timerManager = timeBarUI.GetComponent<TimerManager>();
     }
 
     public void StartUI()
     {
-        UpdateFinalEnergy();
+        int health = healthManager.health;
+        float timeRemaining = timerManager.GetRemainingTimePercentage();
+        energyManager.ChangeEnergy((health * 10) + (timeRemaining * 50));
+        StartCoroutine(UpdateFinalEnergy());
     }
 
-    private void UpdateFinalEnergy()
+    private IEnumerator UpdateFinalEnergy()
     {
-        int health = healthManager.health; // * 10
-        for (int i = 0; i < health; i++)
-        {
-            energyManager.ChangeEnergy(10);
-        }
-
-        float time = timerManager.GetRemainingTimePercentage(); // * 50
-        energyManager.ChangeEnergy(time * 50);
+        timerManager.StartAddToEnergy();
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(healthManager.StartAddToEnergy());
     }
 
 

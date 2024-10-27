@@ -14,6 +14,7 @@ public class UniversalLevelManager : MonoBehaviour
     public EnergyManager energyManager;
     public WarpSpeedController wrapSpeedController;
     public GameOverUIController gameOverUiController;
+    public WinGameUIController winGameUiController;
 
     void Start()
     {
@@ -24,15 +25,14 @@ public class UniversalLevelManager : MonoBehaviour
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
         int selectedLevel = 13;
-        StartCoroutine(timerManager.StartAddToEnergy());
-        // LoadAndSetUpLevel(selectedLevel);
+        LoadAndSetUpLevel(selectedLevel);
     }
 
     private void LoadAndSetUpLevel(int level)
     {
         if (IsJsonLoaded(level))
         {
-            SetUpLevel(0);
+            // SetUpLevel(0);
         }
     }
 
@@ -62,6 +62,8 @@ public class UniversalLevelManager : MonoBehaviour
 
             if (level != null)
             {
+
+                winGameUiController.StartUI();
                 return true;
             }
             else

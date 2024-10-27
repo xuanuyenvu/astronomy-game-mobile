@@ -22,10 +22,9 @@ public class EnergyManager : MonoBehaviour
     void Start()
     {
         originalScale = star.transform.localScale;
-        scaleTo = originalScale * 1.2f;
+        scaleTo = originalScale * 1.5f;
 
-        changeEnergyPS.gameObject.SetActive(false);
-        changeEnergyPS.Stop();
+        // changeEnergyPS.Stop();
         hitPS.Stop();
 
         currentValue = 0;
@@ -69,7 +68,7 @@ public class EnergyManager : MonoBehaviour
 
     private void OnScaleStar(float duration)
     {
-        float singleLoopDuration = 0.5f;
+        float singleLoopDuration = 0.7f;
         int loops = Mathf.CeilToInt(duration / singleLoopDuration);
 
         star.transform.DOScale(scaleTo, singleLoopDuration / 2)

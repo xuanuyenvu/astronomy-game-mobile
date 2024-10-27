@@ -30,14 +30,8 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    public void StartAddToEnergy()
+    public IEnumerator StartAddToEnergy()
     {
-        StartCoroutine(AddToEnergy());
-    }
-
-    private IEnumerator AddToEnergy()
-    {
-        yield return new WaitForSeconds(2f);
         // Tìm các trái tim có enabled = true
         for (int i = health - 1; i >= 0; i--)
         {
@@ -61,6 +55,7 @@ public class HealthManager : MonoBehaviour
                 };
 
                 health--;
+                particle.Play();
 
                 // Di chuyển ParticleSystem theo path
                 particleRect.DOPath(path, 0.6f, PathType.CatmullRom)
@@ -69,7 +64,7 @@ public class HealthManager : MonoBehaviour
                     {
                         particle.Stop();
                         Destroy(particle.gameObject, particle.main.duration);
-                        energyManager.ChangeEnergy(10);
+                        // energyManager.ChangeEnergy(10);
                     });
                 yield return new WaitForSeconds(0.6f);
             }
