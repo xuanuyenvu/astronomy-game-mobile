@@ -32,7 +32,7 @@ public class UniversalLevelManager : MonoBehaviour
     {
         if (IsJsonLoaded(level))
         {
-            // SetUpLevel(0);
+            SetUpLevel(0);
         }
     }
 
@@ -62,8 +62,6 @@ public class UniversalLevelManager : MonoBehaviour
 
             if (level != null)
             {
-
-                winGameUiController.StartUI();
                 return true;
             }
             else
@@ -103,6 +101,7 @@ public class UniversalLevelManager : MonoBehaviour
 
         if (level.total_stages == 1)
         {
+            winGameUiController.StartUI();
             // gameManager.UpdateFinalEnergy();
             // gameManager.DestroyCurrentGamePlay();
             // GoBackToMap();
@@ -164,6 +163,7 @@ public class UniversalLevelManager : MonoBehaviour
         Debug.Log("Load Game");
         // TO DO : EFFECT FADE
         gameOverUiController.StopUI(level.level > 6);
+        timerManager.gameObject.SetActive(true);
         GameManager.Instance.DestroyCurrentGamePlay();
         LoadAndSetUpLevel(level.level);
     }

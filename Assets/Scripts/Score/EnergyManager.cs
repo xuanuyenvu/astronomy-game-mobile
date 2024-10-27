@@ -19,11 +19,14 @@ public class EnergyManager : MonoBehaviour
     private Vector3 originalScale;
     private Vector3 scaleTo;
 
-    void Start()
+    void Awake()
     {
         originalScale = star.transform.localScale;
-        scaleTo = originalScale * 1.5f;
+        scaleTo = originalScale * 1.2f;
+    }
 
+    void Start()
+    {
         // changeEnergyPS.Stop();
         hitPS.Stop();
 
