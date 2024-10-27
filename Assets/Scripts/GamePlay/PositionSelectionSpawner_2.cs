@@ -85,7 +85,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
         }
     }
 
-    protected void DestroyEffect()
+    private void DestroyEffect()
     {
         // Hủy boom instance
         if (boomInstance != null)
@@ -96,25 +96,23 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
-
-        // Thiết lập lại game
-        ReSetUpGame();
-    }
-
-    protected void ReSetUpGame()
-    {
-        if (healthManager.health > 0)
-        {
-            // Set up lại các object trong màn chơi
-            RePlayGame();
-            // Bật tính năng chọn thẻ bài
-            cardController.turnOnPointerHandler();
-            cardController.ShowACard();
-        }
-        else
+        if (healthManager.health == 0)
         {
             GameOver();
         }
+        else
+        {
+            ReSetUpGame();
+        }
+    }
+
+    private void ReSetUpGame()
+    {
+        // Set up lại các object trong màn chơi
+        RePlayGame();
+        // Bật tính năng chọn thẻ bài
+        cardController.turnOnPointerHandler();
+        cardController.ShowACard();
     }
 
     protected virtual void RePlayGame()
@@ -728,16 +726,17 @@ public class PositionSelectionSpawner_2 : IGamePlay
         }
         yield return new WaitForSeconds(2f);
         timerManager.StopTimer();
-        StartCoroutine(IncreaseEnergyAndDestroyPlanetsCoroutine());
-    }
-
-    private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
-    {
-        energyManager.ChangeEnergy(30);
-        yield return new WaitForSeconds(2f);
         DestroyAllPlanetsInGroup();
         universalLevelManager.EndStage();
     }
+
+    // private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
+    // {
+    //     energyManager.ChangeEnergy(30);
+    //     yield return new WaitForSeconds(2f);
+    //     DestroyAllPlanetsInGroup();
+    //     universalLevelManager.EndStage();
+    // }
 
     protected void DestroyAllPlanetsInGroup()
     {
@@ -760,7 +759,18 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     private void GameOver()
     {
+        timerManager.StopTimer();
         DestroyAllPlanetsInGroup();
         universalLevelManager.GameOver();
+    }
+
+    public override void OnTimeOver()
+    {
+
+    }
+
+    public override void OnFullEnergy()
+    {
+
     }
 }

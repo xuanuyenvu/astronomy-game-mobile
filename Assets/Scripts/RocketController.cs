@@ -4,17 +4,12 @@ using UnityEngine;
 
 public class RocketController : AstronomicalObject
 {
-    private IGamePlay iGamePlay;
     private bool turnOnCollider = false;
 
     private Collider rocketCollider;
     public global::System.Boolean TurnOnCollider { get => turnOnCollider; set => turnOnCollider = value; }
     void Start()
     {
-        if (iGamePlay == null)
-        {
-            iGamePlay = FindObjectOfType<IGamePlay>();
-        }
         rocketCollider = GetComponent<Collider>();
     }
 
@@ -69,12 +64,12 @@ public class RocketController : AstronomicalObject
         if (obj.gameObject.CompareTag("Planet") || obj.gameObject.CompareTag("Rocket"))
         {
             obj.gameObject.SetActive(false);
-            iGamePlay.ExecuteAfterCollision(obj.gameObject.GetComponent<AstronomicalObject>());
+            GameManager.Instance.CurrentGamePlay.ExecuteAfterCollision(obj.gameObject.GetComponent<AstronomicalObject>());
             Destroy(this.gameObject);
         }
         else if (obj.gameObject.CompareTag("Bound"))
         {
-            iGamePlay.ExecuteAfterCollision(null);
+            GameManager.Instance.CurrentGamePlay.ExecuteAfterCollision(null);
             Destroy(this.gameObject);
         }
     }

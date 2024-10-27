@@ -64,15 +64,15 @@ public class PlanetSelectionSpawner : IGamePlay
     private void DestroyEffect()
     {
         // Hủy boom instance
-        // if (boomInstance != null)
-        // {
-        //     Destroy(boomInstance.gameObject);
-        //     boomInstance = null;
-        // }
+        if (boomInstance != null)
+        {
+            Destroy(boomInstance.gameObject);
+            boomInstance = null;
+        }
 
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
-        if (cardController.GetNumOfCards() == 0)
+        if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
         {
             GameOver();
         }
@@ -84,17 +84,10 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private void ReSetUpGame()
     {
-        if (healthManager.health > 0)
-        {
-            // Set up lại các object trong màn chơi
-            RePlayGame();
-            // Bật tính năng chọn thẻ bài
-            cardController.turnOnPointerHandler();
-        }
-        else
-        {
-            GameOver();
-        }
+        // Set up lại các object trong màn chơi
+        RePlayGame();
+        // Bật tính năng chọn thẻ bài
+        cardController.turnOnPointerHandler();
     }
 
     private void RePlayGame()
@@ -368,22 +361,10 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private IEnumerator PlayBoomAndShake()
     {
-        if(boomInstance == null)
-        {
-            Debug.Log("Boom instance is null");
-        }
-        if(cameraShake == null)
-        {
-            Debug.Log("cameraShake instance is null");
-        }
-        if(healthManager == null)
-        {
-            Debug.Log("healthManager instance is null");
-        }
         boomInstance.gameObject.SetActive(true);
         boomInstance.Play();
         cameraShake.ShakeCamera();
-        
+
         // Mất 1 mạng
         healthManager.health--;
         yield return new WaitForSeconds(2f);
@@ -428,16 +409,16 @@ public class PlanetSelectionSpawner : IGamePlay
         }
         yield return new WaitForSeconds(2f);
         timerManager.StopTimer();
-        StartCoroutine(IncreaseEnergyAndDestroyPlanetsCoroutine());
-    }
-
-    private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
-    {
-        energyManager.ChangeEnergy(30);
-        yield return new WaitForSeconds(2f);
         DestroyAllPlanetsInGroup();
         universalLevelManager.EndStage();
     }
+
+    // private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
+    // {
+    //     energyManager.ChangeEnergy(30);
+    //     yield return new WaitForSeconds(2f);
+        
+    // }
 
 
     protected void DestroyAllPlanetsInGroup()
@@ -461,7 +442,18 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private void GameOver()
     {
+        timerManager.StopTimer();
         DestroyAllPlanetsInGroup();
         universalLevelManager.GameOver();
+    }
+
+    public override void OnTimeOver()
+    {
+
+    }
+
+    public override void OnFullEnergy()
+    {
+
     }
 }

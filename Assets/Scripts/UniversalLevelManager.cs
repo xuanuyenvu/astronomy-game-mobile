@@ -7,15 +7,21 @@ public class UniversalLevelManager : MonoBehaviour
 {
     public Level level = null;
     public Player player;
-    public GameManager gameManager;
+    public GameManager gameManagerPrefab;
 
     public HealthManager healthManager;
     public TimerManager timerManager;
+    public EnergyManager energyManager;
     public WarpSpeedController wrapSpeedController;
     public GameOverUIController gameOverUiController;
+    public WinGameUIController winGameUiController;
 
     void Start()
     {
+        if (GameManager.Instance == null)
+        {
+            Instantiate(gameManagerPrefab);
+        }
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
         int selectedLevel = 13;
@@ -85,22 +91,46 @@ public class UniversalLevelManager : MonoBehaviour
             player.UnregisterInputEvents();
         }
         // Gọi phương thức Initialize trên thể hiện gameManager
-        gameManager.Initialize(id, planets, cardsDisplayed);
+        GameManager.Instance.Initialize(id, planets, cardsDisplayed);
     }
 
     public void EndStage()
     {
+        int energyToAdd = GetEnergyForLevel(level.level);
+        energyManager.ChangeEnergy(energyToAdd);
+
         if (level.total_stages == 1)
         {
-            gameManager.UpdateFinalEnergy();
+            winGameUiController.StartUI();
+            // gameManager.UpdateFinalEnergy();
             // gameManager.DestroyCurrentGamePlay();
             // GoBackToMap();
         }
         else
         {
-            gameManager.DestroyCurrentGamePlay();
+            GameManager.Instance.DestroyCurrentGamePlay();
             level.total_stages--;
             StartCoroutine(HandleStageCompletion());
+        }
+    }
+
+    private int GetEnergyForLevel(int level)
+    {
+        if (level <= 2)
+        {
+            return 100;
+        }
+        else if (level <= 6)
+        {
+            return 45;
+        }
+        else if (level <= 12)
+        {
+            return 35;
+        }
+        else
+        {
+            return 25;
         }
     }
 
@@ -133,7 +163,8 @@ public class UniversalLevelManager : MonoBehaviour
         Debug.Log("Load Game");
         // TO DO : EFFECT FADE
         gameOverUiController.StopUI(level.level > 6);
-        gameManager.DestroyCurrentGamePlay();
+        timerManager.gameObject.SetActive(true);
+        GameManager.Instance.DestroyCurrentGamePlay();
         LoadAndSetUpLevel(level.level);
     }
 
@@ -141,7 +172,7 @@ public class UniversalLevelManager : MonoBehaviour
     {
         Debug.Log("Retry");
         gameOverUiController.StopUI(level.level > 6);
-        gameManager.DestroyCurrentGamePlay();
+        GameManager.Instance.DestroyCurrentGamePlay();
 
         if (level.level > 6)
         {
@@ -161,6 +192,7 @@ public class UniversalLevelManager : MonoBehaviour
                 timerManager.SetUp(25);
                 timerManager.IsTimeOver = false;
             }
+            timerManager.gameObject.SetActive(true);
         }
         else if (level.level > 2)
         {

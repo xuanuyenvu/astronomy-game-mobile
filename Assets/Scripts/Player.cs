@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     private AstronomicalObject selectedPlanetCard = null;
 
     public CardController cardController;
-    private IGamePlay iGamePlay;
     private bool areEventsRegistered = false;
 
     void Start()
@@ -25,10 +24,6 @@ public class Player : MonoBehaviour
         {
             cardController = FindObjectOfType<CardController>();
         }
-        if (iGamePlay == null)
-        {
-            iGamePlay = FindObjectOfType<IGamePlay>();
-        }
     }
 
     private void OnDestroy()
@@ -38,7 +33,7 @@ public class Player : MonoBehaviour
 
     public void SetPlayer(IGamePlay _iGamePlay)
     {
-        iGamePlay = _iGamePlay;
+        // iGamePlay = _iGamePlay;
     }
 
     public void RegisterInputEvents()
@@ -103,7 +98,7 @@ public class Player : MonoBehaviour
                 if (draggedPlanet != null && isSelected)
                 {
                     draggedPlanet.transform.position = new Vector3(worldPosition.x, worldPosition.y, -10);
-                    iGamePlay.CheckDragPosition(draggedPlanet.transform.position, draggedPlanet.name);
+                    GameManager.Instance.CurrentGamePlay.CheckDragPosition(draggedPlanet.transform.position, draggedPlanet.name);
                     // chỉ thực hiện gọi 1 lần
                     if (!hasExecuted)
                     {
@@ -123,7 +118,7 @@ public class Player : MonoBehaviour
         if (draggedPlanet != null)
         {
             Debug.Log("Dragged planet: " + draggedPlanet.name);
-            iGamePlay.HandleConfirmButton(draggedPlanet.name, draggedPlanet.transform.position);
+            GameManager.Instance.CurrentGamePlay.HandleConfirmButton(draggedPlanet.name, draggedPlanet.transform.position);
             Destroy(draggedPlanet.gameObject);
             draggedPlanet = null;
             hasExecuted = false;
@@ -133,6 +128,6 @@ public class Player : MonoBehaviour
     public void ResetPlayer()
     {
         cardController = null;
-        iGamePlay = null;
+        // iGamePlay = null;
     }
 }

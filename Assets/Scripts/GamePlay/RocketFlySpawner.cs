@@ -21,7 +21,7 @@ public class RocketFlySpawner : IGamePlay
 
     // private
     // thành phần game
-    
+
     private AstronomicalObject planet1 = null;
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planet3 = null;
@@ -525,5 +525,15 @@ public class RocketFlySpawner : IGamePlay
     private void GameOver()
     {
         Debug.Log("gameOver");
+    }
+
+    public override void OnTimeOver()
+    {
+
+    }
+
+    public override void OnFullEnergy()
+    {
+
     }
 }
