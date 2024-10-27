@@ -7,7 +7,8 @@ using DG.Tweening;
 public class EnergyManager : MonoBehaviour
 {
     public Slider energySlider;
-    public ParticleSystem particleSystem;
+    public ParticleSystem changeEnergyPS;
+    public ParticleSystem hitPS;
     public Image star;
     public float changeSpeed = 1f;
 
@@ -23,8 +24,9 @@ public class EnergyManager : MonoBehaviour
         originalScale = star.transform.localScale;
         scaleTo = originalScale * 1.2f;
 
-        particleSystem.gameObject.SetActive(false);
-        particleSystem.Stop();
+        changeEnergyPS.gameObject.SetActive(false);
+        changeEnergyPS.Stop();
+        hitPS.Stop();
 
         currentValue = 0;
         energySlider.maxValue = 100;
@@ -36,18 +38,18 @@ public class EnergyManager : MonoBehaviour
     public Tween ChangeEnergy(float increment)
     {
         currentValue = Mathf.Clamp(currentValue + increment, 0, 100);
-        float duration = (float)(increment / 8);
+        float duration = (float)(increment / 10);
 
-        particleSystem.gameObject.SetActive(true);
-        particleSystem.Play();
+        changeEnergyPS.gameObject.SetActive(true);
+        changeEnergyPS.Play();
 
         OnScaleStar(duration);
+
         var energyTween = energySlider.DOValue(currentValue, duration)
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                particleSystem.Stop();
-                particleSystem.gameObject.SetActive(false);
+                changeEnergyPS.Stop();
 
                 isFullEnergy = currentValue >= 100;
                 if (isFullEnergy)
@@ -55,22 +57,27 @@ public class EnergyManager : MonoBehaviour
                     GameManager.Instance.CurrentGamePlay.OnFullEnergy();
                 }
             });
-
+        StartCoroutine(StopChangeEnergyPS());
         return energyTween;
+    }
+
+    private IEnumerator StopChangeEnergyPS()
+    {
+        yield return new WaitForSeconds(10f);
+        changeEnergyPS.gameObject.SetActive(false);
     }
 
     private void OnScaleStar(float duration)
     {
-        float singleLoopDuration = duration / 6;
+        float singleLoopDuration = 0.5f;
         int loops = Mathf.CeilToInt(duration / singleLoopDuration);
 
         star.transform.DOScale(scaleTo, singleLoopDuration / 2)
             .SetEase(Ease.InOutSine)
-            .SetLoops(loops * 2, LoopType.Yoyo) 
+            .SetLoops(loops * 2, LoopType.Yoyo)
             .OnComplete(() =>
             {
                 star.transform.localScale = originalScale;
             });
     }
-
 }

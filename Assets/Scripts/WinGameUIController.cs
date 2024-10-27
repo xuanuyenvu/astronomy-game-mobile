@@ -10,20 +10,29 @@ public class WinGameUIController : MonoBehaviour
     public GameObject background;
     public CameraShake cameraShake;
 
+    private EnergyManager energyManager;
+    private TimerManager timerManager;
     void Awake()
     {
-        // GetChildByName(this.gameObject, "backgroundWin").SetActive(false);
+        energyManager = energyUI.GetComponent<EnergyManager>();
     }
 
-    // private void UpdateFinalEnergy()
-    // {
-    //     int health = currentGamePlay.healthManager.health; // * 10
-    //     for (int i = 0; i < health; i++)
-    //     {
-    //         currentGamePlay.energyManager.ChangeEnergy(10);
-    //     }
+    public void StartUI()
+    {
+        UpdateFinalEnergy();
+    }
 
-    //     float time = currentGamePlay.timerManager.GetRemainingTimePercentage(); // * 10
-    //     currentGamePlay.energyManager.ChangeEnergy(time * 50);
-    // }
+    private void UpdateFinalEnergy()
+    {
+        int health = healthManager.health; // * 10
+        for (int i = 0; i < health; i++)
+        {
+            energyManager.ChangeEnergy(10);
+        }
+
+        float time = timerManager.GetRemainingTimePercentage(); // * 50
+        energyManager.ChangeEnergy(time * 50);
+    }
+
+
 }

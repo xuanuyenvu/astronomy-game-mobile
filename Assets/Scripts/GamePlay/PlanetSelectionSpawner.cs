@@ -409,16 +409,16 @@ public class PlanetSelectionSpawner : IGamePlay
         }
         yield return new WaitForSeconds(2f);
         timerManager.StopTimer();
-        StartCoroutine(IncreaseEnergyAndDestroyPlanetsCoroutine());
-    }
-
-    private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
-    {
-        energyManager.ChangeEnergy(30);
-        yield return new WaitForSeconds(2f);
         DestroyAllPlanetsInGroup();
         universalLevelManager.EndStage();
     }
+
+    // private IEnumerator IncreaseEnergyAndDestroyPlanetsCoroutine()
+    // {
+    //     energyManager.ChangeEnergy(30);
+    //     yield return new WaitForSeconds(2f);
+        
+    // }
 
 
     protected void DestroyAllPlanetsInGroup()

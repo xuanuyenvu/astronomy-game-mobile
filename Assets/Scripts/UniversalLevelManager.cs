@@ -11,6 +11,7 @@ public class UniversalLevelManager : MonoBehaviour
 
     public HealthManager healthManager;
     public TimerManager timerManager;
+    public EnergyManager energyManager;
     public WarpSpeedController wrapSpeedController;
     public GameOverUIController gameOverUiController;
 
@@ -18,12 +19,13 @@ public class UniversalLevelManager : MonoBehaviour
     {
         if (GameManager.Instance == null)
         {
-            Instantiate(gameManagerPrefab); 
+            Instantiate(gameManagerPrefab);
         }
         // nhận giá trị level từ nút bấm
         // int selectedLevel = LevelSelector.selectedLevel;
         int selectedLevel = 13;
-        LoadAndSetUpLevel(selectedLevel);
+        StartCoroutine(timerManager.StartAddToEnergy());
+        // LoadAndSetUpLevel(selectedLevel);
     }
 
     private void LoadAndSetUpLevel(int level)
@@ -94,6 +96,9 @@ public class UniversalLevelManager : MonoBehaviour
 
     public void EndStage()
     {
+        int energyToAdd = GetEnergyForLevel(level.level);
+        energyManager.ChangeEnergy(energyToAdd);
+
         if (level.total_stages == 1)
         {
             // gameManager.UpdateFinalEnergy();
@@ -105,6 +110,26 @@ public class UniversalLevelManager : MonoBehaviour
             GameManager.Instance.DestroyCurrentGamePlay();
             level.total_stages--;
             StartCoroutine(HandleStageCompletion());
+        }
+    }
+
+    private int GetEnergyForLevel(int level)
+    {
+        if (level <= 2)
+        {
+            return 100;
+        }
+        else if (level <= 6)
+        {
+            return 45;
+        }
+        else if (level <= 12)
+        {
+            return 35;
+        }
+        else
+        {
+            return 25;
         }
     }
 

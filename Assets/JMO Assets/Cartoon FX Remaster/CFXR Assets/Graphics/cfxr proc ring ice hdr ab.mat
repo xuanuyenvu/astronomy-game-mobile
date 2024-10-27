@@ -8,21 +8,24 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: cfxr proc ring ice hdr ab
-  m_Shader: {fileID: -6465566751694194690, guid: 1581eccce46ba384596a1dce7936ab19,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 1581eccce46ba384596a1dce7936ab19, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
-  - _CFXR_HDR_BOOST
+  - _CFXR_DITHERED_SHADOWS_ON
   - _CFXR_RADIAL_UV
-  - _CFXR_SINGLE_CHANNEL
   - _FADING_ON
   m_InvalidKeywords:
-  - _CFXR_DITHERED_SHADOWS_OFF
+  - _CFXR_HDR_BOOST
+  - _CFXR_SINGLE_CHANNEL
+  - _SINGLECHANNEL_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -40,14 +43,14 @@ Material:
         m_Offset: {x: 0.3, y: 0}
     m_Ints: []
     m_Floats:
-    - _CFXR_DITHERED_SHADOWS: 0
+    - _CFXR_DITHERED_SHADOWS: 1
     - _DissolveSmooth: 0.1
     - _DstBlend: 10
     - _HdrBoost: 1
     - _HdrMultiply: 4
     - _InvertDissolveTex: 0
     - _RingTopOffset: 0.07
-    - _ShadowStrength: 1
+    - _ShadowStrength: 0.5
     - _SingleChannel: 1
     - _SoftParticlesFadeDistanceFar: 0.25
     - _SoftParticlesFadeDistanceNear: 0
