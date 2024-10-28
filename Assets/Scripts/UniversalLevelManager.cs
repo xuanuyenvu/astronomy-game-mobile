@@ -49,7 +49,8 @@ public class UniversalLevelManager : MonoBehaviour
 
             // gán các thông tin vào biến level
             level = levelsData.levels[_selectedLevel - 1];
-            Debug.Log("Level: " + level);
+            
+            energyManager.SetUp();
             healthManager.SetUp(level.lives);
             if (level.level > 6)
             {
@@ -97,17 +98,17 @@ public class UniversalLevelManager : MonoBehaviour
     public void EndStage()
     {
         int energyToAdd = GetEnergyForLevel(level.level);
-        energyManager.ChangeEnergy(energyToAdd);
 
         if (level.total_stages == 1)
         {
-            winGameUiController.StartUI();
+            winGameUiController.StartUI((float)energyToAdd);
             // gameManager.UpdateFinalEnergy();
             // gameManager.DestroyCurrentGamePlay();
             // GoBackToMap();
         }
         else
         {
+            energyManager.ChangeEnergy(energyToAdd);
             GameManager.Instance.DestroyCurrentGamePlay();
             level.total_stages--;
             StartCoroutine(HandleStageCompletion());
