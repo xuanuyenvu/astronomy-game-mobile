@@ -8,10 +8,11 @@ public class WinGameUIController : MonoBehaviour
     public GameObject timeBarUI;
     public HealthManager healthManager;
     public GameObject energyUI;
+    public ParticleSystem starEffectPS;
     public GameObject background;
-    public GameObject starSprite;
     public CameraShake cameraShake;
     public Canvas uiCanvas;
+    public ParticleSystem glowPS;
 
     private EnergyManager energyManager;
     private TimerManager timerManager;
@@ -19,6 +20,7 @@ public class WinGameUIController : MonoBehaviour
 
     void Awake()
     {
+        glowPS.Stop();
         energyManager = energyUI.GetComponent<EnergyManager>();
         timerManager = timeBarUI.GetComponent<TimerManager>();
         starRectTransform = GetChildByName(energyUI, "star").GetComponent<RectTransform>();
@@ -41,38 +43,64 @@ public class WinGameUIController : MonoBehaviour
 
     private void ModifyUI()
     {
+        HideUIElements();
+        ActivateStarEffect();
+        MoveAndScaleStar();
+    }
+
+    private void HideUIElements()
+    {
         timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
         healthManager.SetUp(0);
 
         GetChildByName(energyUI, "border").SetActive(false);
         GetChildByName(energyUI, "background").SetActive(false);
-        // GetChildByName(this.gameObject, "backgroundWin").SetActive(true);
+        GetChildByName(this.gameObject, "backgroundWin").SetActive(true);
+    }
 
+    private void ActivateStarEffect()
+    {
+        starEffectPS.gameObject.SetActive(true);
+        starEffectPS.Play();
+    }
+
+    private void MoveAndScaleStar()
+    {
         Vector3 targetPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        starRectTransform.DOMove(targetPosition, 1f)
-            .SetEase(Ease.OutQuad);
+        
+        starEffectPS.transform.DOMove(targetPosition, 1f).SetEase(Ease.OutQuad);
+        starRectTransform.DOMove(targetPosition, 1f).SetEase(Ease.OutQuad);
+
+        Vector3 targetScalePS = starEffectPS.transform.localScale * 3.3f;
+        starEffectPS.transform.DOScale(targetScalePS, 1f);
 
         Vector3 targetScale = starRectTransform.localScale * 3.3f;
-        starRectTransform.DOScale(targetScale, 1f) // Thêm yield return để đảm bảo chờ cho DOScale hoàn thành
+        starRectTransform.DOScale(targetScale, 1f)
             .SetEase(Ease.OutQuad)
-            .OnComplete(() =>
-            {
-                // Chuyển đổi vị trí từ UI sang World Space
-                Vector3 worldPosition = Camera.main.ScreenToWorldPoint(starRectTransform.position);
-                worldPosition.z = 0;
+            .OnComplete(() => StartCoroutine(ShowLevelResult()))
+            .WaitForCompletion();
+    }
 
-                // Tính toán tỷ lệ tương ứng để star trong World Space bằng với star trong UI
-                float canvasScaleFactor = uiCanvas.scaleFactor;
-                float screenToWorldRatio = Camera.main.orthographicSize * 2 / Screen.height;
-                Vector3 worldScale = targetScale * screenToWorldRatio / canvasScaleFactor;
+    private IEnumerator ShowLevelResult()
+    {
+        cameraShake.ShakeCamera(0.3f);
+        yield return new WaitForSeconds(0.2f);
+        if (starRectTransform != null)
+        {
+            starRectTransform.DOScale(new Vector3(0.55f, 0.45f, 1f), 0.5f).SetEase(Ease.OutQuad);
+        }
+        starEffectPS.transform.DOScale(new Vector3(73, 73, 73), 0.5f).SetEase(Ease.OutQuad);
 
-                // Đặt vị trí và tỷ lệ cho starSprite
-                starSprite.transform.position = worldPosition;
-                starSprite.transform.localScale = worldScale;
-                starSprite.SetActive(true);
-            }).WaitForCompletion(); // Đảm bảo chuỗi hoàn thành
+        yield return new WaitForSeconds(0.5f);
 
+        starRectTransform.anchoredPosition = Vector2.zero;
+        starEffectPS.transform.localPosition = Vector3.zero;
+
+        starRectTransform.gameObject.SetActive(false);
+        starEffectPS.gameObject.SetActive(false);
+
+        glowPS.Play();
     }
 
 
