@@ -2,6 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using TMPro;
+
+[System.Serializable]
+public class Reward
+{
+    public GameObject star;
+    public ParticleSystem shineLightPS;
+    public TextMeshProUGUI text;
+}
+
 
 public class WinGameUIController : MonoBehaviour
 {
@@ -9,10 +20,14 @@ public class WinGameUIController : MonoBehaviour
     public HealthManager healthManager;
     public GameObject energyUI;
     public ParticleSystem starEffectPS;
-    public GameObject background;
+
+    public GameObject darkBg;
     public CameraShake cameraShake;
-    public Canvas uiCanvas;
     public ParticleSystem glowPS;
+    public List<Reward> rewards;
+
+    public TextMeshProUGUI tapText;
+    public Button tapBtn;
 
     private EnergyManager energyManager;
     private TimerManager timerManager;
@@ -56,7 +71,8 @@ public class WinGameUIController : MonoBehaviour
 
         GetChildByName(energyUI, "border").SetActive(false);
         GetChildByName(energyUI, "background").SetActive(false);
-        GetChildByName(this.gameObject, "backgroundWin").SetActive(true);
+        darkBg.SetActive(true);
+        // GetChildByName(this.gameObject, "backgroundWin").SetActive(true);
     }
 
     private void ActivateStarEffect()
@@ -68,7 +84,7 @@ public class WinGameUIController : MonoBehaviour
     private void MoveAndScaleStar()
     {
         Vector3 targetPosition = new Vector3(Screen.width / 2, Screen.height / 2, 0);
-        
+
         starEffectPS.transform.DOMove(targetPosition, 1f).SetEase(Ease.OutQuad);
         starRectTransform.DOMove(targetPosition, 1f).SetEase(Ease.OutQuad);
 
@@ -88,11 +104,10 @@ public class WinGameUIController : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         if (starRectTransform != null)
         {
-            starRectTransform.DOScale(new Vector3(0.55f, 0.45f, 1f), 0.5f).SetEase(Ease.OutQuad);
+            starRectTransform.DOScale(new Vector3(0.55f, 0.45f, 1f), 0.3f)
+                .SetEase(Ease.OutQuad);
         }
-        starEffectPS.transform.DOScale(new Vector3(73, 73, 73), 0.5f).SetEase(Ease.OutQuad);
-
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         starRectTransform.anchoredPosition = Vector2.zero;
         starEffectPS.transform.localPosition = Vector3.zero;
@@ -101,6 +116,44 @@ public class WinGameUIController : MonoBehaviour
         starEffectPS.gameObject.SetActive(false);
 
         glowPS.Play();
+        yield return new WaitForSeconds(0.2f);
+
+        if (!energyManager.isFullEnergy)
+        {
+            rewards[0].shineLightPS.gameObject.SetActive(true);
+            rewards[0].shineLightPS.Play();
+            rewards[0].star.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.3f)
+                .SetEase(Ease.OutBounce);
+            rewards[0].shineLightPS.transform.DOScale(new Vector3(1.6f, 1.6f, 1.6f), 0.3f)
+                .SetEase(Ease.OutQuad);
+            rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
+                .SetEase(Ease.OutBounce);
+        }
+        else
+        {
+            rewards[1].shineLightPS.gameObject.SetActive(true);
+            rewards[1].shineLightPS.Play();
+            rewards[1].star.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.3f)
+                .SetEase(Ease.OutBounce);
+            rewards[1].shineLightPS.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.3f)
+                .SetEase(Ease.OutQuad);
+            rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
+            .SetEase(Ease.OutBounce);
+        }
+
+        tapText.gameObject.SetActive(true);
+        OnScaletapText();
+        tapBtn.gameObject.SetActive(true);
+    }
+
+    private void OnScaletapText()
+    {
+        Vector3 scaleTo = tapText.transform.localScale * 1.15f;
+        float singleLoopDuration = 0.8f;
+
+        tapText.transform.DOScale(scaleTo, singleLoopDuration / 2)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
     }
 
 

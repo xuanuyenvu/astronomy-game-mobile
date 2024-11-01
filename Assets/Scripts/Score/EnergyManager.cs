@@ -42,15 +42,8 @@ public class EnergyManager : MonoBehaviour
     public Tween ChangeEnergy(float increment, Action onComplete = null)
     {
         currentValue = Mathf.Clamp(currentValue + increment, 0, 100);
-        float duration;
-        if (increment >= 40)
-        {
-            duration = 4;
-        }
-        else
-        {
-            duration = increment / 10;
-        }
+        float duration = (float)2.5 + (increment / 120);
+        Debug.Log("duration " + duration);
 
         changeEnergyPS.gameObject.SetActive(true);
         changeEnergyPS.Play();

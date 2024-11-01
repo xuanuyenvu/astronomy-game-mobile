@@ -74,10 +74,10 @@ public class WarpSpeedController : MonoBehaviour
         warpSpeedVFX2.Play();
         var bgSpeed = backgroundScroller.speed;
 
-        cameraShake.ShakeCamera(9f);
+        cameraShake.ShakeCamera(7f);
         float amount1 = warpSpeedVFX1.GetFloat("WarpAmount") + (rate * 3);
         float amount2 = warpSpeedVFX2.GetFloat("WarpAmount");
-        while (amount1 < (1 + (rate * 3)))
+        while (amount1 < (1 + rate))
         {
             amount1 += rate;
             amount2 += rate / 9;
