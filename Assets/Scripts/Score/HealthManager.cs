@@ -50,7 +50,7 @@ public class HealthManager : MonoBehaviour
                 Vector3[] path = new Vector3[]
                 {
                 heartRect.position,
-                (heartRect.position + starRect.position) / 2 + Vector3.up * 12,
+                (heartRect.position + starRect.position) / 2 + Vector3.up * 30,
                 starRect.position
                 };
 

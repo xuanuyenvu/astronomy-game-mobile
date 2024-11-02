@@ -161,8 +161,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         // Set animation for the card
         cardAnimation.transform.DOMove(new Vector3(0f, -1.5f, cardAnimation.transform.position.z), 0.16f)
             .SetEase(Ease.OutQuad);
-        // cardAnimation.transform.DOScale(new Vector3(0.033f, 0.033f, 0.033f), 0.3f)
-        //     .SetEase(Ease.OutQuad);
+        
         cardAnimation.transform.DORotate(new Vector3(70f, 0f, 0f), 0.16f, RotateMode.FastBeyond360)
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>
@@ -184,8 +183,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         // Set animation for the card
         cardAnimation.transform.DOMove(desPos, 0.16f)
             .SetEase(Ease.OutQuad);
-        // cardAnimation.transform.DOScale(new Vector3(0.033f, 0.033f, 0.033f), 0.3f)
-        //     .SetEase(Ease.OutQuad);
+
         cardAnimation.transform.DORotate(new Vector3(0f, 0f, 0f), 0.16f, RotateMode.FastBeyond360)
             .SetEase(Ease.OutQuad)
             .OnComplete(() =>

@@ -104,9 +104,9 @@ public class TimerManager : MonoBehaviour
 
         Vector3[] path = new Vector3[]
         {
-        timerRect.position,
-        (timerRect.position + starRect.position) / 2 + Vector3.down * 10,
-        starRect.position
+            timerRect.position,
+            (timerRect.position + starRect.position) / 2 + Vector3.down * 90,
+            starRect.position
         };
 
         particle.Play();
@@ -119,7 +119,7 @@ public class TimerManager : MonoBehaviour
         }
 
         // Di chuyển ParticleSystem theo path
-        particleRect.DOPath(path, 0.6f, PathType.CatmullRom)
+        particleRect.DOPath(path, 0.8f, PathType.CatmullRom)
             .SetEase(Ease.InOutQuint)
             .OnComplete(() =>
             {

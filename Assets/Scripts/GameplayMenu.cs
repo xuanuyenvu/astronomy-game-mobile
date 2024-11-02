@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,6 +19,7 @@ public class GameplayMenu : MonoBehaviour
     public void Exit()
     {
         Debug.Log("Exit");
-        SceneManager.LoadScene("chapter1");
+        DOTween.KillAll();
+        // SceneManager.LoadScene("chapter1");
     }
 }
