@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,7 +9,6 @@ public class EnergyManager : MonoBehaviour
 {
     public Slider energySlider;
     public ParticleSystem changeEnergyPS;
-    public ParticleSystem hitPS;
     public Image star;
     public float changeSpeed = 1f;
 
@@ -27,20 +27,23 @@ public class EnergyManager : MonoBehaviour
 
     void Start()
     {
-        // changeEnergyPS.Stop();
-        hitPS.Stop();
-
-        currentValue = 0;
+        changeEnergyPS.Stop();
         energySlider.maxValue = 100;
-        energySlider.value = currentValue;
+        SetUp();
+    }
 
+    public void SetUp()
+    {
+        currentValue = 0;
+        energySlider.value = currentValue;
         isFullEnergy = false;
     }
 
-    public Tween ChangeEnergy(float increment)
+    public Tween ChangeEnergy(float increment, Action onComplete = null)
     {
         currentValue = Mathf.Clamp(currentValue + increment, 0, 100);
-        float duration = (float)(increment / 10);
+        float duration = (float)2.5 + (increment / 120);
+        Debug.Log("duration " + duration);
 
         changeEnergyPS.gameObject.SetActive(true);
         changeEnergyPS.Play();
@@ -51,22 +54,18 @@ public class EnergyManager : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                changeEnergyPS.Stop();
-
                 isFullEnergy = currentValue >= 100;
                 if (isFullEnergy)
                 {
                     GameManager.Instance.CurrentGamePlay.OnFullEnergy();
                 }
-            });
-        StartCoroutine(StopChangeEnergyPS());
-        return energyTween;
-    }
 
-    private IEnumerator StopChangeEnergyPS()
-    {
-        yield return new WaitForSeconds(10f);
-        changeEnergyPS.gameObject.SetActive(false);
+                changeEnergyPS.Stop();
+                changeEnergyPS.gameObject.SetActive(false);
+                onComplete?.Invoke();
+            });
+
+        return energyTween;
     }
 
     private void OnScaleStar(float duration)

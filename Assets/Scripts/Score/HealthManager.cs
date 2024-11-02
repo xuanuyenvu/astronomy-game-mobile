@@ -45,7 +45,7 @@ public class HealthManager : MonoBehaviour
                 RectTransform heartRect = hearts[i].GetComponent<RectTransform>();
                 RectTransform starRect = star.GetComponent<RectTransform>();
 
-                particleRect.position = heartRect.position; // Đặt vị trí ParticleSystem trùng với vị trí của trái tim
+                particleRect.position = heartRect.position; 
 
                 Vector3[] path = new Vector3[]
                 {
@@ -66,7 +66,7 @@ public class HealthManager : MonoBehaviour
                         Destroy(particle.gameObject, particle.main.duration);
                         // energyManager.ChangeEnergy(10);
                     });
-                yield return new WaitForSeconds(0.6f);
+                yield return new WaitForSeconds(0.5f);
             }
         }
     }

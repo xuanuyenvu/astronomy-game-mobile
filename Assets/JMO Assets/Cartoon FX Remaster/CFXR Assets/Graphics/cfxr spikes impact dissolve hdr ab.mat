@@ -8,27 +8,25 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: cfxr spikes impact dissolve hdr ab
-  m_Shader: {fileID: -6465566751694194690, guid: 1a29b4d27eb8b04479ef89c00dea533d, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
+  m_Shader: {fileID: -6465566751694194690, guid: 1a29b4d27eb8b04479ef89c00dea533d,
+    type: 3}
   m_ValidKeywords:
   - _ALPHABLEND_ON
-  - _CFXR_DITHERED_SHADOWS_ON
+  - _CFXR_DISSOLVE
+  - _CFXR_HDR_BOOST
+  - _CFXR_SINGLE_CHANNEL
   - _FADING_ON
   m_InvalidKeywords:
   - _
-  - _CFXR_HDR_BOOST
+  - _CFXR_DITHERED_SHADOWS_OFF
   - _CFXR_OVERLAYBLEND_RGBA
   - _CFXR_OVERLAYTEX_OFF
-  - _CFXR_SINGLE_CHANNEL
-  - _SINGLECHANNEL_ON
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -65,7 +63,7 @@ Material:
     - _BacklightTransmittance: 1
     - _BlendingType: 0
     - _BumpScale: 1
-    - _CFXR_DITHERED_SHADOWS: 1
+    - _CFXR_DITHERED_SHADOWS: 0
     - _CFXR_OVERLAYBLEND: 0
     - _CFXR_OVERLAYTEX: 0
     - _Cutoff: 0.1
@@ -85,7 +83,7 @@ Material:
     - _OVERLAYBLEND: 0
     - _OVERLAYTEX: 0
     - _SecondColorSmooth: 0.2
-    - _ShadowStrength: 0.5
+    - _ShadowStrength: 1
     - _SingleChannel: 1
     - _SoftParticlesFadeDistanceFar: 1
     - _SoftParticlesFadeDistanceNear: 0
@@ -93,7 +91,7 @@ Material:
     - _UVDistortionAdd: 0
     - _UseAlphaClip: 0
     - _UseBackLighting: 0
-    - _UseDissolve: 0
+    - _UseDissolve: 1
     - _UseDissolveOffsetUV: 0
     - _UseEF: 0
     - _UseEmission: 0

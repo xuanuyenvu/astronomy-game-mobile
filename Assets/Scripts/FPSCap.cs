@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class FPSCap : MonoBehaviour {
     private void Start() {
-        Application.targetFrameRate = 60;
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 120;
     }
 }
