@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,11 +19,17 @@ public class CardSelection : MonoBehaviour
     {
         originalPosition = planet.transform.position;
         originalScale = planet.transform.localScale;
-
+        
         planet.transform.localScale = originalScale * 0.5f;
         planet.transform.position = new Vector3(originalPosition.x, originalPosition.y - startPos, originalPosition.z);
+        
 
         planet.transform.DOMove(originalPosition, time).SetEase(Ease.OutQuad);
         planet.transform.DOScale(originalScale, time).SetEase(Ease.OutQuad);
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(planet.transform);
     }
 }
