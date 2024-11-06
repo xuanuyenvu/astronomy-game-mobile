@@ -210,7 +210,6 @@ MonoBehaviour:
   targetRotation: -2.142857
   targetVerticalDisplacement: 39.183674
   planetName: jupiter
-  dissolveMaterial: {fileID: 2100000, guid: 0f7a929ab7c288547b94186787fc400f, type: 2}
   cardController: {fileID: 0}
   animationSpeedConfig:
     rotation: 60

@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class HealthManager : MonoBehaviour
 {
     [HideInInspector] public int health = 5;
     public Sprite heart;
     public List<Image> hearts;
+    public Image star;
+    public ParticleSystem psPrefab;
+    public Canvas uiCanvas;
+    public EnergyManager energyManager;
 
     public void SetUp(int _health)
     {
@@ -25,15 +30,45 @@ public class HealthManager : MonoBehaviour
         }
     }
 
-    // public void AddToEngergy()
-    // {
-    //     health--;
-    //     Vector3[] path = new Vector3[]
-    //     {
-    //         hearts[health].transform.position, 
-    //         (hearts[health].transform.position + star.transform.position) / 2 + (Vector3.up * 10), 
-    //         star.transform.position
-    //     };
-    //     hearts[health - 1].DOPath(path, 1f, PathType.CatmullRom);
-    // }
+    public IEnumerator StartAddToEnergy()
+    {
+        // Tìm các trái tim có enabled = true
+        for (int i = health - 1; i >= 0; i--)
+        {
+            if (hearts[i].enabled)
+            {
+                // Spawn ParticleSystem tại vị trí của trái tim trong không gian UI
+                ParticleSystem particle = Instantiate(psPrefab, uiCanvas.transform);
+
+                // Đặt vị trí ParticleSystem trong UI
+                RectTransform particleRect = particle.GetComponent<RectTransform>();
+                RectTransform heartRect = hearts[i].GetComponent<RectTransform>();
+                RectTransform starRect = star.GetComponent<RectTransform>();
+
+                particleRect.position = heartRect.position; 
+
+                Vector3[] path = new Vector3[]
+                {
+                heartRect.position,
+                (heartRect.position + starRect.position) / 2 + Vector3.up * 30,
+                starRect.position
+                };
+
+                health--;
+                particle.Play();
+
+                // Di chuyển ParticleSystem theo path
+                particleRect.DOPath(path, 0.6f, PathType.CatmullRom)
+                    .SetEase(Ease.InOutQuint)
+                    .OnComplete(() =>
+                    {
+                        particle.Stop();
+                        Destroy(particle.gameObject, particle.main.duration);
+                        // energyManager.ChangeEnergy(10);
+                    });
+                yield return new WaitForSeconds(0.5f);
+            }
+        }
+    }
+
 }

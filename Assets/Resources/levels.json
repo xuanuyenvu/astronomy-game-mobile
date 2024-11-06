@@ -144,7 +144,7 @@
                 }
             ],
             "lives": 3,
-            "total_time": "01:30",
+            "total_time": "01:00",
             "cards_displayed": 3
         },
         {
@@ -167,7 +167,7 @@
                 }
             ],
             "lives": 3,
-            "total_time": "01:30",
+            "total_time": "01:00",
             "cards_displayed": 4
         },
         {
@@ -190,7 +190,7 @@
                 }
             ],
             "lives": 3,
-            "total_time": "01:30",
+            "total_time": "01:00",
             "cards_displayed": 4
         },
         {
@@ -213,7 +213,7 @@
                 }
             ],
             "lives": 3,
-            "total_time": "01:30",
+            "total_time": "01:00",
             "cards_displayed": 4
         },
         {
@@ -236,7 +236,7 @@
                 }
             ],
             "lives": 3,
-            "total_time": "01:30",
+            "total_time": "01:00",
             "cards_displayed": 4
         },
         {
@@ -259,7 +259,7 @@
                 }
             ],
             "lives": 3,
-            "total_time": "02:00",
+            "total_time": "01:30",
             "cards_displayed": 5
         },
         {
@@ -282,7 +282,7 @@
                 }
             ],
             "lives": 3,
-            "total_time": "02:00",
+            "total_time": "01:30",
             "cards_displayed": 5
         },
         {
@@ -305,7 +305,7 @@
                 }
             ],
             "lives": 4,
-            "total_time": "02:00",
+            "total_time": "01:30",
             "cards_displayed": 5
         },
         {
@@ -328,7 +328,7 @@
                 }
             ],
             "lives": 4,
-            "total_time": "02:00",
+            "total_time": "01:30",
             "cards_displayed": 5
         },
         {
@@ -351,7 +351,7 @@
                 }
             ],
             "lives": 4,
-            "total_time": "02:30",
+            "total_time": "02:00",
             "cards_displayed": 6
         },
         {
@@ -374,7 +374,7 @@
                 }
             ],
             "lives": 4,
-            "total_time": "02:30",
+            "total_time": "02:00",
             "cards_displayed": 6
         },
         {
@@ -397,7 +397,7 @@
                 }
             ],
             "lives": 4,
-            "total_time": "02:30",
+            "total_time": "02:00",
             "cards_displayed": 7
         },
         {
@@ -420,7 +420,7 @@
                 }
             ],
             "lives": 5,
-            "total_time": "02:30",
+            "total_time": "02:00",
             "cards_displayed": 7
         }
     ]

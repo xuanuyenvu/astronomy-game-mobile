@@ -19,7 +19,7 @@ public class GameOverUIController : MonoBehaviour
     void Awake()
     {
         brokenStarPS.Stop();
-        GetChildByName(this.gameObject, "backgroundGO").SetActive(false);
+        background.SetActive(false);
         titleBtnGroupRectTransform = GetChildByName(this.gameObject, "titleBtnGroup").GetComponent<RectTransform>();
         starRectTransform = GetChildByName(energyUI, "star").GetComponent<RectTransform>();
     }
@@ -107,9 +107,7 @@ public class GameOverUIController : MonoBehaviour
             GetChildByName(energyUI, "border").SetActive(true);
             GetChildByName(energyUI, "background").SetActive(true);
             GetChildByName(energyUI, "star").SetActive(true);
-            GetChildByName(this.gameObject, "backgroundGO").SetActive(false);
-
-
+            background.SetActive(false);
         });
     }
 }

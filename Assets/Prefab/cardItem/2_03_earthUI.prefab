@@ -210,7 +210,6 @@ MonoBehaviour:
   targetRotation: 6.428571
   targetVerticalDisplacement: 32.65306
   planetName: earth
-  dissolveMaterial: {fileID: 2100000, guid: 0f7a929ab7c288547b94186787fc400f, type: 2}
   cardController: {fileID: 0}
   animationSpeedConfig:
     rotation: 60
