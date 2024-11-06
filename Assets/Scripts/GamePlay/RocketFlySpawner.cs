@@ -529,7 +529,7 @@ public class RocketFlySpawner : IGamePlay
 
     public override void OnTimeOver()
     {
-
+        this.GameOver();
     }
 
     public override void OnFullEnergy()

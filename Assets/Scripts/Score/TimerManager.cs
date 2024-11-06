@@ -92,6 +92,10 @@ public class TimerManager : MonoBehaviour
 
     public void StartAddToEnergy()
     {
+        if (sliderTimer <= 0)
+        {
+            return;
+        }   
         // Tìm các trái tim có enabled = true
         ParticleSystem particle = Instantiate(psPrefab, uiCanvas.transform);
 

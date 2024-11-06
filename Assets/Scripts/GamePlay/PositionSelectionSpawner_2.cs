@@ -766,7 +766,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     public override void OnTimeOver()
     {
-
+        this.GameOver();
     }
 
     public override void OnFullEnergy()

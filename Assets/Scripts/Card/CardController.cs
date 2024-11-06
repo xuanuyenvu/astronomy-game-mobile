@@ -37,16 +37,14 @@ public class CardController : MonoBehaviour
 
     [HideInInspector] public int cardsDisplayed = 0;
 
-    void Awake()
+
+    void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         if (darkMask == null)
         {
             darkMask = GameObject.FindGameObjectWithTag("DarkMask");
         }
-    }
-    void Start()
-    {
         darkMask.SetActive(false);
         maxHeight = Screen.height / 20;
     }

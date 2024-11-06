@@ -449,7 +449,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
     public override void OnTimeOver()
     {
-
+        this.GameOver();
     }
 
     public override void OnFullEnergy()

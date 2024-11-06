@@ -16,7 +16,7 @@ public class GameOverUIController : MonoBehaviour
     private RectTransform starRectTransform;
     private RectTransform titleBtnGroupRectTransform;
 
-    void Awake()
+    void Start()
     {
         brokenStarPS.Stop();
         background.SetActive(false);

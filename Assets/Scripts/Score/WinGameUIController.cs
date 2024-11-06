@@ -33,7 +33,7 @@ public class WinGameUIController : MonoBehaviour
     private TimerManager timerManager;
     private RectTransform starRectTransform;
 
-    void Awake()
+    void Start()
     {
         glowPS.Stop();
         energyManager = energyUI.GetComponent<EnergyManager>();
@@ -117,28 +117,26 @@ public class WinGameUIController : MonoBehaviour
 
         glowPS.Play();
         yield return new WaitForSeconds(0.2f);
+        
+        Sequence sequence = DOTween.Sequence();
 
         if (!energyManager.isFullEnergy)
         {
             rewards[0].shineLightPS.gameObject.SetActive(true);
             rewards[0].shineLightPS.Play();
-            rewards[0].star.transform.DOScale(new Vector3(0.06f, 0.06f, 0.06f), 0.3f)
-                .SetEase(Ease.OutBounce);
-            rewards[0].shineLightPS.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.3f)
-                .SetEase(Ease.OutQuad);
-            rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
-                .SetEase(Ease.OutBounce);
+            sequence.Append(rewards[0].star.transform.DOScale(new Vector3(0.06f, 0.06f, 0.06f), 0.3f).SetEase(Ease.OutBounce))
+                    .Join(rewards[0].shineLightPS.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.3f).SetEase(Ease.OutQuad))
+                    .Join(rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));;
+            
+            
         }
         else
         {
             rewards[1].shineLightPS.gameObject.SetActive(true);
             rewards[1].shineLightPS.Play();
-            rewards[1].star.transform.DOScale(new Vector3(0.08f, 0.08f, 0.08f), 0.3f)
-                .SetEase(Ease.OutBounce);
-            rewards[1].shineLightPS.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.3f)
-                .SetEase(Ease.OutQuad);
-            rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
-            .SetEase(Ease.OutBounce);
+            sequence.Append(rewards[1].star.transform.DOScale(new Vector3(0.08f, 0.08f, 0.08f), 0.3f).SetEase(Ease.OutBounce))
+                .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.3f).SetEase(Ease.OutQuad))
+                .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));;
         }
 
         tapText.gameObject.SetActive(true);
