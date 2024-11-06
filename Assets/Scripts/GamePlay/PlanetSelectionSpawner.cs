@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using DG.Tweening;
 
 
 public class PlanetSelectionSpawner : IGamePlay
@@ -38,8 +37,7 @@ public class PlanetSelectionSpawner : IGamePlay
     private bool isLeft;
 
     // biến bool
-    private bool animationStart = false;
-    private bool playing;
+    private bool isAnimationPlaying = false;
 
     void Awake()
     {
@@ -51,7 +49,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
     void Update()
     {
-        if (!animationStart && playing)
+        if (!isAnimationPlaying)
         {
             rocket.TurnOnCollider = true;
         }
@@ -72,6 +70,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
+        
         if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
         {
             GameOver();
@@ -98,7 +97,7 @@ public class PlanetSelectionSpawner : IGamePlay
         Destroy(planetAnswer.gameObject);
 
         FindMeanAndSetRocket();
-        StartCoroutine(SetPositionBeforePlaying(0.5f));
+        StartCoroutine(SetPositionBeforePlaying(0.6f));
     }
 
     public void RandomizePosition()
@@ -194,7 +193,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
     IEnumerator SetPositionBeforePlaying(float time)
     {
-        animationStart = true;
+        isAnimationPlaying = true;
         var center = GetCenterPoint();
         var planet1Pos = planet1.transform.position;
         var rocketPos = rocket.transform.position;
@@ -212,8 +211,10 @@ public class PlanetSelectionSpawner : IGamePlay
         planet1.transform.position = planet1Pos;
         rocket.transform.position = rocketPos;
 
-        animationStart = false;
-        playing = true;
+        isAnimationPlaying = false;
+        
+        // Kết thúc quá trình kết quả (sau khi đã chọn sai 1 lần), được phép bấm pause
+        isResultPlaying  = false;
     }
 
     virtual protected Vector3 GetCenterPoint()
@@ -233,7 +234,7 @@ public class PlanetSelectionSpawner : IGamePlay
     {
         RandomizePosition();
         FindMeanAndSetRocket();
-        StartCoroutine(SetPositionBeforePlaying(0.5f));
+        StartCoroutine(SetPositionBeforePlaying(0.6f));
     }
 
     public override void CheckDragPosition(Vector3 dragPos, string planetName)
@@ -251,6 +252,7 @@ public class PlanetSelectionSpawner : IGamePlay
         planetAnswer.transform.SetParent(effectsGroupTransform);
 
         // Hàm thực hiện bay hành tinh và bay rocket
+        isResultPlaying = true;
         StartCoroutine(CoroutineExcutesequentially());
     }
 
@@ -275,7 +277,7 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private IEnumerator FlySelectedPlanetToTarget()
     {
-        animationStart = true;
+        isAnimationPlaying = true;
         Vector3 startingPos = planetAnswer.transform.position;
         Vector3 finalPos = target.transform.position;
 
@@ -296,7 +298,7 @@ public class PlanetSelectionSpawner : IGamePlay
         // Ẩn target 
         if (target != null)
         {
-            animationStart = false;
+            isAnimationPlaying = false;
             target.SetActive(false);
         }
     }

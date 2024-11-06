@@ -466,4 +466,10 @@ public class CardController : MonoBehaviour
         gamePlayId = -1;
         isStart = false;
     }
+
+    public void OnPauseButtonPressed()
+    {
+        ChangeSelectedCard(null);
+        DestroyPlanetSelection();
+    }
 }

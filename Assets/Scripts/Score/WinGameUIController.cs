@@ -135,7 +135,7 @@ public class WinGameUIController : MonoBehaviour
             rewards[1].shineLightPS.gameObject.SetActive(true);
             rewards[1].shineLightPS.Play();
             sequence.Append(rewards[1].star.transform.DOScale(new Vector3(0.08f, 0.08f, 0.08f), 0.3f).SetEase(Ease.OutBounce))
-                .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.3f).SetEase(Ease.OutQuad))
+                .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(1.9f, 1.9f, 1.9f), 0.3f).SetEase(Ease.OutQuad))
                 .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));;
         }
 
