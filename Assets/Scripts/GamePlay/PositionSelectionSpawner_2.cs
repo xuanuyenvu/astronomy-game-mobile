@@ -775,4 +775,10 @@ public class PositionSelectionSpawner_2 : IGamePlay
     {
 
     }
+    
+    protected void OnDestroy()
+    {
+        StopAllCoroutines();
+        DestroyAllPlanetsInGroup();
+    }
 }

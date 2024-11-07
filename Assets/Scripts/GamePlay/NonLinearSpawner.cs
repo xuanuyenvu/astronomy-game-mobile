@@ -598,4 +598,10 @@ public class NonLinearSpawner : IGamePlay
     {
 
     }
+    
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+        // DestroyAllPlanetsInGroup();
+    }
 }

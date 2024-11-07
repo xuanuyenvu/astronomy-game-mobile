@@ -28,6 +28,7 @@ public class WinGameUIController : MonoBehaviour
 
     public TextMeshProUGUI tapText;
     public Button tapBtn;
+    public GameObject btnGroup;
 
     private EnergyManager energyManager;
     private TimerManager timerManager;
@@ -43,6 +44,8 @@ public class WinGameUIController : MonoBehaviour
 
     public void StartUI(float energy)
     {
+        btnGroup.SetActive(false);
+        
         int health = healthManager.health;
         float timeRemaining = timerManager.GetRemainingTimePercentage();
         energyManager.ChangeEnergy(energy + (health * 10) + (timeRemaining * 50), () => ModifyUI());

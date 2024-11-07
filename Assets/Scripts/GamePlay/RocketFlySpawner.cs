@@ -536,4 +536,10 @@ public class RocketFlySpawner : IGamePlay
     {
 
     }
+    
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+        // DestroyAllPlanetsInGroup();
+    }
 }

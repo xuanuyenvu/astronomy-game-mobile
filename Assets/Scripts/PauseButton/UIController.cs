@@ -15,6 +15,7 @@ public class UIController : MonoBehaviour
 
     public TimerManager timerManager;
     public CardController cardController;
+    public SettingsButtonMenu settingsButtonMenu;
     
     public Button pauseBtn;
     public Sprite pauseImg;
@@ -106,18 +107,20 @@ public class UIController : MonoBehaviour
             Invoke(nameof(ResetButtonCooldown), 0.6f); // Đặt lại biến sau 0.6 giây để cho phép nhấn lại
             
             pauseBtn.image.sprite = playImg;
+            settingsButtonMenu.ToggleMenu(isPaused);
             isPaused = true;
         
             cardController.OnPauseButtonPressed();
             timerManager.StopTimer();
             HideElements();
         }
-        else
+        else if (isPaused)
         {
             isButtonCooldown = true; 
             Invoke(nameof(ResetButtonCooldown), 0.6f); // Đặt lại biến sau 0.6 giây để cho phép nhấn lại
             
             pauseBtn.image.sprite = pauseImg;
+            settingsButtonMenu.ToggleMenu(isPaused);
             isPaused = false;
         
             timerManager.StartTimer();
@@ -130,4 +133,18 @@ public class UIController : MonoBehaviour
         isButtonCooldown = false;
     }
 
+    public void Reset()
+    {
+        pauseBtn.image.sprite = pauseImg;
+        settingsButtonMenu.ToggleMenu(true);
+        isPaused = false;
+        
+        pauseTextRect.localScale = Vector3.zero;
+        gamePlayObjectsGroup.transform.position = new Vector3(0, 0, 0);
+
+        energyUIRect.anchoredPosition = energyUIStartPos;
+        timerUIRect.anchoredPosition = timerUIStartPos;
+        healthUIRect.anchoredPosition = healthUIStartPos;
+        cardContainerUIRect.anchoredPosition = Vector2.zero;
+    }
 }

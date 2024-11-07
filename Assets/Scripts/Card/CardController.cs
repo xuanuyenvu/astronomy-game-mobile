@@ -27,6 +27,10 @@ public class CardController : MonoBehaviour
     [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
     [SerializeField] private float maxHeight = 30;
     private float maxHeightDisplacement;
+    public float MaxHeight
+    {
+        get => maxHeight;
+    }
 
     [SerializeField] private AnimationSpeedConfig animationSpeedConfig;
     private RectTransform rectTransform;
@@ -77,6 +81,9 @@ public class CardController : MonoBehaviour
             cardInstance.name = cardInstance.name.Replace("(Clone)", "");
             allCardInstances = new List<CardWrapper>(GetComponentsInChildren<CardWrapper>());
         }
+        
+        SetUpCards();
+        SetCardsAnchor();
     }
 
     private void ShuffleCards()
@@ -458,7 +465,10 @@ public class CardController : MonoBehaviour
         {
             foreach (var card in allCardInstances)
             {
-                DestroyImmediate(card.gameObject);
+                if (card != null) // Kiểm tra null trước khi hủy
+                {
+                    Destroy(card.gameObject); 
+                }
             }
             allCardInstances.Clear();
             allCardInstances = null;

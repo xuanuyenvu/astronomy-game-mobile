@@ -458,4 +458,11 @@ public class PlanetSelectionSpawner : IGamePlay
     {
 
     }
+    
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+        DestroyAllPlanetsInGroup();
+    }
+
 }

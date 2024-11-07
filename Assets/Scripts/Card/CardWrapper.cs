@@ -103,7 +103,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
         if (noRotation)
         {
-            target = new Vector2(targetPosition.x, 33);
+            target = new Vector2(target.x, target.y + cardController.MaxHeight);
         }
         if (isSelected)
         {

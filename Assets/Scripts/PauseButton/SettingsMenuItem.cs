@@ -7,12 +7,8 @@ public class SettingsMenuItem : MonoBehaviour {
 
     //SettingsMenu reference
     private SettingsButtonMenu settingsMenu ;
-
-    //item button
     private Button button ;
-
-    //index of the item in the hierarchy
-    int index ;
+    private int index ;
 
     void Awake () {
         img = GetComponent<Image> () ;

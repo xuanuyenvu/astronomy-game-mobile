@@ -13,6 +13,8 @@ public class GameOverUIController : MonoBehaviour
     public ParticleSystem brokenStarPS;
     public CameraShake cameraShake;
 
+    public GameObject btnGroup;
+
     private RectTransform starRectTransform;
     private RectTransform titleBtnGroupRectTransform;
 
@@ -26,6 +28,8 @@ public class GameOverUIController : MonoBehaviour
 
     public void StartUI()
     {
+        btnGroup.SetActive(false);
+        
         timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
         healthManager.SetUp(0);
@@ -107,6 +111,7 @@ public class GameOverUIController : MonoBehaviour
             GetChildByName(energyUI, "border").SetActive(true);
             GetChildByName(energyUI, "background").SetActive(true);
             GetChildByName(energyUI, "star").SetActive(true);
+            btnGroup.SetActive(true);
             background.SetActive(false);
         });
     }

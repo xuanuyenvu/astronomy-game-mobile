@@ -27,9 +27,6 @@ public class SettingsButtonMenu : MonoBehaviour
    Button mainButton ;
    SettingsMenuItem[] menuItems ;
 
-   //is menu opened or not
-   bool isExpanded = false ;
-
    Vector2 mainButtonPosition ;
    int itemsCount ;
 
@@ -43,26 +40,24 @@ public class SettingsButtonMenu : MonoBehaviour
       }
 
       mainButton = transform.GetChild (0).GetComponent <Button> () ;
-      mainButton.onClick.AddListener (ToggleMenu) ;
+      // mainButton.onClick.AddListener (ToggleMenu) ;
       //SetAsLastSibling () to make sure that the main button will be always at the top layer
       mainButton.transform.SetAsLastSibling () ;
 
       mainButtonPosition = mainButton.GetComponent <RectTransform> ().anchoredPosition ;
 
       //set all menu items position to mainButtonPosition
-      ResetPositions () ;
+      ResetPositions() ;
    }
 
-   void ResetPositions () {
+   private void ResetPositions () {
       for (int i = 0; i < itemsCount; i++) {
          menuItems[ i ].GetComponent<RectTransform>().anchoredPosition = mainButtonPosition ;
       }
    }
 
-   void ToggleMenu () {
-      isExpanded = !isExpanded ;
-
-      if (isExpanded) {
+   public void ToggleMenu (bool isMenuOpened) {
+      if (!isMenuOpened) {
          //menu opened
          for (int i = 0; i < itemsCount; i++) {
             menuItems[ i ].GetComponent<RectTransform>().DOAnchorPos (mainButtonPosition + spacing * (i + 1), expandDuration).SetEase (expandEase) ;
@@ -77,12 +72,6 @@ public class SettingsButtonMenu : MonoBehaviour
             menuItems [ i ].GetComponent<Image>().DOFade (0f, collapseFadeDuration) ;
          }
       }
-
-      //rotate main button arround Z axis by 180 degree starting from 0
-   //    mainButton.transform
-			// .DORotate (Vector3.forward * 180f, rotationDuration)
-			// .From (Vector3.zero)
-			// .SetEase (rotationEase) ;
    }
 
    public void OnItemClick (int index) {
@@ -94,17 +83,12 @@ public class SettingsButtonMenu : MonoBehaviour
             break ;
          case 1: 
 				//second button
-            Debug.Log ("Sounds") ;
+            Debug.Log ("LoadGame") ;
             break ;
          case 2: 
 				//third button
-            Debug.Log ("Vibration") ;
+            Debug.Log ("Exit") ;
             break ;
       }
-   }
-
-   void OnDestroy () {
-      //remove click listener to avoid memory leaks
-      mainButton.onClick.RemoveListener (ToggleMenu) ;
    }
 }
