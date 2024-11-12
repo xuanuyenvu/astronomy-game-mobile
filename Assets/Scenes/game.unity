@@ -645,7 +645,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 191020137}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -5985,7 +5985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &485746712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6282,7 +6282,7 @@ VFXRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 592128275}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -11524,6 +11524,7 @@ MonoBehaviour:
   wrapSpeedController: {fileID: 485746712}
   gameOverUiController: {fileID: 2099959582}
   winGameUiController: {fileID: 1831175217}
+  uiController: {fileID: 833095398}
 --- !u!4 &738906221
 Transform:
   m_ObjectHideFlags: 0
@@ -11881,6 +11882,7 @@ MonoBehaviour:
   gamePlayObjectsGroup: {fileID: 1421563102}
   timerManager: {fileID: 2108130377}
   cardController: {fileID: 1233786268}
+  settingsButtonMenu: {fileID: 2046946443}
   pauseBtn: {fileID: 1162287244}
   pauseImg: {fileID: 21300000, guid: d91899f515a8dc24e92a49dcf932bb33, type: 3}
   playImg: {fileID: 21300000, guid: 5bb9275357bd9f040b2a2580e7b01449, type: 3}
@@ -11910,7 +11912,7 @@ Transform:
   m_GameObject: {fileID: 849215400}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -12967,7 +12969,7 @@ Transform:
   m_GameObject: {fileID: 1050481665}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: -3}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -18328,7 +18330,7 @@ Transform:
   m_GameObject: {fileID: 1125272919}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -39813,6 +39815,7 @@ MonoBehaviour:
     text: {fileID: 2059664142}
   tapText: {fileID: 1998285500}
   tapBtn: {fileID: 242294891}
+  btnGroup: {fileID: 2046946441}
 --- !u!1 &1848164144
 GameObject:
   m_ObjectHideFlags: 0
@@ -40702,12 +40705,12 @@ MonoBehaviour:
   spacing: {x: 0, y: -160}
   rotationDuration: 0
   rotationEase: 0
-  expandDuration: 0
-  collapseDuration: 0
-  expandEase: 7
-  collapseEase: 7
-  expandFadeDuration: 0
-  collapseFadeDuration: 0
+  expandDuration: 0.3
+  collapseDuration: 0.3
+  expandEase: 4
+  collapseEase: 4
+  expandFadeDuration: 0.3
+  collapseFadeDuration: 0.3
 --- !u!1 &2059664140
 GameObject:
   m_ObjectHideFlags: 0
@@ -41010,6 +41013,7 @@ MonoBehaviour:
   background: {fileID: 930833645}
   brokenStarPS: {fileID: 3063057555058137670}
   cameraShake: {fileID: 1939734920}
+  btnGroup: {fileID: 2046946441}
 --- !u!1 &2100569450
 GameObject:
   m_ObjectHideFlags: 0
@@ -50829,7 +50833,7 @@ Transform:
   m_GameObject: {fileID: 1652143757729231515}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 1
   m_Children:
