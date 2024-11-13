@@ -410,7 +410,10 @@ public class PlanetSelectionSpawner : IGamePlay
             winEffect.Play();
         }
         yield return new WaitForSeconds(2f);
-        timerManager.StopTimer();
+        if (timerManager != null)
+        {
+            timerManager.StopTimer();
+        }
         DestroyAllPlanetsInGroup();
         universalLevelManager.EndStage();
     }
@@ -444,7 +447,10 @@ public class PlanetSelectionSpawner : IGamePlay
 
     private void GameOver()
     {
-        timerManager.StopTimer();
+        if (timerManager != null)
+        {
+            timerManager.StopTimer();
+        }
         DestroyAllPlanetsInGroup();
         universalLevelManager.GameOver();
     }

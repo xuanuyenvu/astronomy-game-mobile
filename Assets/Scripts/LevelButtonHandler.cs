@@ -39,14 +39,14 @@ public class LevelButtonHandler : MonoBehaviour
         return level;
     }
 
-    private void OnValidate()
-    {
-        UpdateState(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector
-    }
+    // private void OnValidate()
+    // {
+    //     UpdateState(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector
+    // }
 
-    private void UpdateState()
+    public void UpdateState(int _state)
     {
-        switch (state)
+        switch (_state)
         {
             case 1:
                 SetLocked();
@@ -65,7 +65,7 @@ public class LevelButtonHandler : MonoBehaviour
 
     private void SetLocked()
     {
-        button.interactable = true;
+        button.interactable = false;
         rock.gameObject.SetActive(false);
         star.gameObject.SetActive(false);
 
@@ -86,7 +86,7 @@ public class LevelButtonHandler : MonoBehaviour
 
     private void SetUnlockedUnplayed()
     {
-        button.interactable = false;
+        button.interactable = true;
         rock.gameObject.SetActive(false);
         star.gameObject.SetActive(false);
 
@@ -107,7 +107,7 @@ public class LevelButtonHandler : MonoBehaviour
 
     private void SetPlayedRocket()
     {
-        button.interactable = false;
+        button.interactable = true;
         rock.gameObject.SetActive(true);
         star.gameObject.SetActive(false);
         
@@ -124,7 +124,7 @@ public class LevelButtonHandler : MonoBehaviour
 
     private void SetPlayedStar()
     {
-        // button.interactable = false;
+        button.interactable = true;
         rock.gameObject.SetActive(false);
         star.gameObject.SetActive(true);
         

@@ -727,7 +727,10 @@ public class PositionSelectionSpawner_2 : IGamePlay
             winEffect.Play();
         }
         yield return new WaitForSeconds(2f);
-        timerManager.StopTimer();
+        if (timerManager != null)
+        {
+            timerManager.StopTimer();
+        }
         DestroyAllPlanetsInGroup();
         universalLevelManager.EndStage();
     }
@@ -761,7 +764,10 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     private void GameOver()
     {
-        timerManager.StopTimer();
+        if (timerManager != null)
+        {
+            timerManager.StopTimer();
+        }
         DestroyAllPlanetsInGroup();
         universalLevelManager.GameOver();
     }

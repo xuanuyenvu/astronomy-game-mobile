@@ -38,23 +38,39 @@ public class WinGameUIController : MonoBehaviour
     {
         glowPS.Stop();
         energyManager = energyUI.GetComponent<EnergyManager>();
-        timerManager = timeBarUI.GetComponent<TimerManager>();
+        if (timeBarUI != null && timeBarUI.activeSelf)
+        {
+            timerManager = timeBarUI.GetComponent<TimerManager>();
+        }
+        else
+        {
+            timerManager = null;
+        }
+
         starRectTransform = GetChildByName(energyUI, "star").GetComponent<RectTransform>();
     }
 
     public void StartUI(float energy)
     {
         btnGroup.SetActive(false);
-        
+
         int health = healthManager.health;
-        float timeRemaining = timerManager.GetRemainingTimePercentage();
+        float timeRemaining = 0;
+        if (timerManager != null)
+        {
+            timeRemaining = timerManager.GetRemainingTimePercentage();
+        }
+
         energyManager.ChangeEnergy(energy + (health * 10) + (timeRemaining * 50), () => ModifyUI());
         StartCoroutine(UpdateFinalEnergy());
     }
 
     private IEnumerator UpdateFinalEnergy()
     {
-        timerManager.StartAddToEnergy();
+        if (timerManager != null)
+        {
+            timerManager.StartAddToEnergy();
+        }
         yield return new WaitForSeconds(1f);
         StartCoroutine(healthManager.StartAddToEnergy());
     }
@@ -110,6 +126,7 @@ public class WinGameUIController : MonoBehaviour
             starRectTransform.DOScale(new Vector3(0.55f, 0.45f, 1f), 0.3f)
                 .SetEase(Ease.OutQuad);
         }
+
         yield return new WaitForSeconds(0.2f);
 
         starRectTransform.anchoredPosition = Vector2.zero;
@@ -120,26 +137,30 @@ public class WinGameUIController : MonoBehaviour
 
         glowPS.Play();
         yield return new WaitForSeconds(0.2f);
-        
+
         Sequence sequence = DOTween.Sequence();
 
         if (!energyManager.isFullEnergy)
         {
             rewards[0].shineLightPS.gameObject.SetActive(true);
             rewards[0].shineLightPS.Play();
-            sequence.Append(rewards[0].star.transform.DOScale(new Vector3(0.06f, 0.06f, 0.06f), 0.3f).SetEase(Ease.OutBounce))
-                    .Join(rewards[0].shineLightPS.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.3f).SetEase(Ease.OutQuad))
-                    .Join(rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));;
-            
-            
+            sequence.Append(rewards[0].star.transform.DOScale(new Vector3(0.06f, 0.06f, 0.06f), 0.3f)
+                    .SetEase(Ease.OutBounce))
+                .Join(rewards[0].shineLightPS.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.3f)
+                    .SetEase(Ease.OutQuad))
+                .Join(rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));
+            ;
         }
         else
         {
             rewards[1].shineLightPS.gameObject.SetActive(true);
             rewards[1].shineLightPS.Play();
-            sequence.Append(rewards[1].star.transform.DOScale(new Vector3(0.08f, 0.08f, 0.08f), 0.3f).SetEase(Ease.OutBounce))
-                .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(1.9f, 1.9f, 1.9f), 0.3f).SetEase(Ease.OutQuad))
-                .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));;
+            sequence.Append(rewards[1].star.transform.DOScale(new Vector3(0.08f, 0.08f, 0.08f), 0.3f)
+                    .SetEase(Ease.OutBounce))
+                .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(1.9f, 1.9f, 1.9f), 0.3f)
+                    .SetEase(Ease.OutQuad))
+                .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));
+            ;
         }
 
         tapText.gameObject.SetActive(true);

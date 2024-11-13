@@ -20,6 +20,6 @@ public class GameplayMenu : MonoBehaviour
     {
         Debug.Log("Exit");
         DOTween.KillAll();
-        // SceneManager.LoadScene("chapter1");
+        SceneManager.LoadScene("chapter1");
     }
 }
