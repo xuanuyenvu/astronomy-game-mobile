@@ -12,7 +12,7 @@ public class LevelSelector : MonoBehaviour
 
     private List<int> levelDatabase = new List<int> 
     { 
-        4, 4, 3, 4, 3, 3, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 
+        4, 4, 3, 4, 3, 3, 4, 4, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1
     };
     [SerializeField] private int currentLevel = 1; 
 
@@ -23,7 +23,8 @@ public class LevelSelector : MonoBehaviour
 
     private void InitializeLevelButtons()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        // transform.childCount
+        for (int i = 0; i < 19; i++)
         {
             // Lấy đối tượng con tại vị trí i
             LevelButtonHandler child = transform.GetChild(i).GetComponent<LevelButtonHandler>();
@@ -47,16 +48,16 @@ public class LevelSelector : MonoBehaviour
     {
         if (currentLevel >= 4 && currentLevel <= transform.childCount - 2)
         {
-            float offset = 810 + (500 * (currentLevel - 4));
-            contentRectTransform.localPosition  = new Vector3(4327.6f - offset, 0, 0);
+            float offset = 3633 - (600 * (currentLevel - 4));
+            contentRectTransform.localPosition  = new Vector3(offset, 0, 0);
         }
         else if (currentLevel > transform.childCount - 2)
         {
-            contentRectTransform.localPosition = new Vector3(-4327.6f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(-4707.061f, 0, 0);
         }
         else 
         {
-            contentRectTransform.localPosition = new Vector3(4327.6f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(4707.061f, 0, 0);
         }
     }
 
