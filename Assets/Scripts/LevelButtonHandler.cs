@@ -5,7 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class LevelButtonHandler : MonoBehaviour
+public class LevelButtonHandler : IButtonHandler
 {
     public Image largeCircle;
     public Image mediumCircle;
@@ -13,12 +13,13 @@ public class LevelButtonHandler : MonoBehaviour
     public Image rock;
     public TextMeshProUGUI levelText;
     [SerializeField] public int state = 1;
-    [SerializeField] private int level = 1;
+    public int level = 1;
     
     public Button button;
 
     private void Start()
     {
+        type = "levelBtn";
         SetLevel(level);
     }
 
@@ -44,7 +45,7 @@ public class LevelButtonHandler : MonoBehaviour
     //     UpdateState(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector
     // }
 
-    public void UpdateState(int _state)
+    public override void UpdateState(int _state)
     {
         switch (_state)
         {

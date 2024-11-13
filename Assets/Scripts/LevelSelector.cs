@@ -12,7 +12,7 @@ public class LevelSelector : MonoBehaviour
 
     private List<int> levelDatabase = new List<int> 
     { 
-        4, 4, 3, 4, 3, 3, 4, 4, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1
+        4, 4, 3, 4, 3, 3, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
     };
     [SerializeField] private int currentLevel = 1; 
 
@@ -27,10 +27,11 @@ public class LevelSelector : MonoBehaviour
         for (int i = 0; i < 19; i++)
         {
             // Lấy đối tượng con tại vị trí i
-            LevelButtonHandler child = transform.GetChild(i).GetComponent<LevelButtonHandler>();
+            IButtonHandler child = transform.GetChild(i).GetComponent<IButtonHandler>();
+            Debug.Log("levelDatabase[i] : " + levelDatabase[i] + "type : " + child.type);
             child.UpdateState(levelDatabase[i]);
             
-            if (levelDatabase[i] == 2)
+            if (levelDatabase[i] == 2 && child.type == "levelBtn")
             {
                 currentLevel = i + 1;
             }
