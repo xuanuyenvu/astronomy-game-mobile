@@ -27,7 +27,7 @@ public class ChapterMenu : MonoBehaviour
     public void LoadChapter1()
     {
         Debug.Log("Chapter 1");
-        // SceneManager.LoadScene("chapter1");
+        SceneManager.LoadScene("chapter1");
     }
 
     public void LoadChapter2()

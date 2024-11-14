@@ -50,4 +50,9 @@ public class CardButtonHandler : IButtonHandler
         button.interactable = false;
         buttonImg.enabled = false;
     }
+
+    public override int GetLevel()
+    {
+        return 0;
+    }
 }

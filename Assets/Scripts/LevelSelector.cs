@@ -12,7 +12,8 @@ public class LevelSelector : MonoBehaviour
 
     private List<int> levelDatabase = new List<int> 
     { 
-        4, 4, 3, 4, 3, 3, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+          4, 4, 3, 4, 3, 3, 4, 4, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+        //L, L, L, L, C, L, L, L, C, L, L, L, L, C, L, L, L, L, C, L, L, C, L, L
     };
     [SerializeField] private int currentLevel = 1; 
 
@@ -24,16 +25,15 @@ public class LevelSelector : MonoBehaviour
     private void InitializeLevelButtons()
     {
         // transform.childCount
-        for (int i = 0; i < 19; i++)
+        for (int i = 0; i < transform.childCount; i++)
         {
             // Lấy đối tượng con tại vị trí i
             IButtonHandler child = transform.GetChild(i).GetComponent<IButtonHandler>();
-            Debug.Log("levelDatabase[i] : " + levelDatabase[i] + "type : " + child.type);
             child.UpdateState(levelDatabase[i]);
             
             if (levelDatabase[i] == 2 && child.type == "levelBtn")
             {
-                currentLevel = i + 1;
+                currentLevel = child.GetLevel();
             }
         }
 
@@ -54,11 +54,11 @@ public class LevelSelector : MonoBehaviour
         }
         else if (currentLevel > transform.childCount - 2)
         {
-            contentRectTransform.localPosition = new Vector3(-4707.061f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(-4707f, 0, 0);
         }
         else 
         {
-            contentRectTransform.localPosition = new Vector3(4707.061f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(4707f, 0, 0);
         }
     }
 

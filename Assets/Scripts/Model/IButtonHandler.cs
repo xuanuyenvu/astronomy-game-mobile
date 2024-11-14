@@ -7,4 +7,5 @@ public abstract class IButtonHandler : MonoBehaviour
 {
     public string type;
     public abstract void UpdateState(int _state);
+    public abstract int GetLevel();
 }

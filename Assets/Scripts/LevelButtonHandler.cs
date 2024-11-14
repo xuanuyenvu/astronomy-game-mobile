@@ -35,7 +35,7 @@ public class LevelButtonHandler : IButtonHandler
         }
     }
     
-    public int GetLevel()
+    public override int GetLevel()
     {
         return level;
     }
