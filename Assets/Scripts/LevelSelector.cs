@@ -49,16 +49,16 @@ public class LevelSelector : MonoBehaviour
     {
         if (currentLevel >= 4 && currentLevel <= transform.childCount - 2)
         {
-            float offset = 3633 - (600 * (currentLevel - 4));
+            float offset = 3420 - (550 * (currentLevel - 4));
             contentRectTransform.localPosition  = new Vector3(offset, 0, 0);
         }
         else if (currentLevel > transform.childCount - 2)
         {
-            contentRectTransform.localPosition = new Vector3(-4707f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(-4305.662f, 0, 0);
         }
         else 
         {
-            contentRectTransform.localPosition = new Vector3(4707f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(4305.662f, 0, 0);
         }
     }
 
