@@ -9,7 +9,7 @@ using Firebase.Auth;
 using Firebase.Extensions;
 using Unity.VisualScripting;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public class FacebookManager : MonoBehaviour
 {
@@ -18,7 +18,6 @@ public class FacebookManager : MonoBehaviour
     public TextMeshProUGUI FB_userName;
     public RawImage rawImg;
 
-    //public Image FB_profilePic;
 
     #region Initialize
 
@@ -84,6 +83,7 @@ public class FacebookManager : MonoBehaviour
     {
         if (isLoggedIn)
         {
+            DataSaver.Instance.facebookUserData = new FacebookUserData();
             FB.API("/me?fields=first_name", HttpMethod.GET, DisplayUsername);
             FB.API("/me/picture?type=square&height=128&width=128", HttpMethod.GET, DisplayProfilePic);
         }
@@ -98,11 +98,12 @@ public class FacebookManager : MonoBehaviour
         if (result.Error == null)
         {
             string name = "" + result.ResultDictionary["first_name"];
-            if (FB_userName != null)
-            {
-                FB_userName.gameObject.SetActive(true);
-                FB_userName.text = name;
-            }
+            // if (FB_userName != null)
+            // {
+            //     FB_userName.gameObject.SetActive(true);
+            //     FB_userName.text = name;
+            // }
+            DataSaver.Instance.facebookUserData.Name = name;
         }
         else
         {
@@ -114,13 +115,11 @@ public class FacebookManager : MonoBehaviour
     {
         if (result.Texture != null)
         {
-            Debug.Log("Profile Pic");
+            // Debug.Log("Profile Pic");
             rawImg.gameObject.SetActive(true);
             rawImg.texture = result.Texture;
-            //if (FB_profilePic != null) FB_profilePic.sprite = Sprite.Create(result.Texture, new Rect(0, 0, 128, 128), new Vector2());
-            /*JSONObject json = new JSONObject(result.RawResult);
-
-            StartCoroutine(DownloadTexture(json["picture"]["data"]["url"].str, profile_texture));*/
+            
+            DataSaver.Instance.facebookUserData.ProfilePic = result.Texture;
         }
         else
         {
@@ -174,31 +173,10 @@ public class FacebookManager : MonoBehaviour
                 Debug.Log("Successfully linked anonymous account with Facebook.");
                 DataSaver.Instance.SetUserId(user.UserId);
                 DataSaver.Instance.LoadDataFn();
+                SceneManager.LoadScene("chapterMenu");
             }
             else if (task.IsFaulted)
             {
-                // var firebaseException = task.Exception?.Flatten().InnerExceptions[0] as FirebaseException;
-                // if (firebaseException != null && firebaseException.ErrorCode == (int)AuthError.CredentialAlreadyInUse)
-                // {
-                //     Debug.Log("Account already linked with Facebook. Signing in with Facebook.");
-                //     SignInWithFacebook(facebookAccessToken);
-                // }
-                // else
-                // {
-                //     Debug.Log("firebaseException: " + firebaseException);
-                //     Debug.LogError("Failed to link account: " + task.Exception);
-                // }
-                
-                // if (firebaseException != null)
-                // {
-                //     Debug.Log("firebaseException: " + firebaseException);
-                // }
-                // else
-                // {
-                //     // In ra toàn bộ lỗi để kiểm tra chi tiết.
-                //     Debug.LogError("Task failed with exception: " + task.Exception?.ToString());
-                // }
-                
                 var innerException = task.Exception?.Flatten().InnerExceptions[0];
                 if (innerException is Firebase.Auth.FirebaseAccountLinkException linkException)
                 {
@@ -235,6 +213,7 @@ public class FacebookManager : MonoBehaviour
 
             DataSaver.Instance.SetUserId(result.User.UserId);
             DataSaver.Instance.CheckIfFacebookUserExists();
+            SceneManager.LoadScene("chapterMenu");
         });
     }
 

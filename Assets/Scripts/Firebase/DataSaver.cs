@@ -10,7 +10,8 @@ public class DataSaver : MonoBehaviour
 {
     public static DataSaver Instance { get; private set; }
     public UserModel userModel;
-
+    public FacebookUserData facebookUserData;
+    
     private DatabaseReference dbRef;
 
     private void Awake()

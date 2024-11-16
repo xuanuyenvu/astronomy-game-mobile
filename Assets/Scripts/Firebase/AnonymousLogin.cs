@@ -12,11 +12,12 @@ public class AnonymousLogin : MonoBehaviour
     private void Start()
     {
         auth = FirebaseAuth.DefaultInstance;
-        // auth.SignOut();
+        // SignOut();
     }
     
     public void SignOut()
     {
+        Debug.Log("SignOut!");
         auth.SignOut();
     }
     
