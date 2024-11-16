@@ -8,6 +8,25 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:997047874673:android:1f6802104c4ac2936f97d0",
+        "android_client_info": {
+          "package_name": "com.SMGStudio.AstronomyMobileGame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUpP0BtMCQ0OzZ6KG_r7lCtOd-KZqb4p4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:997047874673:android:a0fabf30487657c06f97d0",
         "android_client_info": {
           "package_name": "com.astronomymobilegame.firebasedb"

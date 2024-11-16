@@ -1,19 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 using TMPro;
 using Facebook.Unity;
 using System;
+using Firebase;
+using Firebase.Auth;
+using Firebase.Extensions;
+using Unity.VisualScripting;
 using UnityEngine.UI;
 
 
 public class FacebookManager : MonoBehaviour
 {
+    private Firebase.Auth.FirebaseAuth auth;
+
     public TextMeshProUGUI FB_userName;
-    //public Image FB_profilePic;
     public RawImage rawImg;
-    
+
+    //public Image FB_profilePic;
+
     #region Initialize
 
     private void Awake()
@@ -23,22 +29,27 @@ public class FacebookManager : MonoBehaviour
         if (!FB.IsInitialized)
         {
             FB.Init(() =>
-            {
-                if (FB.IsInitialized)
-                    FB.ActivateApp();
-                else
-                    Debug.Log("Couldn't initialize");
-            },
-            isGameShown =>
-            {
-                if (!isGameShown)
-                    Time.timeScale = 0;
-                else
-                    Time.timeScale = 1;
-            });
+                {
+                    if (FB.IsInitialized)
+                        FB.ActivateApp();
+                    else
+                        Debug.Log("Couldn't initialize");
+                },
+                isGameShown =>
+                {
+                    if (!isGameShown)
+                        Time.timeScale = 0;
+                    else
+                        Time.timeScale = 1;
+                });
         }
         else
             FB.ActivateApp();
+    }
+
+    private void Start()
+    {
+        auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
     }
 
     void SetInit()
@@ -46,16 +57,18 @@ public class FacebookManager : MonoBehaviour
         if (FB.IsLoggedIn)
         {
             Debug.Log("Facebook is Login!");
-            string s = "client token" + FB.ClientToken + "User Id" + AccessToken.CurrentAccessToken.UserId + "token string" + AccessToken.CurrentAccessToken.TokenString;
+            string s = "client token" + FB.ClientToken + "User Id" + AccessToken.CurrentAccessToken.UserId +
+                       "token string" + AccessToken.CurrentAccessToken.TokenString;
         }
         else
         {
             Debug.Log("Facebook is not Logged in!");
         }
+
         DealWithFbMenus(FB.IsLoggedIn);
     }
 
-    void FbLoginSuccess(bool isGameShown) 
+    void FbLoginSuccess(bool isGameShown)
     {
         if (!isGameShown)
         {
@@ -79,25 +92,30 @@ public class FacebookManager : MonoBehaviour
             Debug.Log("Not logged in");
         }
     }
+
     void DisplayUsername(IResult result)
     {
         if (result.Error == null)
         {
             string name = "" + result.ResultDictionary["first_name"];
-            if (FB_userName != null) FB_userName.text = name;
-            FB_userName.text = name;
-            Debug.Log("" + name);
+            if (FB_userName != null)
+            {
+                FB_userName.gameObject.SetActive(true);
+                FB_userName.text = name;
+            }
         }
         else
         {
             Debug.Log(result.Error);
         }
     }
+
     void DisplayProfilePic(IGraphResult result)
     {
         if (result.Texture != null)
         {
             Debug.Log("Profile Pic");
+            rawImg.gameObject.SetActive(true);
             rawImg.texture = result.Texture;
             //if (FB_profilePic != null) FB_profilePic.sprite = Sprite.Create(result.Texture, new Rect(0, 0, 128, 128), new Vector2());
             /*JSONObject json = new JSONObject(result.RawResult);
@@ -110,20 +128,17 @@ public class FacebookManager : MonoBehaviour
         }
     }
 
-
-
     #endregion
 
 
     //login
-    public void Facebook_LogIn() 
+    public void Facebook_LogIn()
     {
         List<string> permissions = new List<string>();
         permissions.Add("public_profile");
-        //permissions.Add("user_friends");
         FB.LogInWithReadPermissions(permissions, AuthCallBack);
-
     }
+
     void AuthCallBack(IResult result)
     {
         if (FB.IsLoggedIn)
@@ -131,38 +146,116 @@ public class FacebookManager : MonoBehaviour
             SetInit();
             //AccessToken class will have session details
             var aToken = AccessToken.CurrentAccessToken;
-
-            Debug.Log(aToken.UserId);
-
-            foreach (string perm in aToken.Permissions)
+       
+            if (auth.CurrentUser != null && auth.CurrentUser.IsAnonymous)
             {
-                Debug.Log(perm);
+                LinkAnonymousAccountWithFacebook(aToken.TokenString);
+            }
+            else if (auth.CurrentUser == null)
+            {
+                SignInWithFacebook(aToken.TokenString);
             }
         }
         else
         {
             Debug.Log("Failed to log in");
         }
-
     }
 
+    public void LinkAnonymousAccountWithFacebook(string facebookAccessToken)
+    {
+        var user = auth.CurrentUser;
+        Credential credential = FacebookAuthProvider.GetCredential(facebookAccessToken);
 
+        user.LinkWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log("Successfully linked anonymous account with Facebook.");
+                DataSaver.Instance.SetUserId(user.UserId);
+                DataSaver.Instance.LoadDataFn();
+            }
+            else if (task.IsFaulted)
+            {
+                // var firebaseException = task.Exception?.Flatten().InnerExceptions[0] as FirebaseException;
+                // if (firebaseException != null && firebaseException.ErrorCode == (int)AuthError.CredentialAlreadyInUse)
+                // {
+                //     Debug.Log("Account already linked with Facebook. Signing in with Facebook.");
+                //     SignInWithFacebook(facebookAccessToken);
+                // }
+                // else
+                // {
+                //     Debug.Log("firebaseException: " + firebaseException);
+                //     Debug.LogError("Failed to link account: " + task.Exception);
+                // }
+                
+                // if (firebaseException != null)
+                // {
+                //     Debug.Log("firebaseException: " + firebaseException);
+                // }
+                // else
+                // {
+                //     // In ra toàn bộ lỗi để kiểm tra chi tiết.
+                //     Debug.LogError("Task failed with exception: " + task.Exception?.ToString());
+                // }
+                
+                var innerException = task.Exception?.Flatten().InnerExceptions[0];
+                if (innerException is Firebase.Auth.FirebaseAccountLinkException linkException)
+                {
+                    Debug.Log("Account linking failed: This credential is already associated with a different user account.");
+                    SignInWithFacebook(facebookAccessToken);
+                }
+                else
+                {
+                    Debug.LogError("Task failed with exception: " + task.Exception?.ToString());
+                }
+            }
+        });
+    }
 
+    private void SignInWithFacebook(string accessToken)
+    {
+        Firebase.Auth.Credential credential = Firebase.Auth.FacebookAuthProvider.GetCredential(accessToken);
+        auth.SignInAndRetrieveDataWithCredentialAsync(credential).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCanceled)
+            {
+                Debug.LogError("SignInAndRetrieveDataWithCredentialAsync was canceled.");
+                return;
+            }
+
+            if (task.IsFaulted)
+            {
+                Debug.LogError("SignInAndRetrieveDataWithCredentialAsync encountered an error: " + task.Exception);
+                return;
+            }
+
+            Firebase.Auth.AuthResult result = task.Result;
+            Debug.LogFormat("User signed in successfully: {0} ({1})", result.User.DisplayName, result.User.UserId);
+
+            DataSaver.Instance.SetUserId(result.User.UserId);
+            DataSaver.Instance.CheckIfFacebookUserExists();
+        });
+    }
 
     //logout
     public void Facebook_LogOut()
     {
+        auth.SignOut();
         StartCoroutine(LogOut());
     }
-    IEnumerator LogOut() {
+
+    IEnumerator LogOut()
+    {
         FB.LogOut();
         while (FB.IsLoggedIn)
         {
             Debug.Log("Logging Out");
             yield return null;
         }
+
         Debug.Log("Logout Successful");
-       // if (FB_profilePic != null) FB_profilePic.sprite = null;
+        // if (FB_profilePic != null) FB_profilePic.sprite = null;
         if (FB_userName != null) FB_userName.text = "";
         if (rawImg != null) rawImg.texture = null;
     }
@@ -179,7 +272,6 @@ public class FacebookManager : MonoBehaviour
             "I just watched " + "22" + " times of this channel",
             null,
             ShareCallback);
-
     }
 
     private static void ShareCallback(IShareResult result)
@@ -191,8 +283,10 @@ public class FacebookManager : MonoBehaviour
             Debug.LogError(result.Error);
             return;
         }
+
         Debug.Log(result.RawResult);
     }
+
     public static void SpentCoins(int coins, string item)
     {
         var param = new Dictionary<string, object>();
@@ -220,5 +314,4 @@ public class FacebookManager : MonoBehaviour
     }*/
 
     #endregion
-
 }
