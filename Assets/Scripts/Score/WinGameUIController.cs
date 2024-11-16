@@ -148,8 +148,10 @@ public class WinGameUIController : MonoBehaviour
                     .SetEase(Ease.OutBounce))
                 .Join(rewards[0].shineLightPS.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.3f)
                     .SetEase(Ease.OutQuad))
-                .Join(rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));
-            ;
+                .Join(rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
+                    .SetEase(Ease.OutBounce));
+            
+            DataSaver.Instance.CompletedLevel("rock");
         }
         else
         {
@@ -159,8 +161,10 @@ public class WinGameUIController : MonoBehaviour
                     .SetEase(Ease.OutBounce))
                 .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(1.9f, 1.9f, 1.9f), 0.3f)
                     .SetEase(Ease.OutQuad))
-                .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f).SetEase(Ease.OutBounce));
-            ;
+                .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
+                    .SetEase(Ease.OutBounce));
+            
+            DataSaver.Instance.CompletedLevel("star");
         }
 
         tapText.gameObject.SetActive(true);

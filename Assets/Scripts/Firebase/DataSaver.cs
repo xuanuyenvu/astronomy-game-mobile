@@ -11,6 +11,8 @@ public class DataSaver : MonoBehaviour
     public static DataSaver Instance { get; private set; }
     public UserModel userModel;
     public FacebookUserData facebookUserData;
+    public int selectedLevel;
+    public int selectedLevelIndex;
     
     private DatabaseReference dbRef;
 
@@ -40,13 +42,25 @@ public class DataSaver : MonoBehaviour
     public void InitNewUser()
     {
         userModel.Star = 0;
+        userModel.Levels = new List<LevelItem>();
 
-        userModel.LevelStars = new List<int>();
         for (int i = 0; i < 24; i++)
         {
-            userModel.LevelStars.Add(1);
+            // Mặc định tất cả đều bị khóa
+            userModel.Levels.Add(new LevelItem("game", "locked"));
         }
+
+        // Cập nhật các vị tr lưu card
+        userModel.Levels[4] = new LevelItem("card", "locked");
+        userModel.Levels[8] = new LevelItem("card", "locked");
+        userModel.Levels[13] = new LevelItem("card", "locked");
+        userModel.Levels[18] = new LevelItem("card", "locked");
+        userModel.Levels[21] = new LevelItem("card", "locked");
+
+        // Unlock level đầu tiên
+        userModel.Levels[0] = new LevelItem("game", "unlocked");
     }
+
 
     public void SaveDataFn()
     {
@@ -79,4 +93,47 @@ public class DataSaver : MonoBehaviour
             LoadDataFn();
         }
     }
+    
+    public void CompletedLevel(string type)
+    {
+        int gameIndex = selectedLevelIndex;
+        
+        if (userModel.Levels[gameIndex].Type == "game")
+        {
+            if (type == "rock")
+            {
+                userModel.Levels[gameIndex].State = "rock";
+            }
+            else if (type == "star")
+            {
+                userModel.Levels[gameIndex].State = "star";
+                userModel.Star += 1;
+            }
+            
+            SetCurrentLevel(gameIndex + 1);
+            SaveDataFn();
+        }
+    }
+
+    public void OpenedCard(int cardIndex)
+    {
+        if (userModel.Levels[cardIndex].Type == "card")
+        {
+            userModel.Levels[cardIndex].State = "opened";
+            
+            SetCurrentLevel(cardIndex + 1);
+            SaveDataFn();
+        }
+    }
+    
+    private void SetCurrentLevel(int levelIndex)
+    {
+        if (levelIndex >= userModel.Levels.Count)
+        {
+            return;
+        }
+        
+        userModel.Levels[levelIndex].State = "unlocked";
+    }
+
 }

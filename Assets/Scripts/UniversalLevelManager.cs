@@ -23,10 +23,8 @@ public class UniversalLevelManager : MonoBehaviour
         {
             Instantiate(gameManagerPrefab);
         }
-        // nhận giá trị level từ nút bấm
-        int selectedLevel = LevelSelector.selectedLevel;
-        // int selectedLevel = 7;
-        LoadAndSetUpLevel(selectedLevel);
+        
+        LoadAndSetUpLevel(DataSaver.Instance.selectedLevel);
     }
 
     private void LoadAndSetUpLevel(int level)

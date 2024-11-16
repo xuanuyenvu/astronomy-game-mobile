@@ -7,14 +7,8 @@ using TMPro;
 
 public class LevelSelector : MonoBehaviour
 {
-    public static int selectedLevel;
-    public RectTransform contentRectTransform; 
+    public RectTransform contentRectTransform;
 
-    private List<int> levelDatabase = new List<int> 
-    { 
-          4, 4, 3, 4, 3, 3, 4, 4, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-        //L, L, L, L, C, L, L, L, C, L, L, L, L, C, L, L, L, L, C, L, L, C, L, L
-    };
     [SerializeField] private int currentLevel = 1; 
 
     void Start()
@@ -27,13 +21,16 @@ public class LevelSelector : MonoBehaviour
         // transform.childCount
         for (int i = 0; i < transform.childCount; i++)
         {
-            // Lấy đối tượng con tại vị trí i
             IButtonHandler child = transform.GetChild(i).GetComponent<IButtonHandler>();
-            child.UpdateState(levelDatabase[i]);
             
-            if (levelDatabase[i] == 2 && child.type == "levelBtn")
+            child.UpdateState(DataSaver.Instance.userModel.Levels[i].State);
+            
+            if (DataSaver.Instance.userModel.Levels[i].Equals(new LevelItem("game", "unlocked")))
             {
                 currentLevel = child.GetLevel();
+            } else if (DataSaver.Instance.userModel.Levels[i].Equals(new LevelItem("card", "unlocked")))
+            {
+                currentLevel = transform.GetChild(i+1).GetComponent<IButtonHandler>().GetLevel();
             }
         }
 
@@ -49,7 +46,7 @@ public class LevelSelector : MonoBehaviour
     {
         if (currentLevel >= 4 && currentLevel <= transform.childCount - 2)
         {
-            float offset = 4456 - (550 * (currentLevel - 4));
+            float offset = 4366 - (550 * (currentLevel - 4));
             contentRectTransform.localPosition  = new Vector3(offset, 0, 0);
         }
         else if (currentLevel > transform.childCount - 2)
@@ -62,10 +59,18 @@ public class LevelSelector : MonoBehaviour
         }
     }
 
-    public void OpenLevel(int level)
+    public void PlayGame(int level)
     {
-        selectedLevel = level;
-        Debug.Log("openLevel : " + selectedLevel);
+        DataSaver.Instance.selectedLevel = level;
+        
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            if (transform.GetChild(i).GetComponent<IButtonHandler>().GetLevel() == level)
+            {
+                DataSaver.Instance.selectedLevelIndex = i;
+            }
+        }
+        
         SceneManager.LoadScene("game");
     }
 }

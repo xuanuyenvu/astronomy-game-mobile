@@ -5,7 +5,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class LevelButtonHandler : IButtonHandler
+public class GameButtonHandler : IButtonHandler
 {
     public Image largeCircle;
     public Image mediumCircle;
@@ -19,7 +19,7 @@ public class LevelButtonHandler : IButtonHandler
 
     private void Start()
     {
-        type = "levelBtn";
+        type = "level";
         SetLevel(level);
     }
 
@@ -45,20 +45,20 @@ public class LevelButtonHandler : IButtonHandler
     //     UpdateState(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector
     // }
 
-    public override void UpdateState(int _state)
+    public override void UpdateState(string levelState)
     {
-        switch (_state)
+        switch (levelState)
         {
-            case 1:
+            case "locked":
                 SetLocked();
                 break;
-            case 2:
+            case "unlocked":
                 SetUnlockedUnplayed();
                 break;
-            case 3:
+            case "rock":
                 SetPlayedRocket();
                 break;
-            case 4:
+            case "star":
                 SetPlayedStar();
                 break;
         }

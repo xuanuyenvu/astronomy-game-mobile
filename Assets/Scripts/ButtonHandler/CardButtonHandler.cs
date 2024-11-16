@@ -12,22 +12,22 @@ public class CardButtonHandler : IButtonHandler
 
     private void Start()
     {
-        type = "cardBtn";
+        type = "card";
         button = GetComponent<Button>();
         buttonImg = GetComponent<Image>();
     }
 
-    public override void UpdateState(int _state)
+    public override void UpdateState(string levelState)
     {
-        switch (_state)
+        switch (levelState)
         {
-            case 1:
+            case "locked":
                 SetLocked();
                 break;
-            case 2:
+            case "unlocked":
                 SetUnlocked();
                 break;
-            default:
+            case "opened":
                 SetOpened();
                 break;
         }
