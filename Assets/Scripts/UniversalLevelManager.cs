@@ -15,6 +15,7 @@ public class UniversalLevelManager : MonoBehaviour
     public WarpSpeedController wrapSpeedController;
     public GameOverUIController gameOverUiController;
     public WinGameUIController winGameUiController;
+    public UIController uiController;
 
     void Start()
     {
@@ -22,10 +23,8 @@ public class UniversalLevelManager : MonoBehaviour
         {
             Instantiate(gameManagerPrefab);
         }
-        // nhận giá trị level từ nút bấm
-        // int selectedLevel = LevelSelector.selectedLevel;
-        int selectedLevel = 13;
-        LoadAndSetUpLevel(selectedLevel);
+        
+        LoadAndSetUpLevel(DataSaver.Instance.selectedLevel);
     }
 
     private void LoadAndSetUpLevel(int level)
@@ -163,9 +162,16 @@ public class UniversalLevelManager : MonoBehaviour
     {
         Debug.Log("Load Game");
         // TO DO : EFFECT FADE
+        uiController.Reset();
         gameOverUiController.StopUI(level.level > 6);
         timerManager.gameObject.SetActive(true);
+        StartCoroutine(DelayedLoadLevel());
+    }
+    
+    private IEnumerator DelayedLoadLevel()
+    {
         GameManager.Instance.DestroyCurrentGamePlay();
+        yield return new WaitForEndOfFrame(); // Chờ đến cuối frame hiện tại
         LoadAndSetUpLevel(level.level);
     }
 
@@ -173,7 +179,13 @@ public class UniversalLevelManager : MonoBehaviour
     {
         Debug.Log("Retry");
         gameOverUiController.StopUI(level.level > 6);
+        StartCoroutine(DelayedRetry());
+    }
+
+    private IEnumerator DelayedRetry()
+    {
         GameManager.Instance.DestroyCurrentGamePlay();
+        yield return new WaitForEndOfFrame(); // Chờ đến cuối frame hiện tại
 
         if (level.level > 6)
         {

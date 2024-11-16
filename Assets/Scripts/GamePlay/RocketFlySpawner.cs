@@ -39,7 +39,7 @@ public class RocketFlySpawner : IGamePlay
     private bool isLeft;
 
     // biến bool
-    private bool animationStart = false;
+    private bool isAnimationPlaying = false;
     private bool animationResult = false;
     private bool playing = false;
 
@@ -69,7 +69,7 @@ public class RocketFlySpawner : IGamePlay
             }
         }
 
-        if (!animationStart && playing)
+        if (!isAnimationPlaying && playing)
         {
             rocket.TurnOnCollider = true;
         }
@@ -152,7 +152,7 @@ public class RocketFlySpawner : IGamePlay
         Destroy(planetAnswer.gameObject);
 
         FindMeanAndSetRocket();
-        StartCoroutine(SetPositionBeforePlaying(0.5f));
+        StartCoroutine(SetPositionBeforePlaying(0.6f));
     }
 
     public void RandomizePosition()
@@ -268,8 +268,8 @@ public class RocketFlySpawner : IGamePlay
 
         if (rocket != null)
         {
-            animationStart = true;
-            Debug.Log("" + animationStart);
+            isAnimationPlaying = true;
+            Debug.Log("" + isAnimationPlaying);
             StartCoroutine(FlyTo(answer));
         }
         else
@@ -296,8 +296,8 @@ public class RocketFlySpawner : IGamePlay
             yield return null;
         }
 
-        animationStart = false;
-        Debug.Log("animationStart " + animationStart);
+        isAnimationPlaying = false;
+        Debug.Log("isAnimationPlaying " + isAnimationPlaying);
     }
 
     private void SetRocket(Vector3 _position)
@@ -310,7 +310,7 @@ public class RocketFlySpawner : IGamePlay
 
     IEnumerator SetPositionBeforePlaying(float time)
     {
-        animationStart = true;
+        isAnimationPlaying = true;
         var center = GetCenterPoint();
         var planet1Pos = planet1.transform.position;
         var rocketPos = rocket.transform.position;
@@ -328,7 +328,7 @@ public class RocketFlySpawner : IGamePlay
         planet1.transform.position = planet1Pos;
         rocket.transform.position = rocketPos;
 
-        animationStart = false;
+        isAnimationPlaying = false;
         playing = true;
     }
 
@@ -349,7 +349,7 @@ public class RocketFlySpawner : IGamePlay
     {
         RandomizePosition();
         FindMeanAndSetRocket();
-        StartCoroutine(SetPositionBeforePlaying(0.5f));
+        StartCoroutine(SetPositionBeforePlaying(0.6f));
     }
 
     public override void CheckDragPosition(Vector3 dragPos, string planetName)
@@ -529,11 +529,17 @@ public class RocketFlySpawner : IGamePlay
 
     public override void OnTimeOver()
     {
-
+        this.GameOver();
     }
 
     public override void OnFullEnergy()
     {
 
+    }
+    
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+        // DestroyAllPlanetsInGroup();
     }
 }

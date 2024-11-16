@@ -938,7 +938,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Gradient, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.7753443717956543,"g":2.6257050037384035,"b":4.93635892868042,"a":1.0},"time":0.0},{"color":{"r":1.5275750160217286,"g":2.90462064743042,"b":3.9427952766418459,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.3470664620399475},{"alpha":1.0,"time":0.7441214323043823},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
+      m_SerializableObject: '{"colorKeys":[{"color":{"r":0.6552883982658386,"g":0.9373295307159424,"b":3.6558218002319338,"a":1.0},"time":0.0},{"color":{"r":1.5275750160217286,"g":2.5447399616241457,"b":3.9427952766418459,"a":1.0},"time":1.0}],"alphaKeys":[{"alpha":0.0,"time":0.0},{"alpha":1.0,"time":0.3470664620399475},{"alpha":1.0,"time":0.7441214323043823},{"alpha":0.0,"time":1.0}],"gradientMode":0}'
     m_Space: 2147483647
   m_Property:
     name: Color

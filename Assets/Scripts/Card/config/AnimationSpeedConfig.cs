@@ -12,7 +12,7 @@ namespace config {
         public float position = 500f;
         
         [SerializeField]
-        public float releasePosition = 2000f;
+        public float releasePosition = 1500f;
 
         [SerializeField]
         public float zoom = 0.3f;

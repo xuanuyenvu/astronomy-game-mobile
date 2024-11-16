@@ -36,9 +36,8 @@ public class NonLinearSpawner : IGamePlay
     private bool isTop;
 
     // biến bool
-    private bool animationStart = false;
+    private bool isAnimationPlaying = false;
     private bool animationResult = false;
-    private bool playing;
 
     // các biến khác
     RocketController destinationRocket = null;
@@ -55,7 +54,7 @@ public class NonLinearSpawner : IGamePlay
 
     void Update()
     {
-        if (!animationStart && playing)
+        if (!isAnimationPlaying)
         {
             rocket.TurnOnCollider = true;
         }
@@ -129,7 +128,7 @@ public class NonLinearSpawner : IGamePlay
         Destroy(planetAnswer.gameObject);
 
         SetRocket();
-        StartCoroutine(SetPositionBeforePlaying(0.5f));
+        StartCoroutine(SetPositionBeforePlaying(0.6f));
     }
 
     public void RandomizePosition()
@@ -346,7 +345,7 @@ public class NonLinearSpawner : IGamePlay
 
     IEnumerator SetPositionBeforePlaying(float time)
     {
-        animationStart = true;
+        isAnimationPlaying = true;
         var center = GetCenterPoint();
         var planet1Pos = planet1.transform.position;
         var rocketPos = rocket.transform.position;
@@ -368,8 +367,7 @@ public class NonLinearSpawner : IGamePlay
         rocket.transform.position = rocketPos;
         destinationRocket.transform.position = destinationPos;
 
-        animationStart = false;
-        playing = true;
+        isAnimationPlaying = false;
     }
 
     virtual protected Vector3 GetCenterPoint()
@@ -391,7 +389,7 @@ public class NonLinearSpawner : IGamePlay
         SetRocket();
         SwapPlanetsByMetrics();
         SetDestinationOfRocket();
-        StartCoroutine(SetPositionBeforePlaying(0.5f));
+        StartCoroutine(SetPositionBeforePlaying(0.6f));
     }
 
     public override void CheckDragPosition(Vector3 dragPos, string planetName)
@@ -593,11 +591,17 @@ public class NonLinearSpawner : IGamePlay
 
     public override void OnTimeOver()
     {
-
+        this.GameOver();
     }
 
     public override void OnFullEnergy()
     {
 
+    }
+    
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+        // DestroyAllPlanetsInGroup();
     }
 }

@@ -80,9 +80,8 @@ public class GameManager : MonoBehaviour
 
     public void DestroyCurrentGamePlay()
     {
-        if (currentGamePlay != null)
+        if (currentGamePlay != null && currentGamePlay.gameObject != null)
         {
-            Debug.Log("Destroying current game play " + currentGamePlay);
             Destroy(currentGamePlay.gameObject);
             currentGamePlay = null;
         }

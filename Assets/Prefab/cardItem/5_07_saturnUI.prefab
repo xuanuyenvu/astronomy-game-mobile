@@ -210,7 +210,6 @@ MonoBehaviour:
   targetRotation: -10.714286
   targetVerticalDisplacement: 19.591837
   planetName: saturn
-  dissolveMaterial: {fileID: 2100000, guid: 0f7a929ab7c288547b94186787fc400f, type: 2}
   cardController: {fileID: 0}
   animationSpeedConfig:
     rotation: 60

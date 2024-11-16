@@ -26,7 +26,7 @@ public class PositionSelectionSpawner_3 : PositionSelectionSpawner_2
         Destroy(planetAnswer.gameObject);
 
         FindMeanAndSetRocket();
-        StartCoroutine(SetPositionBeforePlaying(0.5f));
+        StartCoroutine(SetPositionBeforePlaying(0.6f));
     }
 
     override protected void FakeTargetSpawner()
