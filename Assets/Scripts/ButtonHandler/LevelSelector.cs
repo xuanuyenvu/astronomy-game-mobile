@@ -37,6 +37,12 @@ public class LevelSelector : MonoBehaviour
         ScrollToCurrentLevel();
     }
     
+    public void UpdateAfterOpenCard(int cardIndex)
+    {
+        IButtonHandler child = transform.GetChild(cardIndex).GetComponent<IButtonHandler>();
+        child.UpdateState("opened");
+    }
+    
     // private void OnValidate()
     // {
     //     ScrollToCurrentLevel(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector

@@ -802,8 +802,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   userModel:
     star: 0
-    levelStars: 
+    levels: []
     userId: 
+  selectedLevel: 0
+  selectedLevelIndex: 0
 --- !u!4 &947614705
 Transform:
   m_ObjectHideFlags: 0
@@ -850,6 +852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FB_userName: {fileID: 2029506212}
   rawImg: {fileID: 888094062}
+  loginButton: {fileID: 42001208}
 --- !u!4 &1301566258
 Transform:
   m_ObjectHideFlags: 0

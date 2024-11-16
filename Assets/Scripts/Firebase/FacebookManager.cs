@@ -17,10 +17,20 @@ public class FacebookManager : MonoBehaviour
 
     public TextMeshProUGUI FB_userName;
     public RawImage rawImg;
+    
+    public Button loginButton;
 
 
     #region Initialize
 
+    private void HideLoginButton()
+    {
+        if (loginButton != null)
+        {
+            loginButton.gameObject.SetActive(false);
+        }
+    }
+    
     private void Awake()
     {
         FB.Init(SetInit, FbLoginSuccess);
@@ -49,6 +59,11 @@ public class FacebookManager : MonoBehaviour
     private void Start()
     {
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+
+        if (auth.CurrentUser != null && !auth.CurrentUser.IsAnonymous)
+        {
+            HideLoginButton();
+        }
     }
 
     void SetInit()
@@ -116,8 +131,8 @@ public class FacebookManager : MonoBehaviour
         if (result.Texture != null)
         {
             // Debug.Log("Profile Pic");
-            rawImg.gameObject.SetActive(true);
-            rawImg.texture = result.Texture;
+            // rawImg.gameObject.SetActive(true);
+            // rawImg.texture = result.Texture;
             
             DataSaver.Instance.facebookUserData.ProfilePic = result.Texture;
         }

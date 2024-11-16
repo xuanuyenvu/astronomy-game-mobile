@@ -44,18 +44,20 @@ public class DataSaver : MonoBehaviour
         userModel.Star = 0;
         userModel.Levels = new List<LevelItem>();
 
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < 26; i++)
         {
             // Mặc định tất cả đều bị khóa
             userModel.Levels.Add(new LevelItem("game", "locked"));
         }
 
         // Cập nhật các vị tr lưu card
-        userModel.Levels[4] = new LevelItem("card", "locked");
-        userModel.Levels[8] = new LevelItem("card", "locked");
-        userModel.Levels[13] = new LevelItem("card", "locked");
-        userModel.Levels[18] = new LevelItem("card", "locked");
-        userModel.Levels[21] = new LevelItem("card", "locked");
+        userModel.Levels[1] = new LevelItem("card", "locked");
+        userModel.Levels[3] = new LevelItem("card", "locked");
+        userModel.Levels[6] = new LevelItem("card", "locked");
+        userModel.Levels[10] = new LevelItem("card", "locked");
+        userModel.Levels[15] = new LevelItem("card", "locked");
+        userModel.Levels[20] = new LevelItem("card", "locked");
+        userModel.Levels[23] = new LevelItem("card", "locked");
 
         // Unlock level đầu tiên
         userModel.Levels[0] = new LevelItem("game", "unlocked");
@@ -122,6 +124,7 @@ public class DataSaver : MonoBehaviour
             userModel.Levels[cardIndex].State = "opened";
             
             SetCurrentLevel(cardIndex + 1);
+            Debug.Log("Opened card: " + cardIndex);
             SaveDataFn();
         }
     }
