@@ -23,6 +23,9 @@ public class LevelUIManager : MonoBehaviour
     
     public TextMeshProUGUI tapText;
     public Button tapBtn;
+    public Button loginButton;
+    public TextMeshProUGUI userName;
+    public RawImage userPic;
     
     public List<Card> cardPrefabs;
     private Card currentCard;
@@ -35,6 +38,8 @@ public class LevelUIManager : MonoBehaviour
         
         tapText.gameObject.SetActive(false);
         tapBtn.gameObject.SetActive(false);
+        
+        HideLoginButton();
     }
     
     public void OpenCard(int index)
@@ -145,5 +150,22 @@ public class LevelUIManager : MonoBehaviour
     public void BackToChapterMenu()
     {
         SceneManager.LoadScene("chapterMenu");
+    }
+
+    public void LoginFB()
+    {
+        FacebookManager.Instance.Facebook_LogIn();
+    }
+    
+    private void HideLoginButton()
+    {
+        if (FacebookManager.Instance.IsFacebookUserLoggedIn())
+        {
+            loginButton.gameObject.SetActive(false);
+
+            userName.text = DataSaver.Instance.facebookUserData.Name;
+            userPic.texture = DataSaver.Instance.facebookUserData.ProfilePic;
+            userName.gameObject.SetActive(true);
+        }
     }
 }

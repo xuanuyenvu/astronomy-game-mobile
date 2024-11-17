@@ -14,25 +14,21 @@ using UnityEngine.SceneManagement;
 public class FacebookManager : MonoBehaviour
 {
     private Firebase.Auth.FirebaseAuth auth;
-
-    public TextMeshProUGUI FB_userName;
-    public RawImage rawImg;
-    
-    public Button loginButton;
-
+    public static FacebookManager Instance { get; private set; }
 
     #region Initialize
-
-    private void HideLoginButton()
-    {
-        if (loginButton != null)
-        {
-            loginButton.gameObject.SetActive(false);
-        }
-    }
     
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Destroy duplicate instance
+            return;
+        }
+        
+        Instance = this;
+        DontDestroyOnLoad(gameObject); 
+        
         FB.Init(SetInit, FbLoginSuccess);
 
         if (!FB.IsInitialized)
@@ -59,11 +55,16 @@ public class FacebookManager : MonoBehaviour
     private void Start()
     {
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+    }
 
+    public bool IsFacebookUserLoggedIn()
+    {
         if (auth.CurrentUser != null && !auth.CurrentUser.IsAnonymous)
         {
-            HideLoginButton();
+            return true;
         }
+
+        return false;
     }
 
     void SetInit()
@@ -113,11 +114,6 @@ public class FacebookManager : MonoBehaviour
         if (result.Error == null)
         {
             string name = "" + result.ResultDictionary["first_name"];
-            // if (FB_userName != null)
-            // {
-            //     FB_userName.gameObject.SetActive(true);
-            //     FB_userName.text = name;
-            // }
             DataSaver.Instance.facebookUserData.Name = name;
         }
         else
@@ -249,9 +245,6 @@ public class FacebookManager : MonoBehaviour
         }
 
         Debug.Log("Logout Successful");
-        // if (FB_profilePic != null) FB_profilePic.sprite = null;
-        if (FB_userName != null) FB_userName.text = "";
-        if (rawImg != null) rawImg.texture = null;
     }
 
 
