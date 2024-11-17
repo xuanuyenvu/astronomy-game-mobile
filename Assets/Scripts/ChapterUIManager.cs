@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ChapterUIManager : MonoBehaviour
@@ -13,6 +14,8 @@ public class ChapterUIManager : MonoBehaviour
 
     public GameObject primaryBg;
     public GameObject newCardBg;
+    public GameObject settingBg;
+    
     public GameObject scrollView;
     public GameObject backBtn;
     public GameObject stars;
@@ -28,6 +31,8 @@ public class ChapterUIManager : MonoBehaviour
     private void Start()
     {
         newCardBg.SetActive(false);
+        settingBg.SetActive(false);
+        
         tapText.gameObject.SetActive(false);
         tapBtn.gameObject.SetActive(false);
     }
@@ -63,8 +68,9 @@ public class ChapterUIManager : MonoBehaviour
     
     private void ShowCard(string name)
     {
-        primaryBg.SetActive(false);
         newCardBg.SetActive(true);
+        primaryBg.SetActive(false);
+        
         scrollView.SetActive(false);
         backBtn.SetActive(false);
         stars.SetActive(false);
@@ -114,5 +120,30 @@ public class ChapterUIManager : MonoBehaviour
         tapText.transform.DOScale(scaleTo, singleLoopDuration / 2)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo);
+    }
+
+    public void OpenSetting()
+    {
+        settingBg.SetActive(true);
+        
+        scrollView.SetActive(false);
+        backBtn.SetActive(false);
+        stars.SetActive(false);
+        settingBtn.SetActive(false);
+    }
+    
+    public void CloseSetting()
+    {
+        settingBg.SetActive(false);
+        
+        scrollView.SetActive(true);
+        backBtn.SetActive(true);
+        stars.SetActive(true);
+        settingBtn.SetActive(true);
+    }
+    
+    public void BackToChapterMenu()
+    {
+        SceneManager.LoadScene("chapterMenu");
     }
 }
