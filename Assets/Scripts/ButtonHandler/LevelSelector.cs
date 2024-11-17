@@ -67,6 +67,7 @@ public class LevelSelector : MonoBehaviour
 
     public void PlayGame(int level)
     {
+        AudioManager.Instance.PlaySFX("Click");
         DataSaver.Instance.selectedLevel = level;
         
         for (int i = 0; i < transform.childCount; i++)

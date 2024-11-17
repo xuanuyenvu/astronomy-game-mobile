@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,8 +17,23 @@ public class ChapterUIController : MonoBehaviour
     public TextMeshProUGUI userName;
     public RawImage userPic;
     
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+
+    private void Start()
+    {
+        SetUpVolume();
+    }
+    
+    private void SetUpVolume()
+    {
+        bgmSlider.value = AudioManager.Instance.GetMusicVolume();
+        sfxSlider.value = AudioManager.Instance.GetSFXVolume();
+    }
+
     public void OpenSetting()
     {
+        AudioManager.Instance.PlaySFX("Click");
         settingBg.SetActive(true);
         
         btn1.SetActive(false);
@@ -28,6 +44,7 @@ public class ChapterUIController : MonoBehaviour
     
     public void CloseSetting()
     {
+        AudioManager.Instance.PlaySFX("Click");
         settingBg.SetActive(false);
         
         btn1.SetActive(true);
@@ -51,5 +68,15 @@ public class ChapterUIController : MonoBehaviour
             userPic.texture = DataSaver.Instance.facebookUserData.ProfilePic;
             userName.gameObject.SetActive(true);
         }
+    }
+    
+    public void MusicVolumeChange()
+    {
+        AudioManager.Instance.SetMusicVolume(bgmSlider.value);
+    }
+    
+    public void SFXVolumeChange()
+    {
+        AudioManager.Instance.SetSFXVolume(sfxSlider.value);
     }
 }

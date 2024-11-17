@@ -7486,6 +7486,8 @@ MonoBehaviour:
   loginButton: {fileID: 5187443722121009988}
   userName: {fileID: 5044327390493768852}
   userPic: {fileID: 4384016883449984282}
+  bgmSlider: {fileID: 1382747241819983104}
+  sfxSlider: {fileID: 6925045743888239106}
   cardPrefabs:
   - {fileID: 8873965050343267878, guid: bd41efdb1ece28147b482c6eeab65a83, type: 3}
   - {fileID: 7579756230333926622, guid: bd617664d505fa048807f028a9b4a715, type: 3}
@@ -12808,7 +12810,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2029956065}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bc4de97b677ea124985295dadc0911a8, type: 3}
   m_Name: 
@@ -13953,7 +13955,19 @@ MonoBehaviour:
   m_Value: 0.463
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1137481256}
+        m_TargetAssemblyTypeName: LevelUIManager, Assembly-CSharp
+        m_MethodName: MusicVolumeChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1399952412443946067
 GameObject:
   m_ObjectHideFlags: 0
@@ -15610,7 +15624,19 @@ MonoBehaviour:
   m_Value: 0.463
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1137481256}
+        m_TargetAssemblyTypeName: LevelUIManager, Assembly-CSharp
+        m_MethodName: SFXVolumeChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &7023529524763051864
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16238,7 +16264,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 555261658316489937}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2c2d57453051db449ec9eeb0d207989, type: 3}
   m_Name: 

@@ -37,6 +37,10 @@ public class TimerManager : MonoBehaviour
     public void StartTimer()
     {
         stopeTimer = false;
+        if (!gameObject.activeSelf)
+        {
+            return;
+        }
         StartCoroutine(StartTheTimerTicker());
         // StartTheTimerTickerByDotween();
     }

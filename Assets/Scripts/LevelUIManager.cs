@@ -27,6 +27,9 @@ public class LevelUIManager : MonoBehaviour
     public TextMeshProUGUI userName;
     public RawImage userPic;
     
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    
     public List<Card> cardPrefabs;
     private Card currentCard;
     private int indexCard;
@@ -40,10 +43,18 @@ public class LevelUIManager : MonoBehaviour
         tapBtn.gameObject.SetActive(false);
         
         HideLoginButton();
+        SetUpVolume();
+    }
+    
+    private void SetUpVolume()
+    {
+        bgmSlider.value = AudioManager.Instance.GetMusicVolume();
+        sfxSlider.value = AudioManager.Instance.GetSFXVolume();
     }
     
     public void OpenCard(int index)
     {
+        AudioManager.Instance.PlaySFX("Click");
         indexCard = index;
         switch (indexCard)
         {
@@ -97,6 +108,7 @@ public class LevelUIManager : MonoBehaviour
 
     public void ReceiveCard()
     {
+        AudioManager.Instance.PlaySFX("Click");
         HideCard();
         DataSaver.Instance.OpenedCard(indexCard);
         levelSelector.UpdateAfterOpenCard(indexCard);
@@ -129,6 +141,7 @@ public class LevelUIManager : MonoBehaviour
 
     public void OpenSetting()
     {
+        AudioManager.Instance.PlaySFX("Click");
         settingBg.SetActive(true);
         
         scrollView.SetActive(false);
@@ -139,6 +152,7 @@ public class LevelUIManager : MonoBehaviour
     
     public void CloseSetting()
     {
+        AudioManager.Instance.PlaySFX("Click");
         settingBg.SetActive(false);
         
         scrollView.SetActive(true);
@@ -149,6 +163,7 @@ public class LevelUIManager : MonoBehaviour
     
     public void BackToChapterMenu()
     {
+        AudioManager.Instance.PlaySFX("Click");
         SceneManager.LoadScene("chapterMenu");
     }
 
@@ -167,5 +182,15 @@ public class LevelUIManager : MonoBehaviour
             userPic.texture = DataSaver.Instance.facebookUserData.ProfilePic;
             userName.gameObject.SetActive(true);
         }
+    }
+    
+    public void MusicVolumeChange()
+    {
+        AudioManager.Instance.SetMusicVolume(bgmSlider.value);
+    }
+    
+    public void SFXVolumeChange()
+    {
+        AudioManager.Instance.SetSFXVolume(sfxSlider.value);
     }
 }

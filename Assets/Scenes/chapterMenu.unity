@@ -453,6 +453,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199603678}
   m_CullTransparentMesh: 1
+--- !u!1 &1259983941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1259983943}
+  - component: {fileID: 1259983942}
+  m_Layer: 0
+  m_Name: UIController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1259983942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259983941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d923306b38f012949814157cd29fbaa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingBg: {fileID: 3344983123391255373}
+  stars: {fileID: 356067632916692569}
+  btn1: {fileID: 1570185910}
+  btn2: {fileID: 1491280622}
+  settingBtn: {fileID: 4257495568185540165}
+  loginButton: {fileID: 1309854730252354471}
+  userName: {fileID: 3085458391857682294}
+  userPic: {fileID: 5766829802288996088}
+  bgmSlider: {fileID: 9214448727507298018}
+  sfxSlider: {fileID: 921682593932485088}
+--- !u!4 &1259983943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259983941}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2370.64, y: 667.99084, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1460027731
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,7 +652,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 379.9999, y: 45.00002}
+  m_AnchoredPosition: {x: 379.9999, y: 40}
   m_SizeDelta: {x: 4.95, y: 4.95}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1491280624
@@ -862,7 +916,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -380.0057, y: 45.00055}
+  m_AnchoredPosition: {x: -380.0057, y: 40}
   m_SizeDelta: {x: 4.96, y: 4.96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1570185912
@@ -1734,8 +1788,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ChapterUIManager, Assembly-CSharp
+      - m_Target: {fileID: 1259983942}
+        m_TargetAssemblyTypeName: ChapterUIController, Assembly-CSharp
         m_MethodName: OpenSetting
         m_Mode: 1
         m_Arguments:
@@ -2222,7 +2276,19 @@ MonoBehaviour:
   m_Value: 0.463
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1259983942}
+        m_TargetAssemblyTypeName: ChapterUIController, Assembly-CSharp
+        m_MethodName: SFXVolumeChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &984137560071859386
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16609,8 +16675,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: LevelUIManager, Assembly-CSharp
+      - m_Target: {fileID: 1259983942}
+        m_TargetAssemblyTypeName: ChapterUIController, Assembly-CSharp
         m_MethodName: CloseSetting
         m_Mode: 1
         m_Arguments:
@@ -26694,7 +26760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &3216068368691375421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32092,7 +32158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &4959007371053707895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -52297,7 +52363,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356067632916692569}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2c2d57453051db449ec9eeb0d207989, type: 3}
   m_Name: 
@@ -52447,7 +52513,19 @@ MonoBehaviour:
   m_Value: 0.463
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1259983942}
+        m_TargetAssemblyTypeName: ChapterUIController, Assembly-CSharp
+        m_MethodName: MusicVolumeChange
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -52459,3 +52537,4 @@ SceneRoots:
   - {fileID: 1902196660}
   - {fileID: 987579027}
   - {fileID: 1994289679}
+  - {fileID: 1259983943}

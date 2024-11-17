@@ -102,6 +102,11 @@ public class DataSaver : MonoBehaviour
         
         if (userModel.Levels[gameIndex].Type == "game")
         {
+            if (userModel.Levels[gameIndex].State == "star")
+            {
+                return;
+            }
+            
             if (type == "rock")
             {
                 userModel.Levels[gameIndex].State = "rock";
@@ -109,7 +114,7 @@ public class DataSaver : MonoBehaviour
             else if (type == "star")
             {
                 userModel.Levels[gameIndex].State = "star";
-                userModel.Star += 1;
+                userModel.Star++;
             }
             
             SetCurrentLevel(gameIndex + 1);

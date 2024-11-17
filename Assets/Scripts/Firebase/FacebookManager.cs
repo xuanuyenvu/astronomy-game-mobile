@@ -144,6 +144,7 @@ public class FacebookManager : MonoBehaviour
     //login
     public void Facebook_LogIn()
     {
+        AudioManager.Instance.PlaySFX("Click");
         List<string> permissions = new List<string>();
         permissions.Add("public_profile");
         FB.LogInWithReadPermissions(permissions, AuthCallBack);

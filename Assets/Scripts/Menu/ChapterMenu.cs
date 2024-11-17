@@ -26,12 +26,14 @@ public class ChapterMenu : MonoBehaviour
     }
     public void LoadChapter1()
     {
+        AudioManager.Instance.PlaySFX("Click");
         Debug.Log("Chapter 1");
         SceneManager.LoadScene("chapter1");
     }
 
     public void LoadChapter2()
     {
+        AudioManager.Instance.PlaySFX("Click");
         Debug.Log("Chapter 2");
         // SceneManager.LoadScene("chapter2");
     }
