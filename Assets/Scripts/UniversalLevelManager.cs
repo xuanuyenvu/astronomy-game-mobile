@@ -24,6 +24,7 @@ public class UniversalLevelManager : MonoBehaviour
             Instantiate(gameManagerPrefab);
         }
         
+        AudioManager.Instance.PlayMusic("In Game");
         LoadAndSetUpLevel(DataSaver.Instance.selectedLevel);
     }
 
@@ -136,6 +137,7 @@ public class UniversalLevelManager : MonoBehaviour
 
     private IEnumerator HandleStageCompletion()
     {
+        AudioManager.Instance.PlaySFX("Warp");
         yield return StartCoroutine(wrapSpeedController.ActivateForThreeSeconds());
         SetUpLevel(1);
     }

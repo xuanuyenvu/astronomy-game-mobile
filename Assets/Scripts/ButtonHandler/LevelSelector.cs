@@ -37,6 +37,12 @@ public class LevelSelector : MonoBehaviour
         ScrollToCurrentLevel();
     }
     
+    public void UpdateAfterOpenCard(int cardIndex)
+    {
+        IButtonHandler child = transform.GetChild(cardIndex).GetComponent<IButtonHandler>();
+        child.UpdateState("opened");
+    }
+    
     // private void OnValidate()
     // {
     //     ScrollToCurrentLevel(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector
@@ -61,6 +67,7 @@ public class LevelSelector : MonoBehaviour
 
     public void PlayGame(int level)
     {
+        AudioManager.Instance.PlaySFX("Click");
         DataSaver.Instance.selectedLevel = level;
         
         for (int i = 0; i < transform.childCount; i++)

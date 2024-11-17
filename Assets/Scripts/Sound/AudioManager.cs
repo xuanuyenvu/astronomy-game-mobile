@@ -29,7 +29,7 @@ public class AudioManager : MonoBehaviour
 
     void Start()
     {
-        PlayMusic("Theme");
+        PlayMusic("In Menu");
     }
 
     public void PlayMusic(string name)
@@ -42,6 +42,11 @@ public class AudioManager : MonoBehaviour
             return;
         }
         
+        if (musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
+
         musicSource.clip = s.clip;
         musicSource.Play();
     }
@@ -78,5 +83,15 @@ public class AudioManager : MonoBehaviour
     public void SetSFXVolume(float volume)
     {
         sfxSource.volume = volume;
+    }
+    
+    public float GetMusicVolume()
+    {
+        return musicSource.volume;
+    }
+    
+    public float GetSFXVolume()
+    {
+        return sfxSource.volume;
     }
 }

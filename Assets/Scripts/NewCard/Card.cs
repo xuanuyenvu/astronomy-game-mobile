@@ -4,18 +4,20 @@ using DG.Tweening;
 
 public class Card : MonoBehaviour
 {
-    private SpriteRenderer spriteRenderer;
-
+    public SpriteRenderer cardSprite;
+    public ParticleSystem shinePS;
+    public ParticleSystem borderPS;
+    
     [SerializeField] private Sprite faceSprite;
     [SerializeField] private Sprite backSprite;
-
-    private bool isFaceUp;
+    
+    private bool isFaceUp = false;
 
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = backSprite;
-        isFaceUp = false;
+        shinePS.Stop();
+        borderPS.Stop();
+        cardSprite.sprite = backSprite;
     }
     
     public void StartAnimation()
@@ -29,18 +31,25 @@ public class Card : MonoBehaviour
         Sequence rotationSequence = DOTween.Sequence();
         
         rotationSequence
-            .Append(transform.DOScale(0.07f, 0.2f).SetEase(Ease.InOutSine))
-            .Append(transform.DORotate(new Vector3(0f, 90f, 0f), 0.15f).SetEase(Ease.InOutSine))
+            .Append(cardSprite.gameObject.transform.DOScale(0.075f, 0.2f).SetEase(Ease.InOutSine))
+            .Append(cardSprite.gameObject.transform.DORotate(new Vector3(0f, 90f, 0f), 0.1f).SetEase(Ease.InOutSine))
             .AppendCallback(() =>
             {
-                spriteRenderer.sprite = isFaceUp ? backSprite : faceSprite;
+                cardSprite.sprite = isFaceUp ? backSprite : faceSprite;
             });
         
-        rotationSequence.Append(transform.DORotate(new Vector3(0f, rotationAngle, 0f), 0.15f).SetEase(Ease.InOutSine))
+        rotationSequence.Append(cardSprite.gameObject.transform.DORotate(new Vector3(0f, rotationAngle, 0f), 0.1f).SetEase(Ease.InOutSine))
             .OnComplete(() =>
             {
+                shinePS.Play();
+                borderPS.Play();
                 isFaceUp = !isFaceUp;
             });
 
+    }
+    
+    private void OnDestroy()
+    {
+        DOTween.Kill(cardSprite.gameObject.transform);
     }
 }

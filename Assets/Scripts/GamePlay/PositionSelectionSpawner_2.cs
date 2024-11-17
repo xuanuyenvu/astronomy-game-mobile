@@ -681,6 +681,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
     protected IEnumerator PlayBoomAndShake()
     {
         boomInstance.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySFX("Explosion");
         boomInstance.Play();
         cameraShake.ShakeCamera();
 
@@ -724,6 +725,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
         if (winEffect != null)
         {
             winEffect.gameObject.SetActive(true);
+            AudioManager.Instance.PlaySFX("Correct");
             winEffect.Play();
         }
         yield return new WaitForSeconds(2f);

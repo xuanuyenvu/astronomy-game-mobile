@@ -364,6 +364,7 @@ public class PlanetSelectionSpawner : IGamePlay
     private IEnumerator PlayBoomAndShake()
     {
         boomInstance.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySFX("Explosion");
         boomInstance.Play();
         cameraShake.ShakeCamera();
 
@@ -407,6 +408,7 @@ public class PlanetSelectionSpawner : IGamePlay
         if (winEffect != null)
         {
             winEffect.gameObject.SetActive(true);
+            AudioManager.Instance.PlaySFX("Correct");
             winEffect.Play();
         }
         yield return new WaitForSeconds(2f);

@@ -23,9 +23,10 @@ public class AnonymousLogin : MonoBehaviour
     
     public async void Login()
     {
+        AudioManager.Instance.PlaySFX("Click");
         if (auth.CurrentUser != null)
         {
-            DataSaver.Instance.SetUserId(auth.CurrentUser.UserId);
+            DataSaver.Instance.SetUserId(auth.CurrentUser.UserId); 
             DataSaver.Instance.LoadDataFn();
             SceneManager.LoadScene("chapterMenu");
         }

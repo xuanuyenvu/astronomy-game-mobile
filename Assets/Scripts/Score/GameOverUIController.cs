@@ -76,6 +76,7 @@ public class GameOverUIController : MonoBehaviour
     {
         brokenStarPS.Play();
         yield return new WaitForSeconds(0.8f);
+        AudioManager.Instance.PlaySFX("Lose");
         cameraShake.ShakeCamera(0.3f);
         starRectTransform.gameObject.SetActive(false);
     }

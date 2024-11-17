@@ -135,6 +135,7 @@ public class WinGameUIController : MonoBehaviour
         starRectTransform.gameObject.SetActive(false);
         starEffectPS.gameObject.SetActive(false);
 
+        AudioManager.Instance.PlaySFX("Win");
         glowPS.Play();
         yield return new WaitForSeconds(0.2f);
 

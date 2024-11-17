@@ -14,15 +14,21 @@ using UnityEngine.SceneManagement;
 public class FacebookManager : MonoBehaviour
 {
     private Firebase.Auth.FirebaseAuth auth;
-
-    public TextMeshProUGUI FB_userName;
-    public RawImage rawImg;
-
+    public static FacebookManager Instance { get; private set; }
 
     #region Initialize
-
+    
     private void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // Destroy duplicate instance
+            return;
+        }
+        
+        Instance = this;
+        DontDestroyOnLoad(gameObject); 
+        
         FB.Init(SetInit, FbLoginSuccess);
 
         if (!FB.IsInitialized)
@@ -49,6 +55,16 @@ public class FacebookManager : MonoBehaviour
     private void Start()
     {
         auth = Firebase.Auth.FirebaseAuth.DefaultInstance;
+    }
+
+    public bool IsFacebookUserLoggedIn()
+    {
+        if (auth.CurrentUser != null && !auth.CurrentUser.IsAnonymous)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     void SetInit()
@@ -98,11 +114,6 @@ public class FacebookManager : MonoBehaviour
         if (result.Error == null)
         {
             string name = "" + result.ResultDictionary["first_name"];
-            // if (FB_userName != null)
-            // {
-            //     FB_userName.gameObject.SetActive(true);
-            //     FB_userName.text = name;
-            // }
             DataSaver.Instance.facebookUserData.Name = name;
         }
         else
@@ -116,8 +127,8 @@ public class FacebookManager : MonoBehaviour
         if (result.Texture != null)
         {
             // Debug.Log("Profile Pic");
-            rawImg.gameObject.SetActive(true);
-            rawImg.texture = result.Texture;
+            // rawImg.gameObject.SetActive(true);
+            // rawImg.texture = result.Texture;
             
             DataSaver.Instance.facebookUserData.ProfilePic = result.Texture;
         }
@@ -133,6 +144,7 @@ public class FacebookManager : MonoBehaviour
     //login
     public void Facebook_LogIn()
     {
+        AudioManager.Instance.PlaySFX("Click");
         List<string> permissions = new List<string>();
         permissions.Add("public_profile");
         FB.LogInWithReadPermissions(permissions, AuthCallBack);
@@ -234,9 +246,6 @@ public class FacebookManager : MonoBehaviour
         }
 
         Debug.Log("Logout Successful");
-        // if (FB_profilePic != null) FB_profilePic.sprite = null;
-        if (FB_userName != null) FB_userName.text = "";
-        if (rawImg != null) rawImg.texture = null;
     }
 
 

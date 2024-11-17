@@ -13,6 +13,9 @@ public class UIController : MonoBehaviour
     public RectTransform pauseTextRect;
     public GameObject gamePlayObjectsGroup;
 
+    public GameObject settingUI;
+    public GameObject gameBtnGroup;
+
     public TimerManager timerManager;
     public CardController cardController;
     public SettingsButtonMenu settingsButtonMenu;
@@ -20,6 +23,9 @@ public class UIController : MonoBehaviour
     public Button pauseBtn;
     public Sprite pauseImg;
     public Sprite playImg;
+    
+    public Slider bgmSlider;
+    public Slider sfxSlider;
     
     private bool isPaused = false;
     private bool isButtonCooldown = false;
@@ -35,6 +41,13 @@ public class UIController : MonoBehaviour
         timerUIStartPos = timerUIRect.anchoredPosition;
         healthUIStartPos = healthUIRect.anchoredPosition;
         StartGame();
+        SetUpVolume();
+    }
+    
+    private void SetUpVolume()
+    {
+        bgmSlider.value = AudioManager.Instance.GetMusicVolume();
+        sfxSlider.value = AudioManager.Instance.GetSFXVolume();
     }
 
     private void StartGame()
@@ -101,6 +114,7 @@ public class UIController : MonoBehaviour
     {
         if (isButtonCooldown) return; 
         
+        AudioManager.Instance.PlaySFX("Click");
         if (!isPaused && !GameManager.Instance.CurrentGamePlay.IsResultPlaying)
         {
             isButtonCooldown = true;
@@ -146,5 +160,31 @@ public class UIController : MonoBehaviour
         timerUIRect.anchoredPosition = timerUIStartPos;
         healthUIRect.anchoredPosition = healthUIStartPos;
         cardContainerUIRect.anchoredPosition = Vector2.zero;
+    }
+    
+    public void OpenSetting()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        pauseTextRect.gameObject.SetActive(false);
+        gameBtnGroup.SetActive(false);
+        settingUI.SetActive(true);
+    }
+    
+    public void CloseSetting()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        pauseTextRect.gameObject.SetActive(true);
+        gameBtnGroup.SetActive(true);
+        settingUI.SetActive(false);
+    }
+    
+    public void MusicVolumeChange()
+    {
+        AudioManager.Instance.SetMusicVolume(bgmSlider.value);
+    }
+    
+    public void SFXVolumeChange()
+    {
+        AudioManager.Instance.SetSFXVolume(sfxSlider.value);
     }
 }
