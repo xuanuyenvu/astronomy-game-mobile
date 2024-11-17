@@ -7,7 +7,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class ChapterUIManager : MonoBehaviour
+public class LevelUIManager : MonoBehaviour
 {
     public CameraShake cameraShake;
     public LevelSelector levelSelector;
