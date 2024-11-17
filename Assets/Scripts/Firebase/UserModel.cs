@@ -35,6 +35,17 @@ public class LevelItem
         }
         return false;
     }
+    
+    public override int GetHashCode()
+    {
+        unchecked 
+        {
+            int hash = 17;
+            hash = hash * 23 + (Type != null ? Type.GetHashCode() : 0);  
+            hash = hash * 23 + (State != null ? State.GetHashCode() : 0);  
+            return hash;
+        }
+    }
 }
 
 
