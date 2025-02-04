@@ -124,6 +124,7 @@ public class DataSaver : MonoBehaviour
 
     public void OpenedCard(int cardIndex)
     {
+        Debug.Log("Opened card: " + userModel.Levels[cardIndex].Type);
         if (userModel.Levels[cardIndex].Type == "card")
         {
             userModel.Levels[cardIndex].State = "opened";
@@ -141,6 +142,7 @@ public class DataSaver : MonoBehaviour
             return;
         }
         
+        Debug.Log(levelIndex);
         userModel.Levels[levelIndex].State = "unlocked";
     }
 

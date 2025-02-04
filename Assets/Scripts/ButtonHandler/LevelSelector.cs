@@ -41,6 +41,9 @@ public class LevelSelector : MonoBehaviour
     {
         IButtonHandler child = transform.GetChild(cardIndex).GetComponent<IButtonHandler>();
         child.UpdateState("opened");
+        
+        IButtonHandler nextChild = transform.GetChild(cardIndex + 1).GetComponent<IButtonHandler>();
+        nextChild.UpdateState("unlocked");
     }
     
     // private void OnValidate()

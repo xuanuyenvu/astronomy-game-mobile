@@ -43,6 +43,8 @@ public class LevelUIManager : MonoBehaviour
         tapBtn.gameObject.SetActive(false);
         
         HideLoginButton();
+        
+        AudioManager.Instance.PlayMusic("In Menu");
         SetUpVolume();
     }
     

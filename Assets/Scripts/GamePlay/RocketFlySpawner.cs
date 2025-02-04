@@ -21,7 +21,6 @@ public class RocketFlySpawner : IGamePlay
 
     // private
     // thành phần game
-
     private AstronomicalObject planet1 = null;
     private AstronomicalObject planet2 = null;
     private AstronomicalObject planet3 = null;
@@ -40,8 +39,6 @@ public class RocketFlySpawner : IGamePlay
 
     // biến bool
     private bool isAnimationPlaying = false;
-    private bool animationResult = false;
-    private bool playing = false;
 
     // giá trị thay đổi kết quả
     private float elapsedTime = 0f;
@@ -57,19 +54,7 @@ public class RocketFlySpawner : IGamePlay
 
     void Update()
     {
-        if (playing && !isChangePlanet)
-        {
-            if (elapsedTime < 10f)
-            {
-                elapsedTime += Time.deltaTime;
-            }
-            else
-            {
-                ChangeResultPlanet();
-            }
-        }
-
-        if (!isAnimationPlaying && playing)
+        if (!isAnimationPlaying)
         {
             rocket.TurnOnCollider = true;
         }
@@ -77,13 +62,6 @@ public class RocketFlySpawner : IGamePlay
         {
             rocket.TurnOnCollider = false;
         }
-
-        if (cardController.GetNumOfCards() == 0)
-        {
-            GameOver();
-        }
-
-        DestroyEffect();
     }
 
     private void ChangeResultPlanet()
@@ -99,49 +77,32 @@ public class RocketFlySpawner : IGamePlay
 
     private void DestroyEffect()
     {
-        // Hủy hiệu ứng sau khi hành tinh phát nổ
-        if (cameraShake.IsShake == 0 && animationResult)
+        // Hủy boom instance
+        if (boomInstance != null)
         {
-            // Hủy boom instance
             Destroy(boomInstance.gameObject);
             boomInstance = null;
-
-            // Đặt lại giá trị
-            animationResult = false;
-            cameraShake.IsShake = -1;
-
-            // Thiết lập lại game
-            ReSetUpGame();
         }
-        if (winEffectInstance != null)
+
+        // Đặt lại giá trị
+        cameraShake.IsShake = -1;
+        
+        if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
         {
-            if (!winEffectInstance.isPlaying && animationResult)
-            {
-                // Hủy win effect
-                Destroy(winEffectInstance.gameObject);
-                winEffectInstance = null;
-
-                // Đặt lại giá trị
-                animationResult = false;
-
-                // Thắng hoặc qua màn sau
-            }
+            GameOver();
+        }
+        else
+        {
+            ReSetUpGame();
         }
     }
 
     private void ReSetUpGame()
     {
-        if (healthManager.health > 0)
-        {
-            // Set up lại các object trong màn chơi
-            RePlayGame();
-            // Bật tính năng chọn thẻ bài
-            cardController.turnOnPointerHandler();
-        }
-        else
-        {
-            GameOver();
-        }
+        // Set up lại các object trong màn chơi
+        RePlayGame();
+        // Bật tính năng chọn thẻ bài
+        cardController.turnOnPointerHandler();
     }
 
     private void RePlayGame()
@@ -266,6 +227,7 @@ public class RocketFlySpawner : IGamePlay
 
         Vector3 answer = resultPlanet.transform.position + direction * ((float)d2);
 
+        // TODO
         if (rocket != null)
         {
             isAnimationPlaying = true;
@@ -304,6 +266,7 @@ public class RocketFlySpawner : IGamePlay
     {
         rocket = Instantiate(rocketPrefab, _position, Quaternion.identity);
         rocket.name = rocket.name.Replace("(Clone)", "");
+        rocket.transform.SetParent(planetsGroupTransform);
         rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
     }
@@ -329,7 +292,9 @@ public class RocketFlySpawner : IGamePlay
         rocket.transform.position = rocketPos;
 
         isAnimationPlaying = false;
-        playing = true;
+        
+        // Kết thúc quá trình kết quả (sau khi đã chọn sai 1 lần), được phép bấm pause
+        isResultPlaying  = false;
     }
 
     virtual protected Vector3 GetCenterPoint()
@@ -359,15 +324,15 @@ public class RocketFlySpawner : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
-        animationResult = true;
-
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 
         // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
         planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
-
+        planetAnswer.transform.SetParent(effectsGroupTransform);
+        
         // Hàm thực hiện bay hành tinh và bay rocket
+        isResultPlaying = true;
         StartCoroutine(CoroutineExcutesequentially());
     }
 
@@ -392,6 +357,7 @@ public class RocketFlySpawner : IGamePlay
 
     private IEnumerator FlySelectedPlanetToTarget()
     {
+        isAnimationPlaying = true;
         Vector3 startingPos = planetAnswer.transform.position;
         Vector3 finalPos = target.transform.position;
 
@@ -412,6 +378,7 @@ public class RocketFlySpawner : IGamePlay
         // Ẩn target 
         if (target != null)
         {
+            isAnimationPlaying = false;
             target.SetActive(false);
         }
     }
@@ -463,6 +430,7 @@ public class RocketFlySpawner : IGamePlay
                 boomInstance = Instantiate(boomPS, planet.transform.position, Quaternion.identity);
                 var mainModule = boomInstance.main;
                 mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+                boomInstance.transform.SetParent(effectsGroupTransform);
                 boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
                 break;
             }
@@ -476,12 +444,14 @@ public class RocketFlySpawner : IGamePlay
     private IEnumerator PlayBoomAndShake()
     {
         boomInstance.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySFX("Explosion");
         boomInstance.Play();
         cameraShake.ShakeCamera();
 
         // Mất 1 mạng
         healthManager.health--;
-        yield return null;
+        yield return new WaitForSeconds(2f);
+        DestroyEffect();
     }
 
     private IEnumerator CoroutineCorrectAnwser()
@@ -495,6 +465,7 @@ public class RocketFlySpawner : IGamePlay
         winEffectInstance = Instantiate(winEffectPSPrefab, planetAnswer.transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<ParticleSystem>();
         var mainModule = winEffectInstance.main;
         mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+        winEffectInstance.transform.SetParent(effectsGroupTransform);
         winEffectInstance.gameObject.SetActive(false);
 
         // Chỉnh lại giá trị scale
@@ -517,9 +488,35 @@ public class RocketFlySpawner : IGamePlay
         if (winEffect != null)
         {
             winEffect.gameObject.SetActive(true);
+            AudioManager.Instance.PlaySFX("Correct");
             winEffect.Play();
         }
-        yield return null;
+        yield return new WaitForSeconds(2f);
+        if (timerManager != null)
+        {
+            timerManager.StopTimer();
+        }
+        DestroyAllPlanetsInGroup();
+        universalLevelManager.EndStage();
+    }
+    
+    protected void DestroyAllPlanetsInGroup()
+    {
+        if (planetsGroupTransform != null)
+        {
+            foreach (Transform child in planetsGroupTransform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        if (effectsGroupTransform != null)
+        {
+            foreach (Transform child in effectsGroupTransform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        cardController.ResetCards();
     }
 
     private void GameOver()
@@ -540,6 +537,6 @@ public class RocketFlySpawner : IGamePlay
     private void OnDestroy()
     {
         StopAllCoroutines();
-        // DestroyAllPlanetsInGroup();
+        DestroyAllPlanetsInGroup();
     }
 }

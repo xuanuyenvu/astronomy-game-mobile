@@ -28,7 +28,7 @@ public class UniversalLevelManager : MonoBehaviour
         LoadAndSetUpLevel(DataSaver.Instance.selectedLevel);
     }
 
-    private void LoadAndSetUpLevel(int level)
+    private void LoadAndSetUpLevel(int level) 
     {
         if (IsJsonLoaded(level))
         {
@@ -40,7 +40,7 @@ public class UniversalLevelManager : MonoBehaviour
     private bool IsJsonLoaded(int _selectedLevel)
     {
         // load JSON từ Resources
-        TextAsset jsonFile = Resources.Load<TextAsset>("levels");
+        TextAsset jsonFile = Resources.Load<TextAsset>("level_data_part2");
 
         if (jsonFile != null)
         {
@@ -48,11 +48,15 @@ public class UniversalLevelManager : MonoBehaviour
             LevelsData levelsData = JsonUtility.FromJson<LevelsData>(jsonFile.text);
 
             // gán các thông tin vào biến level
+            Debug.Log("selectedLevel = " + _selectedLevel);
             level = levelsData.levels[_selectedLevel - 1];
+            Debug.Log("level Data = " + levelsData.levels[_selectedLevel - 1].level);
             
             energyManager.SetUp();
             healthManager.SetUp(level.lives);
-            if (level.level > 6)
+            // if (level.level > 6)
+            // BO COMMENT
+            if (level.level > 16)
             {
                 timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
             }

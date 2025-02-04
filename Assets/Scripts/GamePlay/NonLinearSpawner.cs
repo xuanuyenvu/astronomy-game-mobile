@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+
 public class NonLinearSpawner : IGamePlay
 {
     // public 
@@ -61,63 +62,37 @@ public class NonLinearSpawner : IGamePlay
         else
         {
             rocket.TurnOnCollider = false;
-            destinationRocket.TurnOnCollider = false;
-            isHealthReduced = true;
         }
-
-        if (cardController.GetNumOfCards() == 0)
-        {
-            GameOver();
-        }
-
-        DestroyEffect();
     }
 
     private void DestroyEffect()
     {
-        // Hủy hiệu ứng sau khi hành tinh phát nổ
-        if (cameraShake.IsShake == 0 && animationResult)
+        // Hủy boom instance
+        if (boomInstance != null)
         {
-            // Hủy boom instance
             Destroy(boomInstance.gameObject);
             boomInstance = null;
-
-            // Đặt lại giá trị
-            animationResult = false;
-            cameraShake.IsShake = -1;
-
-            // Thiết lập lại game
-            ReSetUpGame();
         }
-        if (winEffectInstance != null)
+
+        // Đặt lại giá trị
+        cameraShake.IsShake = -1;
+        
+        if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
         {
-            if (!winEffectInstance.isPlaying && animationResult)
-            {
-                // Hủy win effect
-                Destroy(winEffectInstance.gameObject);
-                winEffectInstance = null;
-
-                // Đặt lại giá trị
-                animationResult = false;
-
-                // Thắng hoặc qua màn sau
-            }
+            GameOver();
+        }
+        else
+        {
+            ReSetUpGame();
         }
     }
 
     private void ReSetUpGame()
     {
-        if (healthManager.health > 0)
-        {
-            // Set up lại các object trong màn chơi
-            RePlayGame();
-            // Bật tính năng chọn thẻ bài
-            cardController.turnOnPointerHandler();
-        }
-        else
-        {
-            GameOver();
-        }
+        // Set up lại các object trong màn chơi
+        RePlayGame();
+        // Bật tính năng chọn thẻ bài
+        cardController.turnOnPointerHandler();
     }
 
     private void RePlayGame()
@@ -138,26 +113,21 @@ public class NonLinearSpawner : IGamePlay
         planet1 = allPlanets[id1];
 
         var id2 = planets[1];
-        // if (id1 < 4)
-        // {
-        //     id2 = UnityEngine.Random.Range(0, 4);
-        // }
-        // else
-        // {
-        //     id2 = UnityEngine.Random.Range(4, allPlanets.Count);
-        // }
         planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
         isTop = Random.Range(0, 2) == 0 ? true : false;
         planet1 = Clone(planet1, isLeft, isTop);
+        planet1.transform.SetParent(planetsGroupTransform);
         planet1.gameObject.SetActive(true);
 
         planet2 = Clone(planet2, !isLeft, !isTop);
+        planet2.transform.SetParent(planetsGroupTransform);
         planet2.gameObject.SetActive(false);
 
         target = Instantiate(targetPrefab, planet2.transform.position, Quaternion.Euler(63, 0, 0));
         target.name = target.name.Replace("(Clone)", "");
+        target.transform.SetParent(planetsGroupTransform);
         target.SetActive(true);
     }
 
@@ -245,6 +215,7 @@ public class NonLinearSpawner : IGamePlay
 
         rocket = Instantiate(rocketPrefab, spawnRocketPosition, Quaternion.identity);
         rocket.name = rocket.name.Replace("(Clone)", "");
+        rocket.transform.SetParent(planetsGroupTransform);
         rocket.RotateRocket(planet1.gameObject.transform.position);
         rocket.gameObject.SetActive(true);
     }
@@ -259,19 +230,15 @@ public class NonLinearSpawner : IGamePlay
         {
             // Tính tỉ lệ khoảng cách
             float ratio = Mathf.Max(distance1, distance2) / Mathf.Min(distance1, distance2);
-            Debug.Log("ratio = " + ratio);
             // Nếu khoảng cách gần gấp đôi
             if (ratio > 1.6f)
             {
-                Debug.Log("ratio > 1.8f");
                 if (distance1 > distance2)
                 {
-                    Debug.Log("ve 1");
                     MoveRocketCloserToPlanet(planet1, 4f);
                 }
                 else if (distance1 < distance2)
                 {
-                    Debug.Log("ve 2");
                     MoveRocketCloserToPlanet(planet2, 4f);
                 }
             }
@@ -340,6 +307,7 @@ public class NonLinearSpawner : IGamePlay
         destinationRocket = Instantiate(rocketPrefab, desPostion, Quaternion.identity);
         destinationRocket.name = destinationRocket.name.Replace("meteorite(Clone)", "destination");
         destinationRocket.gameObject.tag = "Rocket";
+        destinationRocket.transform.SetParent(planetsGroupTransform);
         destinationRocket.gameObject.SetActive(true);
     }
 
@@ -399,15 +367,15 @@ public class NonLinearSpawner : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
-        animationResult = true;
-
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 
         // Hiển thị câu trả lời (hành tinh) vào màn chơi và gán vào biến planetAnswer
         planetAnswer = DisplaySelectedPlanet(planetName, planetPosition);
+        planetAnswer.transform.SetParent(effectsGroupTransform);
 
         // Hàm thực hiện bay hành tinh và bay rocket
+        isResultPlaying = true;
         StartCoroutine(CoroutineExecutesequentially());
     }
 
@@ -432,6 +400,7 @@ public class NonLinearSpawner : IGamePlay
 
     private IEnumerator FlySelectedPlanetToTarget()
     {
+        isAnimationPlaying = true;
         Vector3 startingPos = planetAnswer.transform.position;
         Vector3 finalPos = target.transform.position;
 
@@ -452,6 +421,7 @@ public class NonLinearSpawner : IGamePlay
         // Ẩn target 
         if (target != null)
         {
+            isAnimationPlaying = false;
             target.SetActive(false);
         }
     }
@@ -479,7 +449,7 @@ public class NonLinearSpawner : IGamePlay
         if (planetAnswer.name == planet2.name)
         {
             // Lắc rocket và hiển thị hiệu ứng correct
-            destinationRocket.TurnOnCollider = true;
+            // destinationRocket.TurnOnCollider = true;
             StartCoroutine(CoroutineCorrectAnwser());
             return;
         }
@@ -525,6 +495,7 @@ public class NonLinearSpawner : IGamePlay
                 boomInstance = Instantiate(boomPS, planet.transform.position, Quaternion.identity);
                 var mainModule = boomInstance.main;
                 mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+                boomInstance.transform.SetParent(effectsGroupTransform);
                 boomInstance.gameObject.SetActive(false); // Đặt gameObject về không hoạt động để không hiển thị
                 break;
             }
@@ -538,25 +509,25 @@ public class NonLinearSpawner : IGamePlay
     private IEnumerator PlayBoomAndShake()
     {
         boomInstance.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySFX("Explosion");
         boomInstance.Play();
         cameraShake.ShakeCamera();
 
         // Mất 1 mạng
-        if (isHealthReduced == true)
-        {
-            isHealthReduced = false;
-            healthManager.health--;
-        }
-        yield return null;
+        healthManager.health--;
+        yield return new WaitForSeconds(2f);
+        DestroyEffect();
     }
 
     private IEnumerator CoroutineCorrectAnwser()
     {
         yield return StartCoroutine(rocket.ShakeAndFlyTo(destinationRocket.transform.position));
+        
         // Khởi tạo hiệu ứng tại vị trí planetAnswer
         winEffectInstance = Instantiate(winEffectPSPrefab, planetAnswer.transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<ParticleSystem>();
         var mainModule = winEffectInstance.main;
         mainModule.playOnAwake = false;  // Tắt playOnAwake để ParticleSystem không tự động phát
+        winEffectInstance.transform.SetParent(effectsGroupTransform);
         winEffectInstance.gameObject.SetActive(false);
 
         // Chỉnh lại giá trị scale
@@ -579,14 +550,45 @@ public class NonLinearSpawner : IGamePlay
         if (winEffect != null)
         {
             winEffect.gameObject.SetActive(true);
+            AudioManager.Instance.PlaySFX("Correct");
             winEffect.Play();
         }
-        yield return null;
+        yield return new WaitForSeconds(2f);
+        if (timerManager != null)
+        {
+            timerManager.StopTimer();
+        }
+        DestroyAllPlanetsInGroup();
+        universalLevelManager.EndStage();
     }
 
+    protected void DestroyAllPlanetsInGroup()
+    {
+        if (planetsGroupTransform != null)
+        {
+            foreach (Transform child in planetsGroupTransform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        if (effectsGroupTransform != null)
+        {
+            foreach (Transform child in effectsGroupTransform)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        cardController.ResetCards();
+    }
+    
     private void GameOver()
     {
-        Debug.Log("gameOver");
+        if (timerManager != null)
+        {
+            timerManager.StopTimer();
+        }
+        DestroyAllPlanetsInGroup();
+        universalLevelManager.GameOver();
     }
 
     public override void OnTimeOver()
@@ -602,6 +604,6 @@ public class NonLinearSpawner : IGamePlay
     private void OnDestroy()
     {
         StopAllCoroutines();
-        // DestroyAllPlanetsInGroup();
+        DestroyAllPlanetsInGroup();
     }
 }

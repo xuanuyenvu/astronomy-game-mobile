@@ -7,7 +7,7 @@ public class BackgroundScroller : MonoBehaviour
     public Transform BG1;
     public Transform BG2;
     private Renderer spriteRenderer;
-    public float speed = -0.06f;
+    public float speed = -0.1f;
     Vector3 size;
     void Start(){
         spriteRenderer = BG1.GetComponent<SpriteRenderer>();

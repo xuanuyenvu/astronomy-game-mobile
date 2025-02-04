@@ -107,14 +107,6 @@ public class PlanetSelectionSpawner : IGamePlay
         planet1 = allPlanets[id1];
 
         var id2 = planets[1];
-        // if (id1 < 4)
-        // {
-        //     id2 = UnityEngine.Random.Range(0, 4);
-        // }
-        // else
-        // {
-        //     id2 = UnityEngine.Random.Range(4, allPlanets.Count);
-        // }
         planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;

@@ -1393,21 +1393,29 @@ MonoBehaviour:
   musicSounds:
   - name: In Menu
     clip: {fileID: 8300000, guid: d99e6cdc281e17b44a2bd590c74653c3, type: 3}
+    volume: 1
   - name: In Game
-    clip: {fileID: 8300000, guid: aa774de6863dada45b589c1688096815, type: 3}
+    clip: {fileID: 8300000, guid: df17627017ae6d248a76052cab556aa8, type: 3}
+    volume: 1
   sfxSounds:
   - name: Click
-    clip: {fileID: 8300000, guid: 82c5b8a1ec689c9429ec0d815e0da12a, type: 3}
+    clip: {fileID: 8300000, guid: 96be78ac93d2d7b4883801b33a5251f7, type: 3}
+    volume: 0.6
   - name: Explosion
     clip: {fileID: 8300000, guid: 4ad8cbf64a98cc04982403188d961093, type: 3}
+    volume: 1
   - name: Lose
     clip: {fileID: 8300000, guid: 75350ce751ae9524b92e049f67eba7f4, type: 3}
+    volume: 0.4
   - name: Win
     clip: {fileID: 8300000, guid: 395bea93ed5ff6f4e845b8a1fc22d8fa, type: 3}
+    volume: 0.6
   - name: Correct
     clip: {fileID: 8300000, guid: 3b89c4f74453f0c4b8887672f23932a5, type: 3}
+    volume: 1
   - name: Warp
     clip: {fileID: 8300000, guid: f715eae9f45c7c940a8857ef4b8c7e7a, type: 3}
+    volume: 1
   musicSource: {fileID: 443132072}
   sfxSource: {fileID: 639900538}
 --- !u!4 &1435597786
