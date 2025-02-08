@@ -771,6 +771,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
             timerManager.StopTimer();
         }
         DestroyAllPlanetsInGroup();
+        cardController.DestroyPlanetSelection();
         universalLevelManager.GameOver();
     }
 

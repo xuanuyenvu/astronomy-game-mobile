@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using EasyTransition;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -29,6 +30,8 @@ public class LevelUIManager : MonoBehaviour
     
     public Slider bgmSlider;
     public Slider sfxSlider;
+
+    public TransitionSettings transition;
     
     public List<Card> cardPrefabs;
     private Card currentCard;
@@ -166,7 +169,8 @@ public class LevelUIManager : MonoBehaviour
     public void BackToChapterMenu()
     {
         AudioManager.Instance.PlaySFX("Click");
-        SceneManager.LoadScene("chapterMenu");
+        // SceneManager.LoadScene("chapterMenu");
+        TransitionManager.Instance().Transition("chapterMenu", transition, 0f);
     }
 
     public void LoginFB()

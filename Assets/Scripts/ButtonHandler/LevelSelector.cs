@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using EasyTransition;
 
 
 public class LevelSelector : MonoBehaviour
 {
     public RectTransform contentRectTransform;
-
+    public TransitionSettings transition;
+    
     [SerializeField] private int currentLevel = 1; 
 
     void Start()
@@ -81,6 +83,7 @@ public class LevelSelector : MonoBehaviour
             }
         }
         
-        SceneManager.LoadScene("game");
+        // SceneManager.LoadScene("game");
+        TransitionManager.Instance().Transition("game", transition, 0f, true);
     }
 }

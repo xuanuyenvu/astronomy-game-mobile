@@ -1,13 +1,13 @@
-using System;
 using System.Threading.Tasks;
+using EasyTransition;
 using Firebase.Auth;
 using Firebase.Extensions;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class AnonymousLogin : MonoBehaviour
 {
     private Firebase.Auth.FirebaseAuth auth;
+    public TransitionSettings transition;
 
     private void Start()
     {
@@ -28,11 +28,18 @@ public class AnonymousLogin : MonoBehaviour
         {
             DataSaver.Instance.SetUserId(auth.CurrentUser.UserId); 
             DataSaver.Instance.LoadDataFn();
-            SceneManager.LoadScene("chapterMenu");
+            // SceneManager.LoadScene("chapterMenu");
+            if (TransitionManager.Instance() == null)
+            {
+                Debug.LogError("TransitionManager is NULL!");
+                return;
+            }
+            TransitionManager.Instance().Transition("chapterMenu", transition, 0f);
         }
         else
         {
-            await AnonymousLoginFn().ContinueWithOnMainThread(task => SceneManager.LoadScene("chapterMenu"));
+            // await AnonymousLoginFn().ContinueWithOnMainThread(task => SceneManager.LoadScene("chapterMenu"));
+            await AnonymousLoginFn().ContinueWithOnMainThread(task =>  TransitionManager.Instance().Transition("chapterMenu", transition, 0f));
         }
     }
 

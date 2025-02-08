@@ -26,7 +26,7 @@ public class NonLinearSpawner : IGamePlay
     private AstronomicalObject planetAnswer = null;
     private RocketController rocket = null;
     private GameObject target = null;
-    private ParticleSystem boomInstance = null;
+    // private ParticleSystem boomInstance = null;
     private ParticleSystem winEffectInstance = null;
 
     // giá trị màn hình
@@ -44,6 +44,7 @@ public class NonLinearSpawner : IGamePlay
     RocketController destinationRocket = null;
     private Vector3 spawnRocketPosition = Vector3.zero;
     private bool isHealthReduced = true;
+    private int activeBoomCount = 0;
 
     void Awake()
     {
@@ -65,25 +66,30 @@ public class NonLinearSpawner : IGamePlay
         }
     }
 
-    private void DestroyEffect()
+    private void DestroyEffect(ParticleSystem boomInstance)
     {
         // Hủy boom instance
         if (boomInstance != null)
         {
             Destroy(boomInstance.gameObject);
-            boomInstance = null;
+            // boomInstance = null;
         }
-
-        // Đặt lại giá trị
-        cameraShake.IsShake = -1;
         
-        if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
+        activeBoomCount--;
+
+        if (activeBoomCount == 0)
         {
-            GameOver();
-        }
-        else
-        {
-            ReSetUpGame();
+            // Đặt lại giá trị
+            cameraShake.IsShake = -1;
+            
+            if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
+            {
+                GameOver();
+            }
+            else
+            {
+                ReSetUpGame();
+            }
         }
     }
 
@@ -336,6 +342,9 @@ public class NonLinearSpawner : IGamePlay
         destinationRocket.transform.position = destinationPos;
 
         isAnimationPlaying = false;
+        
+        // Kết thúc quá trình kết quả (sau khi đã chọn sai 1 lần), được phép bấm pause
+        isResultPlaying  = false;
     }
 
     virtual protected Vector3 GetCenterPoint()
@@ -488,6 +497,8 @@ public class NonLinearSpawner : IGamePlay
 
     private void FindBoomMatchPlanet(AstronomicalObject planet)
     {
+        ParticleSystem boomInstance = null;
+        
         foreach (ParticleSystem boomPS in boomPSPrefab)
         {
             if (boomPS.name.Replace("_hit", "") == planet.name)
@@ -502,11 +513,12 @@ public class NonLinearSpawner : IGamePlay
         }
         if (boomInstance != null)
         {
-            StartCoroutine(PlayBoomAndShake());
+            activeBoomCount++;
+            StartCoroutine(PlayBoomAndShake(boomInstance));
         }
     }
 
-    private IEnumerator PlayBoomAndShake()
+    private IEnumerator PlayBoomAndShake(ParticleSystem boomInstance)
     {
         boomInstance.gameObject.SetActive(true);
         AudioManager.Instance.PlaySFX("Explosion");
@@ -516,7 +528,7 @@ public class NonLinearSpawner : IGamePlay
         // Mất 1 mạng
         healthManager.health--;
         yield return new WaitForSeconds(2f);
-        DestroyEffect();
+        DestroyEffect(boomInstance);
     }
 
     private IEnumerator CoroutineCorrectAnwser()
@@ -588,6 +600,7 @@ public class NonLinearSpawner : IGamePlay
             timerManager.StopTimer();
         }
         DestroyAllPlanetsInGroup();
+        cardController.DestroyPlanetSelection();
         universalLevelManager.GameOver();
     }
 

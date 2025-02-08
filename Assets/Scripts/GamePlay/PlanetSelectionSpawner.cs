@@ -446,6 +446,7 @@ public class PlanetSelectionSpawner : IGamePlay
             timerManager.StopTimer();
         }
         DestroyAllPlanetsInGroup();
+        cardController.DestroyPlanetSelection();
         universalLevelManager.GameOver();
     }
 

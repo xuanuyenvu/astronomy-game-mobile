@@ -16,7 +16,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     private RectTransform rectTransform;
     private Canvas canvas;
     private bool isSelected = false;
-    public CardController cardController;
+    public static CardController cardController;
 
     public AnimationSpeedConfig animationSpeedConfig;
     private float overrideYPosition = 9;
@@ -127,8 +127,6 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             isSelected = true;
 
             cardController.ChangeSelectedCard(this);
-            // Xóa instance đang hiển thị (nếu có)
-            cardController.DestroyPlanetSelection();
             // Chạy hiệu ứng thẻ bài
             DisplayCardWithAnimation();
             // Đặt độ ưu tiên = 100
@@ -141,13 +139,9 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             {
                 ConcealCardWithAnimation();
             }
-            else
-            {
-                isSelected = false;
-            }
+
             // Destroy the planet selection if it is displayed
             cardController.ChangeSelectedCard(null);
-            cardController.DestroyPlanetSelection();
         }
     }
 
@@ -172,7 +166,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             });
     }
 
-    private void ConcealCardWithAnimation()
+    public void ConcealCardWithAnimation()
     {
         // Set the card to the correct position
         Vector3 startPos = new Vector3(0f, -1.5f, -7);
