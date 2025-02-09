@@ -20,6 +20,8 @@ public class HealthManager : MonoBehaviour
     }
     void Update()
     {
+        if (health < 0) health = 0;
+        
         foreach (var heart in hearts)
         {
             heart.enabled = false;

@@ -19,6 +19,7 @@ public class WinGameUIController : MonoBehaviour
     public GameObject timeBarUI;
     public HealthManager healthManager;
     public GameObject energyUI;
+    public GameObject stageUI;
     public ParticleSystem starEffectPS;
 
     public GameObject darkBg;
@@ -87,6 +88,7 @@ public class WinGameUIController : MonoBehaviour
         timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
         healthManager.SetUp(0);
+        stageUI.SetActive(false);
 
         GetChildByName(energyUI, "border").SetActive(false);
         GetChildByName(energyUI, "background").SetActive(false);

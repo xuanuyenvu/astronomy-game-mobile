@@ -9,6 +9,8 @@ public class GameOverUIController : MonoBehaviour
     public GameObject timeBarUI;
     public HealthManager healthManager;
     public GameObject energyUI;
+    public GameObject stageUI;
+    
     public GameObject background;
     public ParticleSystem brokenStarPS;
     public CameraShake cameraShake;
@@ -33,6 +35,7 @@ public class GameOverUIController : MonoBehaviour
         timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
         healthManager.SetUp(0);
+        stageUI.SetActive(false);
 
         GetChildByName(energyUI, "border").SetActive(false);
         GetChildByName(energyUI, "background").SetActive(false);
@@ -112,6 +115,8 @@ public class GameOverUIController : MonoBehaviour
             GetChildByName(energyUI, "border").SetActive(true);
             GetChildByName(energyUI, "background").SetActive(true);
             GetChildByName(energyUI, "star").SetActive(true);
+            
+            stageUI.gameObject.SetActive(true);
             btnGroup.SetActive(true);
             background.SetActive(false);
         });

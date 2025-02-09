@@ -9,6 +9,8 @@ public class UIController : MonoBehaviour
     public RectTransform energyUIRect;
     public RectTransform timerUIRect;
     public RectTransform healthUIRect;
+    public RectTransform stageUIRect;
+    
     public RectTransform cardContainerUIRect;
     public RectTransform pauseTextRect;
     public GameObject gamePlayObjectsGroup;
@@ -33,6 +35,7 @@ public class UIController : MonoBehaviour
     private Vector2 energyUIStartPos;
     private Vector2 timerUIStartPos;
     private Vector2 healthUIStartPos;
+    private Vector2 stageUIStartPos;
     private RectTransform pauseBtnRect;
     
     void Start()
@@ -40,6 +43,8 @@ public class UIController : MonoBehaviour
         energyUIStartPos = energyUIRect.anchoredPosition;
         timerUIStartPos = timerUIRect.anchoredPosition;
         healthUIStartPos = healthUIRect.anchoredPosition;
+        stageUIStartPos = stageUIRect.anchoredPosition;
+        
         StartGame();
         SetUpVolume();
     }
@@ -61,6 +66,7 @@ public class UIController : MonoBehaviour
         energyUIRect.anchoredPosition = new Vector2(energyUIStartPos.x, -energyUIStartPos.y);
         timerUIRect.anchoredPosition = new Vector2(timerUIStartPos.x, -timerUIStartPos.y);
         healthUIRect.anchoredPosition = new Vector2(healthUIStartPos.x, -healthUIStartPos.y);
+        stageUIRect.anchoredPosition = new Vector2(stageUIStartPos.x, -stageUIStartPos.y);
         
         pauseBtnRect = pauseBtn.GetComponent<RectTransform>();
         Vector2 pauseBtnStartPos = pauseBtnRect.anchoredPosition;
@@ -72,10 +78,11 @@ public class UIController : MonoBehaviour
     private void MoveUIBackToScreenWithDotween(Vector2 pauseBtnStartPos)
     {
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(energyUIRect.DOAnchorPos(energyUIStartPos, 0.25f).SetEase(Ease.InOutQuad))
-            .Join(timerUIRect.DOAnchorPos(timerUIStartPos, 0.25f).SetEase(Ease.InOutQuad))
-            .Join(healthUIRect.DOAnchorPos(healthUIStartPos, 0.25f).SetEase(Ease.InOutQuad))
-            .Join(pauseBtnRect.DOAnchorPos(pauseBtnStartPos, 0.25f).SetEase(Ease.InOutQuad));
+        sequence.Append(energyUIRect.DOAnchorPos(energyUIStartPos, 0.3f).SetEase(Ease.InOutQuad))
+            .Join(timerUIRect.DOAnchorPos(timerUIStartPos, 0.3f).SetEase(Ease.InOutQuad))
+            .Join(healthUIRect.DOAnchorPos(healthUIStartPos, 0.3f).SetEase(Ease.InOutQuad))
+            .Join(stageUIRect.DOAnchorPos(stageUIStartPos, 0.3f).SetEase(Ease.InOutQuad))
+            .Join(pauseBtnRect.DOAnchorPos(pauseBtnStartPos, 0.3f).SetEase(Ease.InOutQuad));
     }
 
 
@@ -92,6 +99,7 @@ public class UIController : MonoBehaviour
             .Join(timerUIRect.DOAnchorPos(offScreenHorizontalPosition, 0.6f).SetEase(Ease.InOutQuad))
             .Join(healthUIRect.DOAnchorPos(offScreenHorizontalPosition, 0.6f).SetEase(Ease.InOutQuad))
             .Join(cardContainerUIRect.DOAnchorPos(offScreenVerticalPosition, 0.6f).SetEase(Ease.InOutQuad))
+            .Join(stageUIRect.DOAnchorPos(new Vector2(stageUIRect.anchoredPosition.x, -stageUIRect.anchoredPosition.y), 0.6f).SetEase(Ease.InOutQuad))
             .Join(pauseTextRect.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce));
         // .Join(gamePlayObjectsGroup.transform.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InOutQuad));;
     }
@@ -104,6 +112,7 @@ public class UIController : MonoBehaviour
             .Join(timerUIRect.DOAnchorPos(timerUIStartPos, 0.6f).SetEase(Ease.InOutQuad))
             .Join(healthUIRect.DOAnchorPos(healthUIStartPos, 0.6f).SetEase(Ease.InOutQuad))
             .Join(cardContainerUIRect.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.InOutQuad))
+            .Join(stageUIRect.DOAnchorPos(stageUIStartPos, 0.6f).SetEase(Ease.InOutQuad))
             .OnComplete(() => 
             {
                 gamePlayObjectsGroup.transform.position = new Vector3(0, 0, 0);
@@ -160,6 +169,7 @@ public class UIController : MonoBehaviour
         timerUIRect.anchoredPosition = timerUIStartPos;
         healthUIRect.anchoredPosition = healthUIStartPos;
         cardContainerUIRect.anchoredPosition = Vector2.zero;
+        stageUIRect.anchoredPosition = stageUIStartPos;
     }
     
     public void OpenSetting()

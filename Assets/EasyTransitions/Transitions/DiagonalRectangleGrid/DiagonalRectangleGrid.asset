@@ -19,7 +19,7 @@ MonoBehaviour:
   colorTintMode: 0
   colorTint: {r: 1, g: 1, b: 1, a: 1}
   isCutoutTransition: 0
-  transitionSpeed: 1
+  transitionSpeed: 1.3
   autoAdjustTransitionTime: 1
   flipX: 0
   flipY: 0

@@ -172,11 +172,11 @@ public class NonLinearSpawner : IGamePlay
 
         if (isTopPart)
         {
-            spawnY = Random.Range(screenHeight / 2 + padding * 1.2f, screenHeight - padding * 1.6f);
+            spawnY = Random.Range(screenHeight / 2 + padding * 1.2f, screenHeight - padding * 1.9f);
         }
         else
         {
-            spawnY = Random.Range(0 + padding * 2f, screenHeight / 2 - padding);
+            spawnY = Random.Range(0 + padding * 1.9f, screenHeight / 2 - padding);
         }
 
         return spawnY;

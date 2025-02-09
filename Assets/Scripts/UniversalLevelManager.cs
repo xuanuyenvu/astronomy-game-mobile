@@ -12,6 +12,8 @@ public class UniversalLevelManager : MonoBehaviour
     public HealthManager healthManager;
     public TimerManager timerManager;
     public EnergyManager energyManager;
+    public StageUIManager stageManager;
+    
     public WarpSpeedController wrapSpeedController;
     public GameOverUIController gameOverUiController;
     public WinGameUIController winGameUiController;
@@ -54,6 +56,7 @@ public class UniversalLevelManager : MonoBehaviour
             
             energyManager.SetUp();
             healthManager.SetUp(level.lives);
+            stageManager.Initialize(level.total_stages);
             // if (level.level > 6)
             // BO COMMENT
             if (level.level > 16)
@@ -115,6 +118,8 @@ public class UniversalLevelManager : MonoBehaviour
             energyManager.ChangeEnergy(energyToAdd);
             GameManager.Instance.DestroyCurrentGamePlay();
             level.total_stages--;
+
+            stageManager.UpdateStageUI();
             StartCoroutine(HandleStageCompletion());
         }
     }
@@ -171,6 +176,10 @@ public class UniversalLevelManager : MonoBehaviour
         uiController.Reset();
         gameOverUiController.StopUI(level.level > 6);
         timerManager.gameObject.SetActive(true);
+        
+        stageManager.gameObject.SetActive(true);
+        stageManager.SetUp();
+        
         StartCoroutine(DelayedLoadLevel());
     }
     
@@ -198,19 +207,18 @@ public class UniversalLevelManager : MonoBehaviour
             if (healthManager.health == 0 && timerManager.IsTimeOver)
             {
                 healthManager.SetUp(1);
-
-                timerManager.SetUp(15);
-                timerManager.IsTimeOver = false;
+                timerManager.AddTime();
             }
             else if (healthManager.health == 0)
             {
                 healthManager.SetUp(2);
             }
-            else //(timerManager.IsTimeOver == true)
+            else
             {
-                timerManager.SetUp(25);
-                timerManager.IsTimeOver = false;
+                timerManager.AddTime();
             }
+
+            timerManager.IsTimeOver = false;
             timerManager.gameObject.SetActive(true);
         }
         else if (level.level > 2)
@@ -221,7 +229,8 @@ public class UniversalLevelManager : MonoBehaviour
         {
             healthManager.SetUp(1);
         }
-
+        
+        stageManager.gameObject.SetActive(true);
         SetUpLevel(level.total_stages == 1 ? 1 : 0);
     }
 
