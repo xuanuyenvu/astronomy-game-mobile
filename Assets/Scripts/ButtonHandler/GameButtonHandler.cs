@@ -119,7 +119,7 @@ public class GameButtonHandler : IButtonHandler
         {
             // rectTransform.offsetMin = new Vector2(-96, -30);
             // rectTransform.offsetMax = new Vector2(96, 30);
-            rectTransform.anchoredPosition = new Vector3(170, -93, 0);
+            rectTransform.anchoredPosition = new Vector3(144, -95, 0);
         }
     }
 
@@ -136,7 +136,7 @@ public class GameButtonHandler : IButtonHandler
         {
             // rectTransform.offsetMin = new Vector2(-96, -30);
             // rectTransform.offsetMax = new Vector2(96, 30);
-            rectTransform.anchoredPosition = new Vector3(170, -93, 0);
+            rectTransform.anchoredPosition = new Vector3(144, -95, 0);
         }
     }
 

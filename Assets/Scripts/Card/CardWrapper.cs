@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 using config;
+using UnityEngine.UI;
 
 public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -11,7 +12,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [HideInInspector] public float targetRotation;
     [HideInInspector] public float targetVerticalDisplacement;
     public string planetName;
-    public ParticleSystem highlightPS;
+    public Image border;
     
     private GameObject cardAnimation;
     private const float EPS = 0.01f;
@@ -47,7 +48,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         Width = rectTransform.rect.width * rectTransform.localScale.x;
         canvas = GetComponent<Canvas>();
         cardAnimation = GameObject.Find(planetName + "CA");
-        highlightPS.gameObject.SetActive(false);
+        border.gameObject.SetActive(false);
     }
 
     public void SetAnchor(Vector2 min, Vector2 max)
@@ -129,8 +130,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         {
             Debug.Log("onPointerUp" + this.name);
             isSelected = true;
-            highlightPS.gameObject.SetActive(true);
-            highlightPS.Play();
+            border.gameObject.SetActive(true);
 
             cardController.ChangeSelectedCard(this);
             // Chạy hiệu ứng thẻ bài
@@ -141,7 +141,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         else
         {
-            highlightPS.gameObject.SetActive(false);
+            border.gameObject.SetActive(false);
             
             if (isSelected)
             {
@@ -195,7 +195,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void ResetAllValues()
     {
-        highlightPS.gameObject.SetActive(false);
+        border.gameObject.SetActive(false);
         isSelected = false;
         UpdateRotation();
         UpdatePosition();

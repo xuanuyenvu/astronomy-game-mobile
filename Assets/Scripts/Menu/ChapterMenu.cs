@@ -8,23 +8,37 @@ using EasyTransition;
 
 public class ChapterMenu : MonoBehaviour
 {
-    public int star = 10;
+    private int star = 8;
+    
     public Button chapter2;
     public ParticleSystem particleSystem2;
+    public GameObject lock2;
+
+    public Button chapter3;
+    public ParticleSystem particleSystem3;
+    public GameObject lock3;
+    
     public TransitionSettings transition;
     
     void Start()
     {
-        if (star >= 12)
+        Debug.Log("start" + star);
+        if (star >= 9)
         {
-
             chapter2.interactable = true;
+            chapter2.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            particleSystem2.gameObject.SetActive(true);
             particleSystem2.Play();
+            lock2.gameObject.SetActive(false);
         }
-        else
+        
+        if (star >= 18)
         {
-            chapter2.interactable = false;
-            particleSystem2.Stop();
+            chapter3.interactable = true;
+            chapter3.GetComponent<Image>().color = new Color32(167, 219, 255, 255);
+            particleSystem3.gameObject.SetActive(true);
+            particleSystem3.Play();
+            lock3.gameObject.SetActive(false);
         }
     }
     public void LoadChapter1()

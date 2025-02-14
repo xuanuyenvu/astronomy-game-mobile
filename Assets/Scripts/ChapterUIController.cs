@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ChapterUIController : MonoBehaviour
@@ -12,6 +13,7 @@ public class ChapterUIController : MonoBehaviour
     public GameObject btn1;
     public GameObject btn2;
     public GameObject settingBtn;
+    public GameObject bagBtn;
     
     public GameObject loginButton;
     public TextMeshProUGUI userName;
@@ -40,6 +42,7 @@ public class ChapterUIController : MonoBehaviour
         btn2.SetActive(false);
         stars.SetActive(false);
         settingBtn.SetActive(false);
+        bagBtn.SetActive(false);
     }
     
     public void CloseSetting()
@@ -51,6 +54,7 @@ public class ChapterUIController : MonoBehaviour
         btn2.SetActive(true);
         stars.SetActive(true);
         settingBtn.SetActive(true);
+        bagBtn.SetActive(true);
     }
     
     public void LoginFB()
@@ -78,5 +82,12 @@ public class ChapterUIController : MonoBehaviour
     public void SFXVolumeChange()
     {
         AudioManager.Instance.SetSFXVolume(sfxSlider.value);
+    }
+    
+    public void GoToPlanetInfo()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        SceneManager.LoadScene("planetInfo");
+        // TransitionManager.Instance().Transition("planetInfo", transition, 0f);
     }
 }

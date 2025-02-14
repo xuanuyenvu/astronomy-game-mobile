@@ -21,6 +21,7 @@ public class LevelUIManager : MonoBehaviour
     public GameObject backBtn;
     public GameObject stars;
     public GameObject settingBtn;
+    public GameObject bagBtn;
     
     public TextMeshProUGUI tapText;
     public Button tapBtn;
@@ -153,6 +154,7 @@ public class LevelUIManager : MonoBehaviour
         backBtn.SetActive(false);
         stars.SetActive(false);
         settingBtn.SetActive(false);
+        backBtn.SetActive(false);
     }
     
     public void CloseSetting()
@@ -164,6 +166,7 @@ public class LevelUIManager : MonoBehaviour
         backBtn.SetActive(true);
         stars.SetActive(true);
         settingBtn.SetActive(true);
+        backBtn.SetActive(true);
     }
     
     public void BackToChapterMenu()
@@ -172,6 +175,14 @@ public class LevelUIManager : MonoBehaviour
         // SceneManager.LoadScene("chapterMenu");
         TransitionManager.Instance().Transition("chapterMenu", transition, 0f);
     }
+    
+    public void GoToPlanetInfo()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        // SceneManager.LoadScene("chapterMenu");
+        TransitionManager.Instance().Transition("planetInfo", transition, 0f);
+    }
+
 
     public void LoginFB()
     {
