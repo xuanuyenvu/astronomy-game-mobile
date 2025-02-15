@@ -9465,7 +9465,7 @@ GameObject:
   - component: {fileID: 1420152218}
   - component: {fileID: 1420152217}
   m_Layer: 5
-  m_Name: Image
+  m_Name: planetInventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11095,7 +11095,7 @@ GameObject:
   - component: {fileID: 1784542377}
   - component: {fileID: 1784542376}
   m_Layer: 5
-  m_Name: Image
+  m_Name: planetDescription
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

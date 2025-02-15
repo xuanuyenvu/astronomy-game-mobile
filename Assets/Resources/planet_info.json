@@ -1,42 +1,44 @@
-[
-  {
-    "planetID": 0,
-    "planetName": "Earth – Our Home!",
-    "description": "Mass: 5.97 × 10²⁴ kg (1.0 times Earth's mass)\nEarth is the only planet we know that has life! Covered in blue oceans, green forests, and towering mountains, Earth has just the right mix of air, water, and warmth for plants, animals, and humans to thrive. Plus, we have the Moon, which helps control the ocean tides!"
-  },
-  {
-    "planetID": 1,
-    "planetName": "Mercury – The Speedy Rock",
-    "description": "Mass: 3.30 × 10²³ kg (0.055 times Earth's mass)\nMercury is the smallest and fastest planet, zipping around the Sun in just 88 days! With no atmosphere to protect it, daytime is scorching hot (430°C) while nights are freezing cold (-180°C). Its surface is covered in craters from space rocks crashing into it!"
-  },
-  {
-    "planetID": 2,
-    "planetName": "Venus – The Hottest Planet",
-    "description": "Mass: 4.87 × 10²⁴ kg (0.815 times Earth's mass)\nVenus is like a giant oven, with thick clouds trapping heat and making it the hottest planet (475°C). The air is full of poisonous gases, and the pressure is 92 times stronger than Earth's! If you stood on Venus, you’d feel like you were under an ocean of gas."
-  },
-  {
-    "planetID": 3,
-    "planetName": "Mars – The Red Planet",
-    "description": "Mass: 6.42 × 10²³ kg (0.107 times Earth's mass)\nMars looks like a desert, but long ago, it may have had rivers and lakes! It has the tallest volcano in the Solar System, Olympus Mons, and huge dust storms that can last for months. Could there be life on Mars? Scientists are still searching!"
-  },
-  {
-    "planetID": 4,
-    "planetName": "Neptune – The Stormy Deep Blue",
-    "description": "Mass: 1.02 × 10²⁶ kg (17 times Earth's mass)\nNeptune is the windiest planet, with storms roaring at 2,000 km/h! It has a deep blue color, and its largest moon, Triton, moves backward, unlike any other big moon in the Solar System."
-  },
-  {
-    "planetID": 5,
-    "planetName": "Uranus – The Topsy-Turvy Planet",
-    "description": "Mass: 8.68 × 10²⁵ kg (14.5 times Earth's mass)\nUranus is really weird—it spins on its side like a rolling ball! It has a chilly blue-green color because of methane in the air. Winds on Uranus blow at 900 km/h, and it has mysterious faint rings around it."
-  },
-  {
-    "planetID": 6,
-    "planetName": "Saturn – The Ringed Beauty",
-    "description": "Mass: 5.68 × 10²⁶ kg (95 times Earth's mass)\nSaturn is famous for its stunning rings made of ice and rock. Even though it’s huge, it’s so light that it could float on water (if we had a giant bathtub!). One of its moons, Titan, has lakes of liquid methane instead of water!"
-  },
-  {
-    "planetID": 7,
-    "planetName": "Jupiter – The Giant King",
-    "description": "Mass: 1.90 × 10²⁷ kg (318 times Earth's mass)\nJupiter is the biggest planet, made mostly of gas. It has a massive, never-ending storm called the Great Red Spot, which is even bigger than Earth! Jupiter also has at least 79 moons, including Europa, which might have a hidden ocean beneath its icy surface."
-  }
-]
+{
+  "planets": [
+    {
+      "planetID": 0,
+      "planetName": "EARTH – Our Home!",
+      "description": "Mass: 5.97 × 10²⁴ kg\nEarth is the only planet we know that has life! Covered in blue oceans, green forests, and towering mountains, Earth has just the right mix of air, water, and warmth for plants, animals, and humans to thrive. Plus, we have the Moon, which helps control the ocean tides!"
+    },
+    {
+      "planetID": 1,
+      "planetName": "MERCURY – The Speedy Rock",
+      "description": "Mass: 3.30 × 10²³ kg (1/20th the mass of Earth)\nMercury is the smallest and fastest planet, zipping around the Sun in just 88 days! With no atmosphere to protect it, daytime is scorching hot (430°C) while nights are freezing cold (-180°C). Its surface is covered in craters from space rocks crashing into it!"
+    },
+    {
+      "planetID": 2,
+      "planetName": "VENUS – The Hottest Planet",
+      "description": "Mass: 4.87 × 10²⁴ kg (4/5th the mass of Earth)\nVenus is like a giant oven, with thick clouds trapping heat and making it the hottest planet (475°C). The air is full of poisonous gases, and the pressure is 92 times stronger than Earth's! If you stood on Venus, you’d feel like you were under an ocean of gas."
+    },
+    {
+      "planetID": 3,
+      "planetName": "MARS – The Red Planet",
+      "description": "Mass: 6.42 × 10²³ kg (1/10th the mass of Earth)\nMars looks like a desert, but long ago, it may have had rivers and lakes! It has the tallest volcano in the Solar System, Olympus Mons, and huge dust storms that can last for months. Could there be life on Mars? Scientists are still searching!"
+    },
+    {
+      "planetID": 4,
+      "planetName": "NEPTUNE – The Stormy Deep Blue",
+      "description": "Mass: 1.02 × 10²⁶ kg (17 times the mass of Earth)\nNeptune is the windiest planet, with storms roaring at 2,000 km/h! It has a deep blue color, and its largest moon, Triton, moves backward, unlike any other big moon in the Solar System."
+    },
+    {
+      "planetID": 5,
+      "planetName": "URANUS – The Topsy-Turvy Planet",
+      "description": "Mass: 8.68 × 10²⁵ kg (1/20th the mass of Earth)\nUranus is really weird—it spins on its side like a rolling ball! It has a chilly blue-green color because of methane in the air. Winds on Uranus blow at 900 km/h, and it has mysterious faint rings around it."
+    },
+    {
+      "planetID": 6,
+      "planetName": "SATURN – The Ringed Beauty",
+      "description": "Mass: 5.68 × 10²⁶ kg (95 times the mass of Earth)\nSaturn is famous for its stunning rings made of ice and rock. Even though it’s huge, it’s so light that it could float on water (if we had a giant bathtub!). One of its moons, Titan, has lakes of liquid methane instead of water!"
+    },
+    {
+      "planetID": 7,
+      "planetName": "JUPITER – The Giant King",
+      "description": "Mass: 1.90 × 10²⁷ kg (1/20th the mass of Earth)\nJupiter is the biggest planet, made mostly of gas. It has a massive, never-ending storm called the Great Red Spot, which is even bigger than Earth! Jupiter also has at least 79 moons, including Europa, which might have a hidden ocean beneath its icy surface."
+    }
+  ]
+}
