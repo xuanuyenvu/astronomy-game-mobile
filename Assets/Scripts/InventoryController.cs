@@ -25,6 +25,7 @@ public class InventoryController : MonoBehaviour
 
         if (isCardSelected)
         {
+            AudioManager.Instance.PlaySFX("Click");
             listOfCards[currentlySelectedCard].UnselectCard();
             currentlySelectedCard = cardID;
         }

@@ -23,6 +23,9 @@ public class LevelUIManager : MonoBehaviour
     public GameObject settingBtn;
     public GameObject bagBtn;
     
+    public ParticleSystem psPrefab;
+    public Canvas uiCanvas;
+    
     public TextMeshProUGUI tapText;
     public Button tapBtn;
     public Button loginButton;
@@ -90,6 +93,8 @@ public class LevelUIManager : MonoBehaviour
     
     private void ShowCard(string name)
     {
+        AudioManager.Instance.PlaySFX("NewCard");
+        
         newCardBg.SetActive(true);
         primaryBg.SetActive(false);
         
@@ -97,6 +102,7 @@ public class LevelUIManager : MonoBehaviour
         backBtn.SetActive(false);
         stars.SetActive(false);
         settingBtn.SetActive(false);
+        bagBtn.SetActive(false);
         
         Card card = cardPrefabs.Find(c => c.name == name);
         if (card != null)
@@ -115,24 +121,82 @@ public class LevelUIManager : MonoBehaviour
     public void ReceiveCard()
     {
         AudioManager.Instance.PlaySFX("Click");
-        HideCard();
+        AddCardToBag();
+        // HideCard();
         DataSaver.Instance.OpenedCard(indexCard);
         levelSelector.UpdateAfterOpenCard(indexCard);
     }
     
-    private void HideCard()
+    private void AddCardToBag()
+    {
+        bagBtn.SetActive(true);
+
+        // Tạo hiệu ứng ParticleSystem trong UI
+        ParticleSystem particle = Instantiate(psPrefab, uiCanvas.transform);
+        RectTransform particleRect = particle.GetComponent<RectTransform>();
+        
+        particleRect.localScale = new Vector3(3f, 3f, 3f);
+        RectTransform bagRect = bagBtn.GetComponent<RectTransform>();
+
+        // Đặt vị trí ban đầu cho ParticleSystem
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Vector2 uiCenter;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            uiCanvas.GetComponent<RectTransform>(), screenCenter, null, out uiCenter
+        );
+        particleRect.anchoredPosition = uiCenter;
+
+
+        // Định nghĩa đường đi của ParticleSystem
+        Vector3[] path = new Vector3[]
+        {
+            particleRect.position, // Bắt đầu từ vị trí của thẻ
+            (particleRect.position + bagRect.position) / 2 + Vector3.down * 90, // Điểm giữa, lệch xuống một chút
+            bagRect.position // Kết thúc tại Bag Button
+        };
+
+        // Xóa thẻ, chạy particle
+        DestroyCard();
+        particle.Play();
+
+        DOVirtual.DelayedCall(0.2f, BackToLevelScene);
+        
+        // Di chuyển ParticleSystem theo path
+        particleRect.DOPath(path, 0.6f, PathType.CatmullRom)
+            .SetEase(Ease.InOutQuint)
+            .OnComplete(() =>
+            {
+                particle.Stop();
+                Destroy(particle.gameObject, particle.main.duration);
+                bagBtn.transform.DOScale(1.2f, 0.1f)
+                    .SetLoops(2, LoopType.Yoyo);
+                // .OnComplete(() =>
+                // {
+                //     BackToLevelScene();
+                // });
+            });
+    }
+
+    private void DestroyCard()
     {
         tapText.gameObject.SetActive(false);
         tapBtn.gameObject.SetActive(false);
-        
+    
+        if (currentCard != null)
+        {
+            Destroy(currentCard.gameObject);
+        }
+    }
+
+    
+    private void BackToLevelScene()
+    {
         primaryBg.SetActive(true);
         newCardBg.SetActive(false);
         scrollView.SetActive(true);
         backBtn.SetActive(true);
         stars.SetActive(true);
         settingBtn.SetActive(true);
-        
-        Destroy(currentCard.gameObject);
     }
     
     private void OnScaletapText()

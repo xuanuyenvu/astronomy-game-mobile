@@ -108,6 +108,7 @@ public class UniversalLevelManager : MonoBehaviour
 
         if (level.total_stages == 1)
         {
+            stageManager.UpdateStageUI();
             winGameUiController.StartUI((float)energyToAdd);
             // gameManager.UpdateFinalEnergy();
             // gameManager.DestroyCurrentGamePlay();

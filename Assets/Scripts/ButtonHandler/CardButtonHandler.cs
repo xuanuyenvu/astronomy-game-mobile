@@ -6,7 +6,9 @@ using UnityEngine.UI;
 
 public class CardButtonHandler : IButtonHandler
 {
-    public Image card;
+    public Sprite card;
+    public ParticleSystem glowPS;
+    
     private Button button;
     private Image buttonImg;
 
@@ -15,6 +17,7 @@ public class CardButtonHandler : IButtonHandler
         type = "card";
         button = GetComponent<Button>();
         buttonImg = GetComponent<Image>();
+        glowPS.gameObject.SetActive(false);
     }
 
     public override void UpdateState(string levelState)
@@ -36,19 +39,26 @@ public class CardButtonHandler : IButtonHandler
     private void SetLocked()
     {
         button.interactable = false;
-        buttonImg.enabled = true;
+        button.enabled = false;
     }
 
     private void SetUnlocked()
     {
+        button.enabled = true;
         button.interactable = true;
-        buttonImg.enabled = true;
+        buttonImg.sprite = card;
+        buttonImg.color = new Color(1, 1, 1, 1);
+        glowPS.gameObject.SetActive(true);
+        glowPS.Play();
     }
 
     private void SetOpened()
     {
+        glowPS.Pause();
+        glowPS.gameObject.SetActive(false);
+        button.enabled = true;
         button.interactable = false;
-        buttonImg.enabled = false;
+        buttonImg.sprite = card;
     }
 
     public override int GetLevel()

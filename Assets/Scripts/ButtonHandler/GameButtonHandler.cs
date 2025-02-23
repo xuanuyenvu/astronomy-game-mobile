@@ -69,12 +69,10 @@ public class GameButtonHandler : IButtonHandler
         button.interactable = false;
         rock.gameObject.SetActive(false);
         star.gameObject.SetActive(false);
-
-        largeCircle.color = Color.white;
-        largeCircle.color = new Color(largeCircle.color.r, largeCircle.color.g, largeCircle.color.b, 80f / 255f);
-        mediumCircle.color = Color.white;
-        mediumCircle.color = new Color(mediumCircle.color.r, mediumCircle.color.g, mediumCircle.color.b, 30f / 255f);
-        levelText.alpha = 80f / 255f;
+        
+        largeCircle.color = new Color(208 / 255f, 224 / 255f, 236f / 255f, 50f / 255f);
+        mediumCircle.color = new Color(208 / 255f, 224 / 255f, 236f / 255f, 15f / 255f);
+        levelText.color = new Color(208 / 255f, 224 / 255f, 236f / 255f, 30f / 255f);
 
         RectTransform rectTransform = levelText.GetComponent<RectTransform>();
         if (rectTransform != null)
@@ -93,9 +91,10 @@ public class GameButtonHandler : IButtonHandler
 
         largeCircle.color = Color.white;
         largeCircle.color = new Color(largeCircle.color.r, largeCircle.color.g, largeCircle.color.b, 255f / 255f);
-        mediumCircle.color = Color.white;
-        mediumCircle.color = new Color(mediumCircle.color.r, mediumCircle.color.g, mediumCircle.color.b, 50f / 255f);
+        largeCircle.color = Color.white;
+        mediumCircle.color = new Color(mediumCircle.color.r, mediumCircle.color.g, mediumCircle.color.b, 80f / 255f);
 
+        levelText.color = Color.white;
         levelText.alpha = 225f / 255f;
         RectTransform rectTransform = levelText.GetComponent<RectTransform>();
         if (rectTransform != null)
@@ -144,6 +143,7 @@ public class GameButtonHandler : IButtonHandler
     {
         largeCircle.color = new Color(177f / 255f, 192f / 255f, 255f / 255f, 200f / 255f);
         mediumCircle.color = new Color(50f / 255f, 83f / 255f, 157f / 255f, 255f / 255f);
+        levelText.color = Color.white;
         levelText.alpha = 225f / 255f;
     }
 }

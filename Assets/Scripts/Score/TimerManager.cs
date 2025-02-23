@@ -122,7 +122,7 @@ public class TimerManager : MonoBehaviour
         {
             return;
         }   
-        // Tìm các trái tim có enabled = true
+
         ParticleSystem particle = Instantiate(psPrefab, uiCanvas.transform);
 
         // Đặt vị trí ParticleSystem trong UI
