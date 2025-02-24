@@ -85,6 +85,7 @@ namespace EasyTransition
             StartCoroutine(Timer(sceneIndex, startDelay, transition));
         }
 
+
         /// <summary>
         /// Gets the index of a scene from its name.
         /// </summary>

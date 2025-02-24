@@ -27,6 +27,10 @@ public class CardController : MonoBehaviour
     [Header("Rotation")]
     [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
     [SerializeField] private float maxHeight = 30;
+    
+    [Header("UniversalLevelManager")]
+    public UniversalLevelManager universalLevelManager;
+    
     private float maxHeightDisplacement;
     public float MaxHeight
     {
@@ -391,6 +395,8 @@ public class CardController : MonoBehaviour
 
     public void ChangeSelectedCard(CardWrapper card)
     {
+        universalLevelManager.StopTutorial();
+        
         // Nếu đã có card được chọn từ trước thì gọi hàm ResetAllValues() 
         // để reset lại các giá trị Rotation, Position, Sorting
         if (selectedCard != null)

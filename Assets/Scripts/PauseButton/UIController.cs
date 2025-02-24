@@ -10,6 +10,7 @@ public class UIController : MonoBehaviour
     public RectTransform timerUIRect;
     public RectTransform healthUIRect;
     public RectTransform stageUIRect;
+    public RectTransform tutorialUIRect;
     
     public RectTransform cardContainerUIRect;
     public RectTransform pauseTextRect;
@@ -67,6 +68,7 @@ public class UIController : MonoBehaviour
         timerUIRect.anchoredPosition = new Vector2(timerUIStartPos.x, -timerUIStartPos.y);
         healthUIRect.anchoredPosition = new Vector2(healthUIStartPos.x, -healthUIStartPos.y);
         stageUIRect.anchoredPosition = new Vector2(stageUIStartPos.x, -stageUIStartPos.y);
+        tutorialUIRect.anchoredPosition = new Vector2(tutorialUIRect.anchoredPosition.x, -tutorialUIRect.anchoredPosition.y);
         
         pauseBtnRect = pauseBtn.GetComponent<RectTransform>();
         Vector2 pauseBtnStartPos = pauseBtnRect.anchoredPosition;
@@ -100,7 +102,8 @@ public class UIController : MonoBehaviour
             .Join(healthUIRect.DOAnchorPos(offScreenHorizontalPosition, 0.6f).SetEase(Ease.InOutQuad))
             .Join(cardContainerUIRect.DOAnchorPos(offScreenVerticalPosition, 0.6f).SetEase(Ease.InOutQuad))
             .Join(stageUIRect.DOAnchorPos(new Vector2(stageUIRect.anchoredPosition.x, -stageUIRect.anchoredPosition.y), 0.6f).SetEase(Ease.InOutQuad))
-            .Join(pauseTextRect.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce));
+            .Join(pauseTextRect.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutBounce))
+            .Join(tutorialUIRect.DOAnchorPos(offScreenVerticalPosition, 0.6f).SetEase(Ease.InOutQuad));
         // .Join(gamePlayObjectsGroup.transform.DOScale(Vector3.zero, 0.6f).SetEase(Ease.InOutQuad));;
     }
     
@@ -113,6 +116,7 @@ public class UIController : MonoBehaviour
             .Join(healthUIRect.DOAnchorPos(healthUIStartPos, 0.6f).SetEase(Ease.InOutQuad))
             .Join(cardContainerUIRect.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.InOutQuad))
             .Join(stageUIRect.DOAnchorPos(stageUIStartPos, 0.6f).SetEase(Ease.InOutQuad))
+            .Join(tutorialUIRect.DOAnchorPos(Vector2.zero, 0.6f).SetEase(Ease.InOutQuad))
             .OnComplete(() => 
             {
                 gamePlayObjectsGroup.transform.position = new Vector3(0, 0, 0);
@@ -170,6 +174,7 @@ public class UIController : MonoBehaviour
         healthUIRect.anchoredPosition = healthUIStartPos;
         cardContainerUIRect.anchoredPosition = Vector2.zero;
         stageUIRect.anchoredPosition = stageUIStartPos;
+        tutorialUIRect.anchoredPosition = Vector2.zero;
     }
     
     public void OpenSetting()

@@ -7,7 +7,7 @@ using DG.Tweening;
 public class HealthManager : MonoBehaviour
 {
     [HideInInspector] public int health = 5;
-    public Sprite heart;
+    // public Sprite heart;
     public List<Image> hearts;
     public Image star;
     public ParticleSystem psPrefab;

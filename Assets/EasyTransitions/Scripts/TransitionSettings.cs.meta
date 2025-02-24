@@ -4,7 +4,8 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - multiplyColorMaterial: {fileID: 2100000, guid: 53171468e32441749b007c64337cd3db, type: 2}
+  - multiplyColorMaterial: {fileID: 2100000, guid: 53171468e32441749b007c64337cd3db,
+      type: 2}
   - addColorMaterial: {fileID: 2100000, guid: 65ccb7b6cbefce14eb6f884cfc33ba91, type: 2}
   - transitionIn: {instanceID: 0}
   - transitionOut: {instanceID: 0}
@@ -13,3 +14,10 @@ MonoImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 225607
+  packageName: Easy Transitions
+  packageVersion: 1.4
+  assetPath: Assets/EasyTransitions/Scripts/TransitionSettings.cs
+  uploadId: 587727

@@ -18,8 +18,17 @@ public class TimerManager : MonoBehaviour
     private bool stopeTimer = false;
     private bool isTimeOver = false;
     private bool isFlashing = false;
+    private bool isLessThan15Seconds = false;
 
-    public global::System.Boolean IsTimeOver { get => isTimeOver; set => isTimeOver = value; }
+    public global::System.Boolean IsTimeOver
+    {
+        get => isTimeOver;
+    }
+    
+    public global::System.Boolean IsLessThan15Seconds
+    {
+        get => isLessThan15Seconds;
+    }
 
     public void SetUp(int time)
     {   
@@ -47,6 +56,8 @@ public class TimerManager : MonoBehaviour
         sliderTimer = (float)(maxSliderTimer * 0.35f);
         timerSlider.value = sliderTimer;
         stopeTimer = false;
+        isLessThan15Seconds = false;
+        isTimeOver = false;
     }
 
     public void StartTimer()
@@ -74,10 +85,17 @@ public class TimerManager : MonoBehaviour
                 stopeTimer = true;
                 GameManager.Instance.CurrentGamePlay.OnTimeOver();
             }
+
+            if (sliderTimer < 15)
+            {
+                isLessThan15Seconds = true;
+            }
+
+            
             if (!stopeTimer)
             {
                 timerSlider.value = sliderTimer;
-                // Khi thời gian còn 15% thì đổi màu fill thành đỏ
+                // Khi thời gian còn 20% thì đổi màu fill thành đỏ
                 if (sliderTimer / maxSliderTimer <= 0.2f && fillObject != null && !isFlashing)
                 {
                     isFlashing = true; // Đánh dấu đang nhấp nháy

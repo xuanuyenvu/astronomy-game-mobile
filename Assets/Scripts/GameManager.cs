@@ -31,8 +31,8 @@ public class GameManager : MonoBehaviour
 
     public void Initialize(int levelId, int[] planets, int cardsDisplayed)
     {
-        // el = levelId - 1;
-        el = 3;
+        el = levelId - 1;
+        // el = 3;
         OnStartGame(planets, cardsDisplayed);
     }
 

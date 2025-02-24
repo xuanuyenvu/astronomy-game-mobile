@@ -1622,6 +1622,9 @@ MonoBehaviour:
   - name: GameplaySceneTransition
     clip: {fileID: 8300000, guid: 68a9ce401904fd64589362f683dd8bf0, type: 3}
     volume: 1.2
+  - name: NewCard
+    clip: {fileID: 8300000, guid: 50baec025886db44790df7801e59c06f, type: 3}
+    volume: 1.2
   musicSource: {fileID: 443132072}
   sfxSource: {fileID: 639900538}
 --- !u!4 &1435597786

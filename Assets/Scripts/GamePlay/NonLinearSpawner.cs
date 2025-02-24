@@ -14,6 +14,7 @@ public class NonLinearSpawner : IGamePlay
     [Header("Rocket and Target")]
     public RocketController rocketPrefab;
     public GameObject targetPrefab;
+    public RocketController redThreatPrefab;
 
     [Header("List Particle System Boom")]
     public List<ParticleSystem> boomPSPrefab;
@@ -82,7 +83,7 @@ public class NonLinearSpawner : IGamePlay
             // Đặt lại giá trị
             cameraShake.IsShake = -1;
             
-            if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
+            if (healthManager.health == 0 || cardController.GetNumOfCards() == 0)
             {
                 GameOver();
             }
@@ -310,7 +311,7 @@ public class NonLinearSpawner : IGamePlay
     {
         Vector3 desPostion = CalculateResultantPosition(planet1, planet2, rocket, 5);
 
-        destinationRocket = Instantiate(rocketPrefab, desPostion, Quaternion.identity);
+        destinationRocket = Instantiate(redThreatPrefab, desPostion, Quaternion.identity);
         destinationRocket.name = destinationRocket.name.Replace("meteorite(Clone)", "destination");
         destinationRocket.gameObject.tag = "Rocket";
         destinationRocket.transform.SetParent(planetsGroupTransform);
@@ -376,6 +377,9 @@ public class NonLinearSpawner : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
+        // Tắt tutorial nếu có
+        universalLevelManager.StopTutorial();
+        
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 
@@ -482,8 +486,8 @@ public class NonLinearSpawner : IGamePlay
 
     private void DestroyTwoPlanet()
     {
-        RocketController rocketChild1 = Instantiate(rocketPrefab, destinationRocket.transform.position, Quaternion.identity);
-        RocketController rocketChild2 = Instantiate(rocketPrefab, destinationRocket.transform.position, Quaternion.identity);
+        RocketController rocketChild1 = Instantiate(redThreatPrefab, destinationRocket.transform.position, Quaternion.identity);
+        RocketController rocketChild2 = Instantiate(redThreatPrefab, destinationRocket.transform.position, Quaternion.identity);
 
         rocketChild1.RotateRocket(planet1.transform.position);
         rocketChild2.RotateRocket(planetAnswer.transform.position);

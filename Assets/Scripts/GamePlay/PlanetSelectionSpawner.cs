@@ -71,7 +71,7 @@ public class PlanetSelectionSpawner : IGamePlay
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
         
-        if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
+        if (healthManager.health == 0 || cardController.GetNumOfCards() == 0)
         {
             GameOver();
         }
@@ -236,6 +236,9 @@ public class PlanetSelectionSpawner : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
+        // Tắt tutorial nếu có
+        universalLevelManager.StopTutorial();
+        
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 

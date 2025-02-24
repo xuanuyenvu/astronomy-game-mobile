@@ -10,6 +10,7 @@ public class GameOverUIController : MonoBehaviour
     public HealthManager healthManager;
     public GameObject energyUI;
     public GameObject stageUI;
+    public GameObject tutorialUI;
     
     public GameObject background;
     public ParticleSystem brokenStarPS;
@@ -36,6 +37,7 @@ public class GameOverUIController : MonoBehaviour
         timeBarUI.SetActive(false);
         healthManager.SetUp(0);
         stageUI.SetActive(false);
+        tutorialUI.SetActive(false);
 
         GetChildByName(energyUI, "border").SetActive(false);
         GetChildByName(energyUI, "background").SetActive(false);
