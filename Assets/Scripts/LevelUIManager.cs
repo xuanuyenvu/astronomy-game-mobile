@@ -221,6 +221,7 @@ public class LevelUIManager : MonoBehaviour
         stars.SetActive(false);
         settingBtn.SetActive(false);
         backBtn.SetActive(false);
+        bagBtn.SetActive(false);
     }
     
     public void CloseSetting()
@@ -233,6 +234,7 @@ public class LevelUIManager : MonoBehaviour
         stars.SetActive(true);
         settingBtn.SetActive(true);
         backBtn.SetActive(true);
+        bagBtn.SetActive(true);
     }
     
     public void BackToChapterMenu()

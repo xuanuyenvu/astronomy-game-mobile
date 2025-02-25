@@ -114,6 +114,9 @@ public class UniversalLevelManager : MonoBehaviour
             case 4:
                 tutorialManager.StartTutorialLevel4();
                 break;
+            case 7:
+                tutorialManager.StartTutorialLevel7();
+                break;
         }
     }
 

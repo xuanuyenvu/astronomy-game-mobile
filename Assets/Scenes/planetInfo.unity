@@ -5588,7 +5588,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1341048209}
   m_Direction: 2
   m_Value: 0.9999999
-  m_Size: 0.40816322
+  m_Size: 0.40816325
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10938,7 +10938,7 @@ MonoBehaviour:
   - {fileID: 29790543}
   - {fileID: 704474703}
   - {fileID: 810357491}
-  planetInfoUIController: {fileID: 0}
+  planetInfoUIController: {fileID: 1341358480}
 --- !u!1 &1754455712
 GameObject:
   m_ObjectHideFlags: 0
@@ -11231,7 +11231,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 616509368}
   m_HandleRect: {fileID: 616509367}
   m_Direction: 2
-  m_Value: 1.0000004
+  m_Value: 1
   m_Size: 0.6415838
   m_NumberOfSteps: 0
   m_OnValueChanged:
