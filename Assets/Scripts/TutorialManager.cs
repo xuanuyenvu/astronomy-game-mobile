@@ -11,6 +11,10 @@ public class TutorialManager : MonoBehaviour
     
     private int currentTutorial = -1;
     private float fadeDuration = 0.6f;
+    
+    // ngoại trừ level 1 (click card thì mất tutorialText)
+    // thì những level còn lại khi spawn hành tinh mới mất
+    private int counter = 0;
 
     void Start()
     {
@@ -94,14 +98,18 @@ public class TutorialManager : MonoBehaviour
         
             Image icon = tutorialText[1].transform.GetChild(0).GetComponent<Image>(); 
             StartCoroutine(ShowTutorialWithDelay(tutorialText[1], icon, 0.5f));
+
+            counter++;
+        }
+        else if (counter == 1 && (currentTutorial > 0 && currentTutorial < tutorialText.Length))
+        {
+            tutorialText[currentTutorial].transform.DOScale(0f, fadeDuration);
+            currentTutorial = -1;
         }
         else
         {
-            if (currentTutorial >= 0 || currentTutorial < tutorialText.Length)
-            {
-                tutorialText[currentTutorial].transform.DOScale(0f, fadeDuration);
-                currentTutorial = -1;
-            }
+            counter++;
+            // do nothing
         }
     }
 }

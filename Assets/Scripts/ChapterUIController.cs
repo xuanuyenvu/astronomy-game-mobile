@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using EasyTransition;
 
 public class ChapterUIController : MonoBehaviour
 {
@@ -21,6 +18,8 @@ public class ChapterUIController : MonoBehaviour
     
     public Slider bgmSlider;
     public Slider sfxSlider;
+    
+    public TransitionSettings transition;
 
     private void Start()
     {
@@ -84,10 +83,11 @@ public class ChapterUIController : MonoBehaviour
         AudioManager.Instance.SetSFXVolume(sfxSlider.value);
     }
     
-    public void GoToPlanetInfo()
+    public void GoToPlanetInfo(string sceneName)
     {
         AudioManager.Instance.PlaySFX("Click");
-        SceneManager.LoadScene("planetInfo");
-        // TransitionManager.Instance().Transition("planetInfo", transition, 0f);
+        // SceneManager.LoadScene("planetInfo");
+        DataSaver.Instance.sceneName = sceneName;
+        TransitionManager.Instance().Transition("planetInfo", transition, 0f);
     }
 }

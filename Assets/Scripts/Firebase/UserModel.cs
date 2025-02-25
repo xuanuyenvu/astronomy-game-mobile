@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 [System.Serializable]
 public class LevelItem
@@ -48,19 +47,67 @@ public class LevelItem
     }
 }
 
+[System.Serializable]
+public class ChapterItem
+{
+    public int id;
+    public string state;      
+
+    public ChapterItem(int id, string state)
+    {
+        this.Id = id;
+        this.State = state;
+    }
+    
+    public int Id  
+    {
+        get => id;
+        set => id = value;
+    }
+
+    public string State
+    {
+        get => state;
+        set => state = value;
+    }
+    
+    public override bool Equals(object obj)
+    {
+        if (obj is ChapterItem other)
+        {
+            return this.Id == other.Id && this.State == other.State;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked 
+        {
+            int hash = 17;
+            hash = hash * 23 + Id.GetHashCode();  
+            hash = hash * 23 + (State != null ? State.GetHashCode() : 0);  
+            return hash;
+        }
+    }
+} 
 
 [System.Serializable]
 public class UserModel
 {
     public int star;
+    public int card;
     public List<LevelItem> levels;
+    public List<ChapterItem> chapters;
     public string userId;
 
-    public UserModel(string userId, int star, List<LevelItem> levels)
+    public UserModel(string userId, int star, int card, List<LevelItem> levels, List<ChapterItem> chapters)
     {
-        this.UserId = this.userId;
+        this.userId = userId; 
         this.Star = star;
+        this.Card = card;
         this.Levels = levels;
+        this.Chapters = chapters;
     }
     
     public int Star
@@ -69,10 +116,22 @@ public class UserModel
         set => star = value;
     }
     
+    public int Card
+    {
+        get => card;
+        set => card = value;
+    }
+    
     public List<LevelItem> Levels
     {
         get => levels;
         set => levels = value;
+    }
+    
+    public List<ChapterItem> Chapters
+    {
+        get => chapters;
+        set => chapters = value;
     }
 
     public string UserId
@@ -86,7 +145,7 @@ public class UserModel
 public class FacebookUserData
 {
     private string name;
-    private Texture2D  profilePic;
+    private Texture2D profilePic;
     
     public FacebookUserData()
     {
@@ -111,5 +170,4 @@ public class FacebookUserData
         get => profilePic;
         set => profilePic = value;
     }
-
 }

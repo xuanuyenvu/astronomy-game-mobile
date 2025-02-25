@@ -5910,7 +5910,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5670, y: -615}
+  m_AnchoredPosition: {x: 5670, y: -624}
   m_SizeDelta: {x: 220, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &188405112
@@ -6035,7 +6035,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5370, y: -652}
+  m_AnchoredPosition: {x: 4970, y: -652}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &190916538
@@ -39000,7 +39000,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 3cd30a1540fe0d94d8a544a649bbf182, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fc87b019968cdbf4caf2dc9ff7a804a7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -44195,7 +44195,8 @@ MonoBehaviour:
   userPic: {fileID: 4384016883449984282}
   bgmSlider: {fileID: 1382747241819983104}
   sfxSlider: {fileID: 6925045743888239106}
-  transition: {fileID: 11400000, guid: 9710edcf009d00943af961dd2a7ca7d3, type: 2}
+  backBtnTransition: {fileID: 11400000, guid: 9710edcf009d00943af961dd2a7ca7d3, type: 2}
+  bagBtnTransition: {fileID: 11400000, guid: 013263c83b6a84c4d95beaa8bd163ac8, type: 2}
   cardPrefabs:
   - {fileID: 8873965050343267878, guid: bd41efdb1ece28147b482c6eeab65a83, type: 3}
   - {fileID: 7579756230333926622, guid: bd617664d505fa048807f028a9b4a715, type: 3}
@@ -54747,13 +54748,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1137481256}
         m_TargetAssemblyTypeName: LevelUIManager, Assembly-CSharp
         m_MethodName: GoToPlanetInfo
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: chapter1
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1244442555
@@ -65392,8 +65393,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2100052537}
   m_HandleRect: {fileID: 2100052536}
   m_Direction: 0
-  m_Value: -0.00000010368293
-  m_Size: 0.30188507
+  m_Value: -0.000000051835595
+  m_Size: 0.3018061
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -70327,7 +70328,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 5070, y: -710}
+  m_AnchoredPosition: {x: 5270, y: -512}
   m_SizeDelta: {x: 220, y: 220}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1619437244
@@ -96564,8 +96565,8 @@ RectTransform:
   - {fileID: 1691895147}
   - {fileID: 953968605}
   - {fileID: 1803844469}
-  - {fileID: 1619437243}
   - {fileID: 190916537}
+  - {fileID: 1619437243}
   - {fileID: 188405111}
   - {fileID: 1959390072}
   - {fileID: 1203374597}

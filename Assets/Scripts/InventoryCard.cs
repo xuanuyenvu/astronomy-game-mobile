@@ -21,10 +21,12 @@ public class InventoryCard : MonoBehaviour, IPointerClickHandler
         if (itemID == 0)
         {
             border.SetActive(true);
+            isDisplayed = true;
         }
         else
         {
             border.SetActive(false);
+            isDisplayed = false;
         }
     }
 
@@ -57,7 +59,7 @@ public class InventoryCard : MonoBehaviour, IPointerClickHandler
         return false;
     }
 
-    public void UnselectCard()
+    public void ShowBorder()
     {
         border.SetActive(false);
     }

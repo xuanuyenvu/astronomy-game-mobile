@@ -5,6 +5,7 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using EasyTransition;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -35,7 +36,8 @@ public class LevelUIManager : MonoBehaviour
     public Slider bgmSlider;
     public Slider sfxSlider;
 
-    public TransitionSettings transition;
+    public TransitionSettings backBtnTransition;
+    public TransitionSettings bagBtnTransition;
     
     public List<Card> cardPrefabs;
     private Card currentCard;
@@ -79,13 +81,13 @@ public class LevelUIManager : MonoBehaviour
             case 10:
                 ShowCard("neptune");
                 break;
-            case 15:
+            case 14:
                 ShowCard("uranus");
                 break;
-            case 20:
+            case 24:
                 ShowCard("saturn");
                 break;
-            case 23:
+            case 27:
                 ShowCard("jupiter");
                 break;
         }
@@ -237,14 +239,15 @@ public class LevelUIManager : MonoBehaviour
     {
         AudioManager.Instance.PlaySFX("Click");
         // SceneManager.LoadScene("chapterMenu");
-        TransitionManager.Instance().Transition("chapterMenu", transition, 0f);
+        TransitionManager.Instance().Transition("chapterMenu", backBtnTransition, 0f);
     }
     
-    public void GoToPlanetInfo()
+    public void GoToPlanetInfo(string sceneName)
     {
         AudioManager.Instance.PlaySFX("Click");
         // SceneManager.LoadScene("chapterMenu");
-        TransitionManager.Instance().Transition("planetInfo", transition, 0f);
+        DataSaver.Instance.sceneName = sceneName;
+        TransitionManager.Instance().Transition("planetInfo", bagBtnTransition, 0f);
     }
 
 

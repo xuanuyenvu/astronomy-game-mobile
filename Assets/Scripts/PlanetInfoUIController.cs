@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using EasyTransition;
 
 [System.Serializable]
 public class PlanetInfo
@@ -25,6 +25,8 @@ public class PlanetInfoUIController : MonoBehaviour
     public TextMeshProUGUI planetDescription;
     public ParticleSystem fogPS;
     public ParticleSystem starPS;
+    
+    public TransitionSettings transition;
     
     private PlanetInfoList planetData;
     private float screenHeight;
@@ -136,7 +138,7 @@ public class PlanetInfoUIController : MonoBehaviour
     public void GoToChapterMenu()
     {
         AudioManager.Instance.PlaySFX("Click");
-        SceneManager.LoadScene("chapterMenu");
-        // TransitionManager.Instance().Transition("planetInfo", transition, 0f);
+        // SceneManager.LoadScene();
+        TransitionManager.Instance().Transition(DataSaver.Instance.sceneName, transition, 0f);
     }
 }

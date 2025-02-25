@@ -3,12 +3,14 @@ using UnityEngine;
 public class InventoryController : MonoBehaviour
 {
     public InventoryCard[] listOfCards;
-    public int openedCardCount;
+    public PlanetInfoUIController planetInfoUIController;
+    private int openedCardCount;
     private int currentlySelectedCard = 0;
 
     void Start()
     {
-        openedCardCount = Mathf.Clamp(openedCardCount, 0, listOfCards.Length);
+        openedCardCount = DataSaver.Instance.userModel.Card;
+        Debug.Log("ononon" + openedCardCount);
 
         for (int i = 0; i < openedCardCount; i++)
         {
@@ -22,11 +24,13 @@ public class InventoryController : MonoBehaviour
     public void DisplayPlanet(int cardID)
     {
         bool isCardSelected = listOfCards[cardID].SelectCard();
-
+        
         if (isCardSelected)
         {
+            Debug.Log("duoc selected");
             AudioManager.Instance.PlaySFX("Click");
-            listOfCards[currentlySelectedCard].UnselectCard();
+            listOfCards[currentlySelectedCard].ShowBorder();
+            planetInfoUIController.DisplayPlanetInfo(cardID);
             currentlySelectedCard = cardID;
         }
     }

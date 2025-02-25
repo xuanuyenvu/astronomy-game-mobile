@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class CollectedStarsHandler : MonoBehaviour
 {
@@ -29,6 +30,24 @@ public class CollectedStarsHandler : MonoBehaviour
 
     private void LoadText()
     {
+        int k = 0;
+        numOfStars.text = DataSaver.Instance.userModel.Star.ToString();
+
+        foreach (LevelItem el in DataSaver.Instance.userModel.Levels) 
+        {
+            if (el.State == "star") 
+            {
+                k++;
+            }
+
+            if (el.State == "unlocked")
+            {
+                break; 
+            }
+        }
+
+        DataSaver.Instance.userModel.Star = k;
         numOfStars.text = DataSaver.Instance.userModel.Star.ToString();
     }
+
 }

@@ -141,8 +141,12 @@ public class GameButtonHandler : IButtonHandler
 
     private void SetColorWhenPlayed()
     {
-        largeCircle.color = new Color(177f / 255f, 192f / 255f, 255f / 255f, 200f / 255f);
+        // largeCircle.color = new Color(177f / 255f, 192f / 255f, 255f / 255f, 200f / 255f);
+        // mediumCircle.color = new Color(50f / 255f, 83f / 255f, 157f / 255f, 255f / 255f);
+        
+        largeCircle.color = new Color(91f / 255f, 166f / 255f, 232f / 255f, 200f / 255f);
         mediumCircle.color = new Color(50f / 255f, 83f / 255f, 157f / 255f, 255f / 255f);
+        
         levelText.color = Color.white;
         levelText.alpha = 225f / 255f;
     }

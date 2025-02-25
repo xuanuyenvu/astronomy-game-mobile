@@ -1,15 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using TMPro;
 using EasyTransition;
 
 public class ChapterMenu : MonoBehaviour
 {
-    private int star = 8;
-    
     public Button chapter2;
     public ParticleSystem particleSystem2;
     public GameObject lock2;
@@ -22,8 +16,9 @@ public class ChapterMenu : MonoBehaviour
     
     void Start()
     {
-        Debug.Log("start" + star);
-        if (star >= 9)
+        int star = DataSaver.Instance.userModel.Star;
+        
+        if (star >= 10)
         {
             chapter2.interactable = true;
             chapter2.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
@@ -32,7 +27,7 @@ public class ChapterMenu : MonoBehaviour
             lock2.gameObject.SetActive(false);
         }
         
-        if (star >= 18)
+        if (star >= 19)
         {
             chapter3.interactable = true;
             chapter3.GetComponent<Image>().color = new Color32(167, 219, 255, 255);

@@ -19711,13 +19711,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1259983942}
         m_TargetAssemblyTypeName: ChapterUIController, Assembly-CSharp
         m_MethodName: GoToPlanetInfo
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: chapterMenu
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &971466172
@@ -19853,7 +19853,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.39, y: -0.07}
+  m_AnchoredPosition: {x: -0.388, y: -0.07}
   m_SizeDelta: {x: 110, y: 13.0685}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1040806930
@@ -19876,7 +19876,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 9
+  m_text: 10
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 764309be73894ed40af32aa5d11884e5, type: 2}
   m_sharedMaterial: {fileID: 5214543975903533390, guid: 764309be73894ed40af32aa5d11884e5, type: 2}
@@ -20167,6 +20167,7 @@ MonoBehaviour:
   userPic: {fileID: 5766829802288996088}
   bgmSlider: {fileID: 9214448727507298018}
   sfxSlider: {fileID: 921682593932485088}
+  transition: {fileID: 11400000, guid: 013263c83b6a84c4d95beaa8bd163ac8, type: 2}
 --- !u!4 &1259983943
 Transform:
   m_ObjectHideFlags: 0
@@ -20216,7 +20217,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.37999916, y: -0.07}
+  m_AnchoredPosition: {x: -0.36, y: -0.07}
   m_SizeDelta: {x: 110, y: 13.0685}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1312796787
@@ -20239,7 +20240,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 18
+  m_text: 19
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 764309be73894ed40af32aa5d11884e5, type: 2}
   m_sharedMaterial: {fileID: 5214543975903533390, guid: 764309be73894ed40af32aa5d11884e5, type: 2}
@@ -21472,7 +21473,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.27000004, y: -0.19999963}
+  m_AnchoredPosition: {x: 0.46799994, y: -0.19999963}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1809898239
@@ -21669,7 +21670,7 @@ MonoBehaviour:
   chapter3: {fileID: 1330565253}
   particleSystem3: {fileID: 394670860}
   lock3: {fileID: 1191739466}
-  transition: {fileID: 11400000, guid: 013263c83b6a84c4d95beaa8bd163ac8, type: 2}
+  transition: {fileID: 11400000, guid: 9710edcf009d00943af961dd2a7ca7d3, type: 2}
 --- !u!1 &1902196658
 GameObject:
   m_ObjectHideFlags: 0
@@ -21894,7 +21895,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.44, y: -0.19999963}
+  m_AnchoredPosition: {x: 0.4599981, y: -0.19999963}
   m_SizeDelta: {x: 70, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1992589088

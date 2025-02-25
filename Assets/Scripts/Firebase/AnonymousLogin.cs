@@ -27,8 +27,9 @@ public class AnonymousLogin : MonoBehaviour
         if (auth.CurrentUser != null)
         {
             DataSaver.Instance.SetUserId(auth.CurrentUser.UserId); 
+            Debug.Log("DataSaver Instance Start" + auth.CurrentUser.UserId);
             DataSaver.Instance.LoadDataFn();
-            // SceneManager.LoadScene("chapterMenu");
+            
             if (TransitionManager.Instance() == null)
             {
                 Debug.LogError("TransitionManager is NULL!");
