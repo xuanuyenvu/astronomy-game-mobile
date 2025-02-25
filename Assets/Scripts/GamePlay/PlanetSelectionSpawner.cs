@@ -71,7 +71,7 @@ public class PlanetSelectionSpawner : IGamePlay
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
         
-        if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
+        if (healthManager.health == 0 || cardController.GetNumOfCards() == 0)
         {
             GameOver();
         }
@@ -107,14 +107,6 @@ public class PlanetSelectionSpawner : IGamePlay
         planet1 = allPlanets[id1];
 
         var id2 = planets[1];
-        // if (id1 < 4)
-        // {
-        //     id2 = UnityEngine.Random.Range(0, 4);
-        // }
-        // else
-        // {
-        //     id2 = UnityEngine.Random.Range(4, allPlanets.Count);
-        // }
         planet2 = allPlanets[id2];
 
         isLeft = Random.Range(0, 2) == 0 ? true : false;
@@ -244,6 +236,9 @@ public class PlanetSelectionSpawner : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
+        // Tắt tutorial nếu có
+        universalLevelManager.StopTutorial();
+        
         // Tắt tính năng lựa chọn thẻ bài
         cardController.turnOffPointerHandler();
 
@@ -454,6 +449,7 @@ public class PlanetSelectionSpawner : IGamePlay
             timerManager.StopTimer();
         }
         DestroyAllPlanetsInGroup();
+        cardController.DestroyPlanetSelection();
         universalLevelManager.GameOver();
     }
 

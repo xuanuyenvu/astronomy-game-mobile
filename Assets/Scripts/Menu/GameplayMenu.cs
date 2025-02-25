@@ -1,10 +1,12 @@
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using EasyTransition;
 
 public class GameplayMenu : MonoBehaviour
 {
     public UniversalLevelManager universalLevelManager;
+    public TransitionSettings exitTransition;
 
     public void Retry()
     {
@@ -23,6 +25,7 @@ public class GameplayMenu : MonoBehaviour
         AudioManager.Instance.PlaySFX("Click");
         Debug.Log("Exit");
         DOTween.KillAll();
-        SceneManager.LoadScene("chapter1");
+        // SceneManager.LoadScene("chapter1");
+        TransitionManager.Instance().Transition("chapter1", exitTransition, 0f);
     }
 }

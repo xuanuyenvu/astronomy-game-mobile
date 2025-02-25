@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using EasyTransition;
+using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -20,6 +22,10 @@ public class LevelUIManager : MonoBehaviour
     public GameObject backBtn;
     public GameObject stars;
     public GameObject settingBtn;
+    public GameObject bagBtn;
+    
+    public ParticleSystem psPrefab;
+    public Canvas uiCanvas;
     
     public TextMeshProUGUI tapText;
     public Button tapBtn;
@@ -29,6 +35,9 @@ public class LevelUIManager : MonoBehaviour
     
     public Slider bgmSlider;
     public Slider sfxSlider;
+
+    public TransitionSettings backBtnTransition;
+    public TransitionSettings bagBtnTransition;
     
     public List<Card> cardPrefabs;
     private Card currentCard;
@@ -43,6 +52,8 @@ public class LevelUIManager : MonoBehaviour
         tapBtn.gameObject.SetActive(false);
         
         HideLoginButton();
+        
+        AudioManager.Instance.PlayMusic("In Menu");
         SetUpVolume();
     }
     
@@ -70,13 +81,13 @@ public class LevelUIManager : MonoBehaviour
             case 10:
                 ShowCard("neptune");
                 break;
-            case 15:
+            case 14:
                 ShowCard("uranus");
                 break;
-            case 20:
+            case 24:
                 ShowCard("saturn");
                 break;
-            case 23:
+            case 27:
                 ShowCard("jupiter");
                 break;
         }
@@ -84,6 +95,8 @@ public class LevelUIManager : MonoBehaviour
     
     private void ShowCard(string name)
     {
+        AudioManager.Instance.PlaySFX("NewCard");
+        
         newCardBg.SetActive(true);
         primaryBg.SetActive(false);
         
@@ -91,6 +104,7 @@ public class LevelUIManager : MonoBehaviour
         backBtn.SetActive(false);
         stars.SetActive(false);
         settingBtn.SetActive(false);
+        bagBtn.SetActive(false);
         
         Card card = cardPrefabs.Find(c => c.name == name);
         if (card != null)
@@ -109,24 +123,82 @@ public class LevelUIManager : MonoBehaviour
     public void ReceiveCard()
     {
         AudioManager.Instance.PlaySFX("Click");
-        HideCard();
+        AddCardToBag();
+        // HideCard();
         DataSaver.Instance.OpenedCard(indexCard);
         levelSelector.UpdateAfterOpenCard(indexCard);
     }
     
-    private void HideCard()
+    private void AddCardToBag()
+    {
+        bagBtn.SetActive(true);
+
+        // Tạo hiệu ứng ParticleSystem trong UI
+        ParticleSystem particle = Instantiate(psPrefab, uiCanvas.transform);
+        RectTransform particleRect = particle.GetComponent<RectTransform>();
+        
+        particleRect.localScale = new Vector3(3f, 3f, 3f);
+        RectTransform bagRect = bagBtn.GetComponent<RectTransform>();
+
+        // Đặt vị trí ban đầu cho ParticleSystem
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Vector2 uiCenter;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            uiCanvas.GetComponent<RectTransform>(), screenCenter, null, out uiCenter
+        );
+        particleRect.anchoredPosition = uiCenter;
+
+
+        // Định nghĩa đường đi của ParticleSystem
+        Vector3[] path = new Vector3[]
+        {
+            particleRect.position, // Bắt đầu từ vị trí của thẻ
+            (particleRect.position + bagRect.position) / 2 + Vector3.down * 90, // Điểm giữa, lệch xuống một chút
+            bagRect.position // Kết thúc tại Bag Button
+        };
+
+        // Xóa thẻ, chạy particle
+        DestroyCard();
+        particle.Play();
+
+        DOVirtual.DelayedCall(0.2f, BackToLevelScene);
+        
+        // Di chuyển ParticleSystem theo path
+        particleRect.DOPath(path, 0.6f, PathType.CatmullRom)
+            .SetEase(Ease.InOutQuint)
+            .OnComplete(() =>
+            {
+                particle.Stop();
+                Destroy(particle.gameObject, particle.main.duration);
+                bagBtn.transform.DOScale(1.2f, 0.1f)
+                    .SetLoops(2, LoopType.Yoyo);
+                // .OnComplete(() =>
+                // {
+                //     BackToLevelScene();
+                // });
+            });
+    }
+
+    private void DestroyCard()
     {
         tapText.gameObject.SetActive(false);
         tapBtn.gameObject.SetActive(false);
-        
+    
+        if (currentCard != null)
+        {
+            Destroy(currentCard.gameObject);
+        }
+    }
+
+    
+    private void BackToLevelScene()
+    {
         primaryBg.SetActive(true);
         newCardBg.SetActive(false);
         scrollView.SetActive(true);
         backBtn.SetActive(true);
         stars.SetActive(true);
         settingBtn.SetActive(true);
-        
-        Destroy(currentCard.gameObject);
     }
     
     private void OnScaletapText()
@@ -148,6 +220,7 @@ public class LevelUIManager : MonoBehaviour
         backBtn.SetActive(false);
         stars.SetActive(false);
         settingBtn.SetActive(false);
+        backBtn.SetActive(false);
     }
     
     public void CloseSetting()
@@ -159,13 +232,24 @@ public class LevelUIManager : MonoBehaviour
         backBtn.SetActive(true);
         stars.SetActive(true);
         settingBtn.SetActive(true);
+        backBtn.SetActive(true);
     }
     
     public void BackToChapterMenu()
     {
         AudioManager.Instance.PlaySFX("Click");
-        SceneManager.LoadScene("chapterMenu");
+        // SceneManager.LoadScene("chapterMenu");
+        TransitionManager.Instance().Transition("chapterMenu", backBtnTransition, 0f);
     }
+    
+    public void GoToPlanetInfo(string sceneName)
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        // SceneManager.LoadScene("chapterMenu");
+        DataSaver.Instance.sceneName = sceneName;
+        TransitionManager.Instance().Transition("planetInfo", bagBtnTransition, 0f);
+    }
+
 
     public void LoginFB()
     {

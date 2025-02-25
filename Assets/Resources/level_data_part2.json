@@ -1,0 +1,174 @@
+{
+  "levels": [
+    {
+      "level": 15,
+      "total_stages": 1,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [0, 2]
+        }
+      ],
+      "lives": 3,
+      "total_time": "unlimited",
+      "cards_displayed": 3
+    },
+    {
+      "level": 16,
+      "total_stages": 1,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [1, 3]
+        }
+      ],
+      "lives": 3,
+      "total_time": "unlimited",
+      "cards_displayed": 3
+    },
+    {
+      "level": 17,
+      "total_stages": 2,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [7, 2]
+        },
+        {
+          "stage": 4,
+          "elements": [1, 7]
+        }
+      ],
+      "lives": 3,
+      "total_time": "01:00",
+      "cards_displayed": 5
+    },
+    {
+      "level": 18,
+      "total_stages": 2,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [6, 7]
+        },
+        {
+          "stage": 4,
+          "elements": [1, 6]
+        }
+      ],
+      "lives": 3,
+      "total_time": "01:00",
+      "cards_displayed": 5
+    },
+    {
+      "level": 19,
+      "total_stages": 2,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [3, 2]
+        },
+        {
+          "stage": 4,
+          "elements": [3, 0]
+        }
+      ],
+      "lives": 3,
+      "total_time": "01:00",
+      "cards_displayed": 5
+    },
+    {
+      "level": 20,
+      "total_stages": 2,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [5, 6]
+        },
+        {
+          "stage": 4,
+          "elements": [5, 7]
+        }
+      ],
+      "lives": 4,
+      "total_time": "01:00",
+      "cards_displayed": 6
+    },
+    {
+      "level": 21,
+      "total_stages": 2,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [4, 7]
+        },
+        {
+          "stage": 4,
+          "elements": [6, 4]
+        }
+      ],
+      "lives": 4,
+      "total_time": "01:00",
+      "cards_displayed": 6
+    },
+    {
+      "level": 22,
+      "total_stages": 2,
+      "stages": [
+        {
+          "stage": 4,
+          "elements": [5, 4]
+        },
+        {
+          "stage": 4,
+          "elements": [2, 1]
+        }
+      ],
+      "lives": 4,
+      "total_time": "01:00",
+      "cards_displayed": 7
+    },
+    {
+      "level": 23,
+      "total_stages": 3,
+      "stages": [
+        {
+          "stage": 1,
+          "elements": [2, 1]
+        },
+        {
+          "stage": 3,
+          "elements": [4, 5]
+        },
+        {
+          "stage": 4,
+          "elements": [6, 4]
+        }
+      ],
+      "lives": 5,
+      "total_time": "01:30",
+      "cards_displayed": 7
+    },
+    {
+      "level": 24,
+      "total_stages": 3,
+      "stages": [
+        {
+          "stage": 3,
+          "elements": [3, 2]
+        },
+        {
+          "stage": 4,
+          "elements": [0, 1]
+        },
+        {
+          "stage": 1,
+          "elements": [5, 4]
+        }
+      ],
+      "lives": 5,
+      "total_time": "01:30",
+      "cards_displayed": 7
+    }
+  ]
+}

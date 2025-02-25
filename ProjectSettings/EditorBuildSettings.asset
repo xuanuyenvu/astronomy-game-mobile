@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/menu.unity
+    guid: 33b2c8c62b1a866458b187899e5d3f1d
+  - enabled: 1
     path: Assets/Scenes/chapterMenu.unity
     guid: 73853f639c9852446bd71c2273363aa9
   - enabled: 1
@@ -14,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/game.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/planetInfo.unity
+    guid: 7bf62edbac85b644092c30d5813031ac
+  - enabled: 1
+    path: Assets/Scenes/chapter2.unity
+    guid: f5eabf73808668343b01b7066d8fda73
   m_configObjects: {}

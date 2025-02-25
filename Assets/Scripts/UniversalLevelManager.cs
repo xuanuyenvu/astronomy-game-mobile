@@ -12,10 +12,15 @@ public class UniversalLevelManager : MonoBehaviour
     public HealthManager healthManager;
     public TimerManager timerManager;
     public EnergyManager energyManager;
+    public StageUIManager stageManager;
+    public TutorialManager tutorialManager;
+    
     public WarpSpeedController wrapSpeedController;
     public GameOverUIController gameOverUiController;
     public WinGameUIController winGameUiController;
     public UIController uiController;
+    
+    private int currentStageID = 0;
 
     void Start()
     {
@@ -28,7 +33,7 @@ public class UniversalLevelManager : MonoBehaviour
         LoadAndSetUpLevel(DataSaver.Instance.selectedLevel);
     }
 
-    private void LoadAndSetUpLevel(int level)
+    private void LoadAndSetUpLevel(int level) 
     {
         if (IsJsonLoaded(level))
         {
@@ -40,7 +45,7 @@ public class UniversalLevelManager : MonoBehaviour
     private bool IsJsonLoaded(int _selectedLevel)
     {
         // load JSON từ Resources
-        TextAsset jsonFile = Resources.Load<TextAsset>("levels");
+        TextAsset jsonFile = Resources.Load<TextAsset>("level_data_part1");
 
         if (jsonFile != null)
         {
@@ -48,10 +53,13 @@ public class UniversalLevelManager : MonoBehaviour
             LevelsData levelsData = JsonUtility.FromJson<LevelsData>(jsonFile.text);
 
             // gán các thông tin vào biến level
+            Debug.Log("selectedLevel = " + _selectedLevel);
             level = levelsData.levels[_selectedLevel - 1];
+            Debug.Log("level Data = " + levelsData.levels[_selectedLevel - 1].level);
             
             energyManager.SetUp();
             healthManager.SetUp(level.lives);
+            stageManager.Initialize(level.total_stages);
             if (level.level > 6)
             {
                 timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
@@ -93,14 +101,30 @@ public class UniversalLevelManager : MonoBehaviour
         }
         // Gọi phương thức Initialize trên thể hiện gameManager
         GameManager.Instance.Initialize(id, planets, cardsDisplayed);
+        
+        tutorialManager.gameObject.SetActive(true);
+        switch (level.level)
+        {
+            case 1:
+                tutorialManager.StartTutorialLevel1();
+                break;
+            case 2:
+                tutorialManager.StartTutorialLevel2();
+                break;
+            case 4:
+                tutorialManager.StartTutorialLevel4();
+                break;
+        }
     }
 
     public void EndStage()
     {
         int energyToAdd = GetEnergyForLevel(level.level);
-
-        if (level.total_stages == 1)
+        currentStageID++;
+        
+        if (level.total_stages - currentStageID == 0)
         {
+            stageManager.UpdateStageUI();
             winGameUiController.StartUI((float)energyToAdd);
             // gameManager.UpdateFinalEnergy();
             // gameManager.DestroyCurrentGamePlay();
@@ -110,8 +134,9 @@ public class UniversalLevelManager : MonoBehaviour
         {
             energyManager.ChangeEnergy(energyToAdd);
             GameManager.Instance.DestroyCurrentGamePlay();
-            level.total_stages--;
-            StartCoroutine(HandleStageCompletion());
+
+            stageManager.UpdateStageUI();
+            StartCoroutine(HandleStageCompletion(currentStageID));
         }
     }
 
@@ -135,11 +160,11 @@ public class UniversalLevelManager : MonoBehaviour
         }
     }
 
-    private IEnumerator HandleStageCompletion()
+    private IEnumerator HandleStageCompletion(int stageIndex)
     {
         AudioManager.Instance.PlaySFX("Warp");
         yield return StartCoroutine(wrapSpeedController.ActivateForThreeSeconds());
-        SetUpLevel(1);
+        SetUpLevel(stageIndex);
     }
 
     public void GoBackToMap()
@@ -163,10 +188,13 @@ public class UniversalLevelManager : MonoBehaviour
     public void LoadGame()
     {
         Debug.Log("Load Game");
-        // TO DO : EFFECT FADE
         uiController.Reset();
         gameOverUiController.StopUI(level.level > 6);
         timerManager.gameObject.SetActive(true);
+        
+        stageManager.gameObject.SetActive(true);
+        stageManager.SetUp();
+        
         StartCoroutine(DelayedLoadLevel());
     }
     
@@ -191,22 +219,21 @@ public class UniversalLevelManager : MonoBehaviour
 
         if (level.level > 6)
         {
-            if (healthManager.health == 0 && timerManager.IsTimeOver)
+            if (healthManager.health == 0 && (timerManager.IsLessThan15Seconds || timerManager.IsTimeOver))
             {
                 healthManager.SetUp(1);
-
-                timerManager.SetUp(15);
-                timerManager.IsTimeOver = false;
+                timerManager.AddTime();
             }
             else if (healthManager.health == 0)
             {
                 healthManager.SetUp(2);
             }
-            else //(timerManager.IsTimeOver == true)
+            else
             {
-                timerManager.SetUp(25);
-                timerManager.IsTimeOver = false;
+                timerManager.AddTime();
             }
+
+            // timerManager.IsTimeOver = false;
             timerManager.gameObject.SetActive(true);
         }
         else if (level.level > 2)
@@ -217,13 +244,19 @@ public class UniversalLevelManager : MonoBehaviour
         {
             healthManager.SetUp(1);
         }
-
-        SetUpLevel(level.total_stages == 1 ? 1 : 0);
+        
+        stageManager.gameObject.SetActive(true);
+        SetUpLevel(currentStageID);
     }
 
     public void GameOver()
     {
         Debug.Log("Game Over");
         gameOverUiController.StartUI();
+    }
+
+    public void StopTutorial()
+    {
+        tutorialManager.StopTutorialLevel();
     }
 }

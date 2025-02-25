@@ -47,7 +47,11 @@ MonoBehaviour:
   cameraShake: {fileID: 0}
   cardController: {fileID: 0}
   healthManager: {fileID: 0}
-  scoreManager: {fileID: 0}
+  universalLevelManager: {fileID: 0}
+  timerManager: {fileID: 0}
+  planetsGroupTransform: {fileID: 0}
+  effectsGroupTransform: {fileID: 0}
+  planets: 
   allPlanets:
   - {fileID: 3849274529535236460, guid: 2cf7696e07b596046a3512add1b0314a, type: 3}
   - {fileID: 806245802019345058, guid: c541b23eca4f34b4e93a2480f4cd4190, type: 3}
@@ -59,6 +63,7 @@ MonoBehaviour:
   - {fileID: 164559625505778577, guid: 8bc7de61445ddf442aeebea2e77806bd, type: 3}
   rocketPrefab: {fileID: 2564393266105262465, guid: 90ba1301b38853749bfece9e57171690, type: 3}
   targetPrefab: {fileID: 8478459348999334745, guid: 28975ffdba1df554494dfba25b0276be, type: 3}
+  redThreatPrefab: {fileID: 2564393266105262465, guid: 17836eafdd5083b4c971e8826194e5ff, type: 3}
   boomPSPrefab:
   - {fileID: 6884358845297391235, guid: f8be230360aa34f46a4fe781964c1806, type: 3}
   - {fileID: 4091470809153282979, guid: aac25a86b767a8842ba1b98af0a1965b, type: 3}

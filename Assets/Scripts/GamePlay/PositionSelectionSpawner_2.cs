@@ -522,7 +522,9 @@ public class PositionSelectionSpawner_2 : IGamePlay
 
     public override void HandleConfirmButton(string planetName, Vector3 planetPosition)
     {
-        Debug.Log("HandleConfirmButton");
+        // Tắt tutorial nếu có
+        universalLevelManager.StopTutorial();
+        
         if (targetCloser == 0)
         {
             cardController.ShowACard();
@@ -771,6 +773,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
             timerManager.StopTimer();
         }
         DestroyAllPlanetsInGroup();
+        cardController.DestroyPlanetSelection();
         universalLevelManager.GameOver();
     }
 

@@ -11,17 +11,28 @@ public class TimerManager : MonoBehaviour
     public ParticleSystem psPrefab;
     public Canvas uiCanvas;
     public EnergyManager energyManager;
+    public Image fillObject;
 
     private float maxSliderTimer;
     private float sliderTimer;
     private bool stopeTimer = false;
     private bool isTimeOver = false;
+    private bool isFlashing = false;
+    private bool isLessThan15Seconds = false;
 
-    public global::System.Boolean IsTimeOver { get => isTimeOver; set => isTimeOver = value; }
+    public global::System.Boolean IsTimeOver
+    {
+        get => isTimeOver;
+    }
+    
+    public global::System.Boolean IsLessThan15Seconds
+    {
+        get => isLessThan15Seconds;
+    }
 
     public void SetUp(int time)
-    {
-        var fillObject = this.transform.Find("fill");
+    {   
+        // fillObject = this.transform.Find("fill");
         if (fillObject != null)
         {
             fillObject.gameObject.SetActive(true);
@@ -32,6 +43,21 @@ public class TimerManager : MonoBehaviour
         timerSlider.maxValue = sliderTimer;
         timerSlider.value = sliderTimer;
         stopeTimer = false;
+    }
+
+    public void AddTime()
+    {
+        // var fillObject = this.transform.Find("fill");
+        if (fillObject != null)
+        {
+            fillObject.gameObject.SetActive(true);
+        }
+        
+        sliderTimer = (float)(maxSliderTimer * 0.35f);
+        timerSlider.value = sliderTimer;
+        stopeTimer = false;
+        isLessThan15Seconds = false;
+        isTimeOver = false;
     }
 
     public void StartTimer()
@@ -54,13 +80,27 @@ public class TimerManager : MonoBehaviour
 
             if (sliderTimer <= 0)
             {
+                isFlashing = false;
                 isTimeOver = true;
                 stopeTimer = true;
                 GameManager.Instance.CurrentGamePlay.OnTimeOver();
             }
+
+            if (sliderTimer < 15)
+            {
+                isLessThan15Seconds = true;
+            }
+
+            
             if (!stopeTimer)
             {
                 timerSlider.value = sliderTimer;
+                // Khi thời gian còn 20% thì đổi màu fill thành đỏ
+                if (sliderTimer / maxSliderTimer <= 0.2f && fillObject != null && !isFlashing)
+                {
+                    isFlashing = true; // Đánh dấu đang nhấp nháy
+                    StartFlashingEffect();
+                }
             }
         }
     }
@@ -100,7 +140,7 @@ public class TimerManager : MonoBehaviour
         {
             return;
         }   
-        // Tìm các trái tim có enabled = true
+
         ParticleSystem particle = Instantiate(psPrefab, uiCanvas.transform);
 
         // Đặt vị trí ParticleSystem trong UI
@@ -120,7 +160,7 @@ public class TimerManager : MonoBehaviour
         particle.Play();
 
         // Tìm đối tượng "fill" và đảm bảo nó không null
-        var fillObject = this.transform.Find("fill");
+        // var fillObject = this.transform.Find("fill");
         if (fillObject != null)
         {
             fillObject.gameObject.SetActive(false);
@@ -135,6 +175,15 @@ public class TimerManager : MonoBehaviour
                 Destroy(particle.gameObject, particle.main.duration);
                 // energyManager.ChangeEnergy(GetRemainingTimePercentage() * 50);
             });
+    }
+
+    void StartFlashingEffect()
+    {
+        if (fillObject == null) return;
+        
+        fillObject.DOColor(new Color(1, 0, 0, 0.45f), 0.5f) 
+            .SetLoops(-1, LoopType.Yoyo)  // Lặp vô hạn qua lại giữa 2 màu
+            .SetEase(Ease.InOutSine); 
     }
 
 }

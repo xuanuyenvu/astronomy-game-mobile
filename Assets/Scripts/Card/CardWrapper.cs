@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 using config;
+using UnityEngine.UI;
 
 public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
@@ -11,12 +12,14 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     [HideInInspector] public float targetRotation;
     [HideInInspector] public float targetVerticalDisplacement;
     public string planetName;
+    public Image border;
+    
     private GameObject cardAnimation;
     private const float EPS = 0.01f;
     private RectTransform rectTransform;
     private Canvas canvas;
     private bool isSelected = false;
-    public CardController cardController;
+    public static CardController cardController;
 
     public AnimationSpeedConfig animationSpeedConfig;
     private float overrideYPosition = 9;
@@ -45,6 +48,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         Width = rectTransform.rect.width * rectTransform.localScale.x;
         canvas = GetComponent<Canvas>();
         cardAnimation = GameObject.Find(planetName + "CA");
+        border.gameObject.SetActive(false);
     }
 
     public void SetAnchor(Vector2 min, Vector2 max)
@@ -124,11 +128,11 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
     {
         if (!isSelected && turnOnPointerDownAndUp)
         {
+            Debug.Log("onPointerUp" + this.name);
             isSelected = true;
+            border.gameObject.SetActive(true);
 
             cardController.ChangeSelectedCard(this);
-            // Xóa instance đang hiển thị (nếu có)
-            cardController.DestroyPlanetSelection();
             // Chạy hiệu ứng thẻ bài
             DisplayCardWithAnimation();
             // Đặt độ ưu tiên = 100
@@ -137,17 +141,14 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
         }
         else
         {
+            border.gameObject.SetActive(false);
+            
             if (isSelected)
             {
                 ConcealCardWithAnimation();
             }
-            else
-            {
-                isSelected = false;
-            }
-            // Destroy the planet selection if it is displayed
+
             cardController.ChangeSelectedCard(null);
-            cardController.DestroyPlanetSelection();
         }
     }
 
@@ -172,7 +173,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
             });
     }
 
-    private void ConcealCardWithAnimation()
+    public void ConcealCardWithAnimation()
     {
         // Set the card to the correct position
         Vector3 startPos = new Vector3(0f, -1.5f, -7);
@@ -194,6 +195,7 @@ public class CardWrapper : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 
     public void ResetAllValues()
     {
+        border.gameObject.SetActive(false);
         isSelected = false;
         UpdateRotation();
         UpdatePosition();

@@ -14,6 +14,11 @@ public class DataSaver : MonoBehaviour
     public int selectedLevel;
     public int selectedLevelIndex;
     
+    // Do có 3 scene cùng dẫn vào scene PlanetInfo
+    // nên làm cách này hơi chấp vá tí
+    // đó là lưu lại tên của scene trước khi truy cậy scene PlanetInfo
+    public string sceneName;
+    
     private DatabaseReference dbRef;
 
     private void Awake()
@@ -42,9 +47,11 @@ public class DataSaver : MonoBehaviour
     public void InitNewUser()
     {
         userModel.Star = 0;
+        userModel.Card = 1;
         userModel.Levels = new List<LevelItem>();
+        userModel.Chapters = new List<ChapterItem>();
 
-        for (int i = 0; i < 26; i++)
+        for (int i = 0; i < 31; i++)
         {
             // Mặc định tất cả đều bị khóa
             userModel.Levels.Add(new LevelItem("game", "locked"));
@@ -55,9 +62,9 @@ public class DataSaver : MonoBehaviour
         userModel.Levels[3] = new LevelItem("card", "locked");
         userModel.Levels[6] = new LevelItem("card", "locked");
         userModel.Levels[10] = new LevelItem("card", "locked");
-        userModel.Levels[15] = new LevelItem("card", "locked");
-        userModel.Levels[20] = new LevelItem("card", "locked");
-        userModel.Levels[23] = new LevelItem("card", "locked");
+        userModel.Levels[14] = new LevelItem("card", "locked");
+        userModel.Levels[24] = new LevelItem("card", "locked");
+        userModel.Levels[27] = new LevelItem("card", "locked");
 
         // Unlock level đầu tiên
         userModel.Levels[0] = new LevelItem("game", "unlocked");
@@ -124,9 +131,11 @@ public class DataSaver : MonoBehaviour
 
     public void OpenedCard(int cardIndex)
     {
+        Debug.Log("Opened card: " + userModel.Levels[cardIndex].Type);
         if (userModel.Levels[cardIndex].Type == "card")
         {
             userModel.Levels[cardIndex].State = "opened";
+            userModel.Card++;
             
             SetCurrentLevel(cardIndex + 1);
             Debug.Log("Opened card: " + cardIndex);
@@ -140,8 +149,11 @@ public class DataSaver : MonoBehaviour
         {
             return;
         }
-        
-        userModel.Levels[levelIndex].State = "unlocked";
+
+        if (userModel.Levels[levelIndex].State == "locked")
+        {
+            userModel.Levels[levelIndex].State = "unlocked";
+        }
     }
 
 }

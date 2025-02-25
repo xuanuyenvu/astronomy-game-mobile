@@ -34,6 +34,12 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(string name)
     {
+        if (musicSource.clip != null && musicSource.clip.name == name && musicSource.isPlaying)
+        {
+            Debug.Log("Music: " + name + " is already playing.");
+            return;
+        }
+        
         Sound s = musicSounds.Find(x => x.name == name);
         
         if (s == null)
@@ -61,7 +67,7 @@ public class AudioManager : MonoBehaviour
             return;
         }
         
-        sfxSource.PlayOneShot(s.clip);
+        sfxSource.PlayOneShot(s.clip, s.volume * sfxSource.volume);
         
     }
 

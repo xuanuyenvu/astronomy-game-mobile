@@ -19,6 +19,9 @@ public class WinGameUIController : MonoBehaviour
     public GameObject timeBarUI;
     public HealthManager healthManager;
     public GameObject energyUI;
+    public GameObject stageUI;
+    public GameObject tutorialUI;
+    
     public ParticleSystem starEffectPS;
 
     public GameObject darkBg;
@@ -53,6 +56,8 @@ public class WinGameUIController : MonoBehaviour
     public void StartUI(float energy)
     {
         btnGroup.SetActive(false);
+        tutorialUI.SetActive(false);
+        // stageUI.SetActive(false);
 
         int health = healthManager.health;
         float timeRemaining = 0;
@@ -87,6 +92,8 @@ public class WinGameUIController : MonoBehaviour
         timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
         healthManager.SetUp(0);
+        stageUI.SetActive(false);
+        // tutorialUI.SetActive(false);
 
         GetChildByName(energyUI, "border").SetActive(false);
         GetChildByName(energyUI, "background").SetActive(false);
@@ -145,9 +152,9 @@ public class WinGameUIController : MonoBehaviour
         {
             rewards[0].shineLightPS.gameObject.SetActive(true);
             rewards[0].shineLightPS.Play();
-            sequence.Append(rewards[0].star.transform.DOScale(new Vector3(0.06f, 0.06f, 0.06f), 0.3f)
+            sequence.Append(rewards[0].star.transform.DOScale(new Vector3(0.065f, 0.065f, 0.065f), 0.3f)
                     .SetEase(Ease.OutBounce))
-                .Join(rewards[0].shineLightPS.transform.DOScale(new Vector3(1.5f, 1.5f, 1.5f), 0.3f)
+                .Join(rewards[0].shineLightPS.transform.DOScale(new Vector3(1.8f, 1.8f, 1.8f), 0.3f)
                     .SetEase(Ease.OutQuad))
                 .Join(rewards[0].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
                     .SetEase(Ease.OutBounce));
@@ -158,9 +165,9 @@ public class WinGameUIController : MonoBehaviour
         {
             rewards[1].shineLightPS.gameObject.SetActive(true);
             rewards[1].shineLightPS.Play();
-            sequence.Append(rewards[1].star.transform.DOScale(new Vector3(0.08f, 0.08f, 0.08f), 0.3f)
+            sequence.Append(rewards[1].star.transform.DOScale(new Vector3(0.1f, 0.1f, 0.1f), 0.3f)
                     .SetEase(Ease.OutBounce))
-                .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(1.9f, 1.9f, 1.9f), 0.3f)
+                .Join(rewards[1].shineLightPS.transform.DOScale(new Vector3(2.2f, 2.2f, 2.2f), 0.3f)
                     .SetEase(Ease.OutQuad))
                 .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
                     .SetEase(Ease.OutBounce));

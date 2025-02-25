@@ -13,9 +13,10 @@ public class CardController : MonoBehaviour
 
     [Header("List of selected planets")]
     public List<GameObject> allPlanetSelection;
-    private GameObject planetSelectionInstance;
 
     [HideInInspector] public CardWrapper selectedCard = null;
+    public Transform currentPlanetSelectionTransform;
+    private GameObject planetSelectionInstance;
 
     [Header("Asset in Scene")]
     public GameObject darkMask;
@@ -26,6 +27,10 @@ public class CardController : MonoBehaviour
     [Header("Rotation")]
     [SerializeField][Range(0f, 90f)] private float maxCardRotation = 15;
     [SerializeField] private float maxHeight = 30;
+    
+    [Header("UniversalLevelManager")]
+    public UniversalLevelManager universalLevelManager;
+    
     private float maxHeightDisplacement;
     public float MaxHeight
     {
@@ -126,8 +131,9 @@ public class CardController : MonoBehaviour
             }
 
             card.animationSpeedConfig = animationSpeedConfig;
-            card.cardController = this;
+            // card.cardController = this;
         }
+        CardWrapper.cardController = this;
     }
 
     private void SetCardsAnchor()
@@ -331,6 +337,7 @@ public class CardController : MonoBehaviour
 
     public void OnCardDisplayPlanetSelection(CardWrapper card)
     {
+        DestroyPlanetSelection();
         if (char.IsDigit(card.name[0]))
         {
             // Lấy ký tự đầu tiên của object
@@ -339,6 +346,7 @@ public class CardController : MonoBehaviour
             // Hiển thị planet được chọn
             Vector3 positionPlanet = new Vector3(0, 0, -9);
             planetSelectionInstance = Instantiate(planet, positionPlanet, Quaternion.identity);
+            planetSelectionInstance.transform.SetParent(currentPlanetSelectionTransform);
 
             // Bật lớp phủ
             darkMask.SetActive(true);
@@ -351,10 +359,18 @@ public class CardController : MonoBehaviour
 
     public void DestroyPlanetSelection()
     {
-        if (planetSelectionInstance != null)
+        // if (planetSelectionInstance != null)
+        // {
+        //     Debug.Log("destroy planet selection " + planetSelectionInstance.name);
+        //     Destroy(planetSelectionInstance);
+        //     darkMask.SetActive(false);
+        // }
+        if (currentPlanetSelectionTransform != null)
         {
-            Debug.Log("destroy planet selection " + planetSelectionInstance.name);
-            Destroy(planetSelectionInstance);
+            foreach (Transform child in currentPlanetSelectionTransform)
+            {
+                Destroy(child.gameObject);
+            }
             darkMask.SetActive(false);
         }
     }
@@ -379,6 +395,8 @@ public class CardController : MonoBehaviour
 
     public void ChangeSelectedCard(CardWrapper card)
     {
+        universalLevelManager.StopTutorial();
+        
         // Nếu đã có card được chọn từ trước thì gọi hàm ResetAllValues() 
         // để reset lại các giá trị Rotation, Position, Sorting
         if (selectedCard != null)
@@ -388,9 +406,8 @@ public class CardController : MonoBehaviour
 
         // Gán thẻ được chọn vào biến selectedCard
         selectedCard = card;
-
-        // Spawn card mới và chạy animation
-        // SpawnSelectedCardForAnimation();
+        
+        DestroyPlanetSelection();
     }
 
     private void RemoveAndDestroyCardInstance(CardWrapper card)

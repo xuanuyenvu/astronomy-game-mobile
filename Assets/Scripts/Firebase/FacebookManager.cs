@@ -1,19 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using Facebook.Unity;
 using System;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Extensions;
 using Unity.VisualScripting;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
+using EasyTransition;
+
 
 public class FacebookManager : MonoBehaviour
 {
     private Firebase.Auth.FirebaseAuth auth;
+    public TransitionSettings transition;
     public static FacebookManager Instance { get; private set; }
 
     #region Initialize
@@ -185,7 +185,8 @@ public class FacebookManager : MonoBehaviour
                 Debug.Log("Successfully linked anonymous account with Facebook.");
                 DataSaver.Instance.SetUserId(user.UserId);
                 DataSaver.Instance.LoadDataFn();
-                SceneManager.LoadScene("chapterMenu");
+                // SceneManager.LoadScene("chapterMenu");
+                TransitionManager.Instance().Transition("chapterMenu", transition, 0f);
             }
             else if (task.IsFaulted)
             {
@@ -225,7 +226,8 @@ public class FacebookManager : MonoBehaviour
 
             DataSaver.Instance.SetUserId(result.User.UserId);
             DataSaver.Instance.CheckIfFacebookUserExists();
-            SceneManager.LoadScene("chapterMenu");
+            // SceneManager.LoadScene("chapterMenu");
+            TransitionManager.Instance().Transition("chapterMenu", transition, 0f);
         });
     }
 
