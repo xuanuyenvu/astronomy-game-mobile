@@ -51,16 +51,15 @@ public class UniversalLevelManager : MonoBehaviour
         {
             // phân tích file JSON thành LevelsData object
             LevelsData levelsData = JsonUtility.FromJson<LevelsData>(jsonFile.text);
-
-            // gán các thông tin vào biến level
-            Debug.Log("selectedLevel = " + _selectedLevel);
-            level = levelsData.levels[_selectedLevel - 1];
-            Debug.Log("level Data = " + levelsData.levels[_selectedLevel - 1].level);
             
+            // gán các thông tin vào biến level
+            level = levelsData.levels[_selectedLevel - 1];
             energyManager.SetUp();
             healthManager.SetUp(level.lives);
             stageManager.Initialize(level.total_stages);
-            if (level.level > 6)
+            
+            // if (level.level > 6)
+            if (level.total_time != "unlimited")
             {
                 timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
             }
@@ -114,6 +113,12 @@ public class UniversalLevelManager : MonoBehaviour
             case 4:
                 tutorialManager.StartTutorialLevel4();
                 break;
+            case 7:
+                tutorialManager.StartTutorialLevel7();
+                break;
+            case 15:
+                tutorialManager.StartTutorialLevel15();
+                break;
         }
     }
 
@@ -142,22 +147,19 @@ public class UniversalLevelManager : MonoBehaviour
 
     private int GetEnergyForLevel(int level)
     {
-        if (level <= 2)
+        Dictionary<int, int> energyMap = new Dictionary<int, int>
         {
-            return 100;
-        }
-        else if (level <= 6)
+            {2, 100}, {6, 45}, {12, 35}, {14, 25}, 
+            {16, 80}, {19, 45}, {22, 35}, {int.MaxValue, 25}
+        };
+
+        foreach (var entry in energyMap)
         {
-            return 45;
+            if (level <= entry.Key)
+                return entry.Value;
         }
-        else if (level <= 12)
-        {
-            return 35;
-        }
-        else
-        {
-            return 25;
-        }
+
+        return 25;
     }
 
     private IEnumerator HandleStageCompletion(int stageIndex)
@@ -189,9 +191,12 @@ public class UniversalLevelManager : MonoBehaviour
     {
         Debug.Log("Load Game");
         uiController.Reset();
-        gameOverUiController.StopUI(level.level > 6);
-        timerManager.gameObject.SetActive(true);
-        
+        gameOverUiController.StopUI((level.level > 6 && level.level < 15) || (level.level >= 17));
+        if ((level.level > 6 && level.level < 15) || (level.level >= 17))
+        {
+            timerManager.gameObject.SetActive(true);
+        }
+
         stageManager.gameObject.SetActive(true);
         stageManager.SetUp();
         
@@ -208,7 +213,7 @@ public class UniversalLevelManager : MonoBehaviour
     public void Retry()
     {
         Debug.Log("Retry");
-        gameOverUiController.StopUI(level.level > 6);
+        gameOverUiController.StopUI((level.level > 6 && level.level < 15) || (level.level >= 17));
         StartCoroutine(DelayedRetry());
     }
 
@@ -217,14 +222,14 @@ public class UniversalLevelManager : MonoBehaviour
         GameManager.Instance.DestroyCurrentGamePlay();
         yield return new WaitForEndOfFrame(); // Chờ đến cuối frame hiện tại
 
-        if (level.level > 6)
+        if ((level.level > 6 && level.level < 15) || (level.level >= 17))
         {
-            if (healthManager.health == 0 && (timerManager.IsLessThan15Seconds || timerManager.IsTimeOver))
+            if (healthManager.Health == 0 && (timerManager.IsLessThan15Seconds || timerManager.IsTimeOver))
             {
                 healthManager.SetUp(1);
                 timerManager.AddTime();
             }
-            else if (healthManager.health == 0)
+            else if (healthManager.Health == 0)
             {
                 healthManager.SetUp(2);
             }
@@ -245,6 +250,7 @@ public class UniversalLevelManager : MonoBehaviour
             healthManager.SetUp(1);
         }
         
+        healthManager.ShowUI();
         stageManager.gameObject.SetActive(true);
         SetUpLevel(currentStageID);
     }

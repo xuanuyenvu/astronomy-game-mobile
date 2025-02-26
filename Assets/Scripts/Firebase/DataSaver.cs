@@ -64,7 +64,7 @@ public class DataSaver : MonoBehaviour
         userModel.Levels[10] = new LevelItem("card", "locked");
         userModel.Levels[14] = new LevelItem("card", "locked");
         userModel.Levels[24] = new LevelItem("card", "locked");
-        userModel.Levels[27] = new LevelItem("card", "locked");
+        userModel.Levels[26] = new LevelItem("card", "locked");
 
         // Unlock level đầu tiên
         userModel.Levels[0] = new LevelItem("game", "unlocked");
@@ -103,7 +103,7 @@ public class DataSaver : MonoBehaviour
         }
     }
     
-    public void CompletedLevel(string type)
+    public void  CompletedLevel(string type)
     {
         int gameIndex = selectedLevelIndex;
         
@@ -131,7 +131,7 @@ public class DataSaver : MonoBehaviour
 
     public void OpenedCard(int cardIndex)
     {
-        Debug.Log("Opened card: " + userModel.Levels[cardIndex].Type);
+        Debug.Log("Opened card : " + userModel.Levels[cardIndex].Type);
         if (userModel.Levels[cardIndex].Type == "card")
         {
             userModel.Levels[cardIndex].State = "opened";
@@ -143,9 +143,9 @@ public class DataSaver : MonoBehaviour
         }
     }
     
-    private void SetCurrentLevel(int levelIndex)
+    public void SetCurrentLevel(int levelIndex)
     {
-        if (levelIndex >= userModel.Levels.Count)
+        if (levelIndex >= userModel.Levels.Count) 
         {
             return;
         }

@@ -20,6 +20,8 @@ public class ChapterMenu : MonoBehaviour
         
         if (star >= 10)
         {
+            DataSaver.Instance.SetCurrentLevel(19);
+            
             chapter2.interactable = true;
             chapter2.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
             particleSystem2.gameObject.SetActive(true);

@@ -59,7 +59,7 @@ public class WinGameUIController : MonoBehaviour
         tutorialUI.SetActive(false);
         // stageUI.SetActive(false);
 
-        int health = healthManager.health;
+        int health = healthManager.Health;
         float timeRemaining = 0;
         if (timerManager != null)
         {
@@ -171,7 +171,7 @@ public class WinGameUIController : MonoBehaviour
                     .SetEase(Ease.OutQuad))
                 .Join(rewards[1].text.transform.DOScale(new Vector3(1f, 1f, 1f), 0.3f)
                     .SetEase(Ease.OutBounce));
-            
+   
             DataSaver.Instance.CompletedLevel("star");
         }
 

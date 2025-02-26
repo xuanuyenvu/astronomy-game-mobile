@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class LevelUIManager : MonoBehaviour
 {
     public CameraShake cameraShake;
-    public LevelSelector levelSelector;
+    public BaseLevelSelector levelSelector;
 
     public GameObject primaryBg;
     public GameObject newCardBg;
@@ -87,7 +87,7 @@ public class LevelUIManager : MonoBehaviour
             case 24:
                 ShowCard("saturn");
                 break;
-            case 27:
+            case 26:
                 ShowCard("jupiter");
                 break;
         }
@@ -125,6 +125,7 @@ public class LevelUIManager : MonoBehaviour
         AudioManager.Instance.PlaySFX("Click");
         AddCardToBag();
         // HideCard();
+
         DataSaver.Instance.OpenedCard(indexCard);
         levelSelector.UpdateAfterOpenCard(indexCard);
     }
@@ -221,6 +222,7 @@ public class LevelUIManager : MonoBehaviour
         stars.SetActive(false);
         settingBtn.SetActive(false);
         backBtn.SetActive(false);
+        bagBtn.SetActive(false);
     }
     
     public void CloseSetting()
@@ -233,6 +235,7 @@ public class LevelUIManager : MonoBehaviour
         stars.SetActive(true);
         settingBtn.SetActive(true);
         backBtn.SetActive(true);
+        bagBtn.SetActive(true);
     }
     
     public void BackToChapterMenu()

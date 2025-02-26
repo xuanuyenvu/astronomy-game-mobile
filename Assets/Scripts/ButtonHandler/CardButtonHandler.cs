@@ -20,7 +20,7 @@ public class CardButtonHandler : IButtonHandler
         glowPS.gameObject.SetActive(false);
     }
 
-    public override void UpdateState(string levelState)
+    public override void UpdateState(string levelState, int chapter)
     {
         switch (levelState)
         {

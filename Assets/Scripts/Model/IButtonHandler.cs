@@ -8,6 +8,6 @@ public abstract class IButtonHandler : MonoBehaviour
 {
     public string type;
 
-    public abstract void UpdateState(string levelState);
+    public abstract void UpdateState(string levelState, int chapter);
     public abstract int GetLevel();
 }

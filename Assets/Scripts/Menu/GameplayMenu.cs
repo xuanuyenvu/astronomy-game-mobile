@@ -26,6 +26,6 @@ public class GameplayMenu : MonoBehaviour
         Debug.Log("Exit");
         DOTween.KillAll();
         // SceneManager.LoadScene("chapter1");
-        TransitionManager.Instance().Transition("chapter1", exitTransition, 0f);
+        TransitionManager.Instance().Transition(DataSaver.Instance.sceneName, exitTransition, 0f);
     }
 }

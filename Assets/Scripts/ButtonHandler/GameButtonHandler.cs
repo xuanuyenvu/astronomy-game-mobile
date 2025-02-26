@@ -45,7 +45,7 @@ public class GameButtonHandler : IButtonHandler
     //     UpdateState(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector
     // }
 
-    public override void UpdateState(string levelState)
+    public override void UpdateState(string levelState, int chapter)
     {
         switch (levelState)
         {
@@ -56,10 +56,10 @@ public class GameButtonHandler : IButtonHandler
                 SetUnlockedUnplayed();
                 break;
             case "rock":
-                SetPlayedRocket();
+                SetPlayedRocket(chapter);
                 break;
             case "star":
-                SetPlayedStar();
+                SetPlayedStar(chapter);
                 break;
         }
     }
@@ -105,13 +105,22 @@ public class GameButtonHandler : IButtonHandler
         }
     }
 
-    private void SetPlayedRocket()
+    private void SetPlayedRocket(int chapter)
     {
         button.interactable = true;
         rock.gameObject.SetActive(true);
         star.gameObject.SetActive(false);
+
+        switch (chapter)
+        {
+            case 1:
+                SetColorWhenPlayed_Chapter1();
+                break;
+            default:
+                SetColorWhenPlayed_Chapter2();
+                break;
+        }
         
-        SetColorWhenPlayed();
         
         RectTransform rectTransform = levelText.GetComponent<RectTransform>();
         if (rectTransform != null)
@@ -122,13 +131,22 @@ public class GameButtonHandler : IButtonHandler
         }
     }
 
-    private void SetPlayedStar()
+    private void SetPlayedStar(int chapter)
     {
         button.interactable = true;
         rock.gameObject.SetActive(false);
         star.gameObject.SetActive(true);
         
-        SetColorWhenPlayed();
+        switch (chapter)
+        {
+            case 1:
+                SetColorWhenPlayed_Chapter1();
+                break;
+            default:
+                SetColorWhenPlayed_Chapter2();
+                break;
+        }
+        
         
         RectTransform rectTransform = levelText.GetComponent<RectTransform>();
         if (rectTransform != null)
@@ -139,7 +157,7 @@ public class GameButtonHandler : IButtonHandler
         }
     }
 
-    private void SetColorWhenPlayed()
+    private void SetColorWhenPlayed_Chapter1()
     {
         // largeCircle.color = new Color(177f / 255f, 192f / 255f, 255f / 255f, 200f / 255f);
         // mediumCircle.color = new Color(50f / 255f, 83f / 255f, 157f / 255f, 255f / 255f);
@@ -147,6 +165,15 @@ public class GameButtonHandler : IButtonHandler
         largeCircle.color = new Color(91f / 255f, 166f / 255f, 232f / 255f, 200f / 255f);
         mediumCircle.color = new Color(50f / 255f, 83f / 255f, 157f / 255f, 255f / 255f);
         
+        levelText.color = Color.white;
+        levelText.alpha = 225f / 255f;
+    }
+    
+    private void SetColorWhenPlayed_Chapter2()
+    {
+        largeCircle.color = new Color(177f / 255f, 192f / 255f, 255f / 255f, 200f / 255f);
+        mediumCircle.color = new Color(81f / 255f, 122f / 255f, 215f / 255f, 255f / 255f);
+
         levelText.color = Color.white;
         levelText.alpha = 225f / 255f;
     }

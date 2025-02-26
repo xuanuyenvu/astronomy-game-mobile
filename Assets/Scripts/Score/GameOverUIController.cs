@@ -35,7 +35,7 @@ public class GameOverUIController : MonoBehaviour
         
         timeBarUI.GetComponent<TimerManager>().StopTimer();
         timeBarUI.SetActive(false);
-        healthManager.SetUp(0);
+        healthManager.HideUI();
         stageUI.SetActive(false);
         tutorialUI.SetActive(false);
 

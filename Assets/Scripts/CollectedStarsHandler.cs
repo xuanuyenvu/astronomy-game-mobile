@@ -39,15 +39,11 @@ public class CollectedStarsHandler : MonoBehaviour
             {
                 k++;
             }
-
-            if (el.State == "unlocked")
-            {
-                break; 
-            }
         }
-
+        Debug.Log("k " + k);
         DataSaver.Instance.userModel.Star = k;
         numOfStars.text = DataSaver.Instance.userModel.Star.ToString();
+        DataSaver.Instance.SaveDataFn();
     }
 
 }

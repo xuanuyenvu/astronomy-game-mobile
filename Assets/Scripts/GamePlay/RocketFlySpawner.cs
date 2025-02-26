@@ -87,7 +87,7 @@ public class RocketFlySpawner : IGamePlay
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
         
-        if (cardController.GetNumOfCards() == 0 || healthManager.health == 0)
+        if (cardController.GetNumOfCards() == 0 || healthManager.Health == 0)
         {
             GameOver();
         }
@@ -449,7 +449,7 @@ public class RocketFlySpawner : IGamePlay
         cameraShake.ShakeCamera();
 
         // Mất 1 mạng
-        healthManager.health--;
+        healthManager.ReduceHealth();
         yield return new WaitForSeconds(2f);
         DestroyEffect();
     }

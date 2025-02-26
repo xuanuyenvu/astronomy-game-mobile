@@ -81,13 +81,21 @@ public class TutorialManager : MonoBehaviour
         Image icon = tutorialText[3].transform.GetChild(0).GetComponent<Image>(); 
         StartCoroutine(ShowTutorialWithDelay(tutorialText[3], icon));
     }
-
-    public void StartTutorialLevel15()
+    
+    public void StartTutorialLevel7()
     {
         currentTutorial = 4;
         
         Image icon = tutorialText[4].transform.GetChild(0).GetComponent<Image>(); 
         StartCoroutine(ShowTutorialWithDelay(tutorialText[4], icon));
+    }
+
+    public void StartTutorialLevel15()
+    {
+        currentTutorial = 5;
+        
+        Image icon = tutorialText[5].transform.GetChild(0).GetComponent<Image>(); 
+        StartCoroutine(ShowTutorialWithDelay(tutorialText[5], icon));
     }
     public void StopTutorialLevel()
     {
