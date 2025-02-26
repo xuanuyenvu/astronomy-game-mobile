@@ -83,7 +83,7 @@ public class NonLinearSpawner : IGamePlay
             // Đặt lại giá trị
             cameraShake.IsShake = -1;
             
-            if (healthManager.health == 0 || cardController.GetNumOfCards() == 0)
+            if (healthManager.Health == 0 || cardController.GetNumOfCards() == 0)
             {
                 GameOver();
             }
@@ -232,8 +232,20 @@ public class NonLinearSpawner : IGamePlay
         float distance1 = planet1.Distance(rocket);
         float distance2 = planet2.Distance(rocket);
 
-        // Nêu hai planet giống nhau
-        if (planet1.name == planet2.name)
+        Dictionary<string, string> planetPairs = new Dictionary<string, string>
+        {
+            { "earth", "venus" },
+            { "venus", "earth" }, 
+            { "mercury", "mars" },
+            { "mars", "mercury" },
+            { "neptune", "uranus" },
+            { "uranus", "neptune" }
+        };
+
+        // Kiểm tra nếu hai hành tinh giống nhau hoặc thuộc cùng một cặp trong dictionary
+        bool arePairedPlanets = planetPairs.ContainsKey(planet1.name) && planetPairs[planet1.name] == planet2.name;
+
+        if (planet1.name == planet2.name || arePairedPlanets)
         {
             // Tính tỉ lệ khoảng cách
             float ratio = Mathf.Max(distance1, distance2) / Mathf.Min(distance1, distance2);
@@ -256,8 +268,8 @@ public class NonLinearSpawner : IGamePlay
         {
 
             // nếu rocket trùng trục x với 1 trong 2 planet
-            if (Mathf.Abs(rocket.transform.position.x - planet1.transform.position.x) < 1
-                || Mathf.Abs(rocket.transform.position.x - planet2.transform.position.x) < 1)
+            if (Mathf.Abs(rocket.transform.position.x - planet1.transform.position.x) < 1.5f
+                || Mathf.Abs(rocket.transform.position.x - planet2.transform.position.x) < 1.5f)
             {
                 if (distance1 > distance2)
                 {
@@ -530,7 +542,7 @@ public class NonLinearSpawner : IGamePlay
         cameraShake.ShakeCamera();
 
         // Mất 1 mạng
-        healthManager.health--;
+        healthManager.ReduceHealth();
         yield return new WaitForSeconds(2f);
         DestroyEffect(boomInstance);
     }
@@ -538,6 +550,7 @@ public class NonLinearSpawner : IGamePlay
     private IEnumerator CoroutineCorrectAnwser()
     {
         yield return StartCoroutine(rocket.ShakeAndFlyTo(destinationRocket.transform.position));
+        yield return new WaitForSeconds(1f);
         
         // Khởi tạo hiệu ứng tại vị trí planetAnswer
         winEffectInstance = Instantiate(winEffectPSPrefab, planetAnswer.transform.position, Quaternion.Euler(0, 0, 0)).GetComponent<ParticleSystem>();

@@ -46,7 +46,7 @@
             "level": 5,
             "total_stages": 2,
             "stages": [
-                { "stage": 1, "elements": [3, 2] },
+                { "stage": 1, "elements": [2, 3] },
                 { "stage": 1, "elements": [3, 1] }
             ],
             "lives": 3,
@@ -90,7 +90,7 @@
             "level": 9,
             "total_stages": 2,
             "stages": [
-                { "stage": 3, "elements": [7, 2] },
+                { "stage": 3, "elements": [2, 7] },
                 { "stage": 1, "elements": [1, 7] }
             ],
             "lives": 3,
@@ -135,7 +135,7 @@
             "total_stages": 3,
             "stages": [
                 { "stage": 1, "elements": [6, 6] },
-                { "stage": 3, "elements": [1, 2] },
+                { "stage": 3, "elements": [2, 1] },
                 { "stage": 3, "elements": [0, 1] }
             ],
             "lives": 4,
@@ -160,7 +160,7 @@
             "stages": [
                 {
                     "stage": 4,
-                    "elements": [0, 2]
+                    "elements": [2, 0]
                 }
             ],
             "lives": 3,
@@ -220,7 +220,7 @@
             "stages": [
                 {
                     "stage": 4,
-                    "elements": [3, 2]
+                    "elements": [2, 3]
                 },
                 {
                     "stage": 4,
@@ -263,7 +263,7 @@
             ],
             "lives": 4,
             "total_time": "01:00",
-            "cards_displayed": 6
+            "cards_displayed": 7
         },
         {
             "level": 22,

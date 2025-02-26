@@ -96,7 +96,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
 
-        if (healthManager.health == 0)
+        if (healthManager.Health == 0)
         {
             GameOver();
         }
@@ -688,7 +688,7 @@ public class PositionSelectionSpawner_2 : IGamePlay
         cameraShake.ShakeCamera();
 
         // Mất 1 mạng
-        healthManager.health--;
+        healthManager.ReduceHealth();
         yield return new WaitForSeconds(2f);
         DestroyEffect();
     }

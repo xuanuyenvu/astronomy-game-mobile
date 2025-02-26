@@ -63,6 +63,13 @@ public class TimerManager : MonoBehaviour
     public void StartTimer()
     {
         stopeTimer = false;
+        
+        if (isFlashing)
+        {
+            isFlashing = false;
+            StopFlashingEffect();
+        }
+        
         if (!gameObject.activeSelf)
         {
             return;
@@ -80,7 +87,6 @@ public class TimerManager : MonoBehaviour
 
             if (sliderTimer <= 0)
             {
-                isFlashing = false;
                 isTimeOver = true;
                 stopeTimer = true;
                 GameManager.Instance.CurrentGamePlay.OnTimeOver();
@@ -177,7 +183,7 @@ public class TimerManager : MonoBehaviour
             });
     }
 
-    void StartFlashingEffect()
+    private void StartFlashingEffect()
     {
         if (fillObject == null) return;
         
@@ -185,5 +191,12 @@ public class TimerManager : MonoBehaviour
             .SetLoops(-1, LoopType.Yoyo)  // Lặp vô hạn qua lại giữa 2 màu
             .SetEase(Ease.InOutSine); 
     }
-
+    
+    private void StopFlashingEffect()
+    {
+        if (fillObject == null) return;
+    
+        fillObject.DOKill(true);
+        fillObject.color = Color.white; 
+    }
 }

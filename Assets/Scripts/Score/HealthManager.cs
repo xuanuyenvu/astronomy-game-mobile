@@ -6,7 +6,9 @@ using DG.Tweening;
 
 public class HealthManager : MonoBehaviour
 {
-    [HideInInspector] public int health = 5;
+    private int health = 5;
+    public int Health => health;
+    
     // public Sprite heart;
     public List<Image> hearts;
     public Image star;
@@ -14,14 +16,27 @@ public class HealthManager : MonoBehaviour
     public Canvas uiCanvas;
     public EnergyManager energyManager;
 
+    void Start()
+    {
+        ShowUI();
+    }
+    
     public void SetUp(int _health)
     {
         health = _health;
+        ShowUI();
     }
-    void Update()
+
+    public void HideUI()
     {
-        if (health < 0) health = 0;
-        
+        foreach (var heart in hearts)
+        {
+            heart.enabled = false;
+        }
+    }
+    
+    public void ShowUI()
+    {
         foreach (var heart in hearts)
         {
             heart.enabled = false;
@@ -57,6 +72,7 @@ public class HealthManager : MonoBehaviour
                 };
 
                 health--;
+                ShowUI();
                 particle.Play();
 
                 // Di chuyển ParticleSystem theo path
@@ -72,5 +88,15 @@ public class HealthManager : MonoBehaviour
             }
         }
     }
+    
+    public void ReduceHealth()
+    {
+        Debug.Log("bi tru roi" + health);
+        health--;
+        
+        if (health < 0) health = 0;
+        ShowUI();
+    }
+
 
 }

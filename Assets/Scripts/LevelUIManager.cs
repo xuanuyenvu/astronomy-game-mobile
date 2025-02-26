@@ -12,7 +12,7 @@ using UnityEngine.UI;
 public class LevelUIManager : MonoBehaviour
 {
     public CameraShake cameraShake;
-    public LevelSelector levelSelector;
+    public BaseLevelSelector levelSelector;
 
     public GameObject primaryBg;
     public GameObject newCardBg;
@@ -125,6 +125,7 @@ public class LevelUIManager : MonoBehaviour
         AudioManager.Instance.PlaySFX("Click");
         AddCardToBag();
         // HideCard();
+
         DataSaver.Instance.OpenedCard(indexCard);
         levelSelector.UpdateAfterOpenCard(indexCard);
     }

@@ -18,8 +18,10 @@ public class ChapterMenu : MonoBehaviour
     {
         int star = DataSaver.Instance.userModel.Star;
         
-        if (star >= 0)// CẦN CHỈNH 0 --> 10
+        if (star >= 10)
         {
+            DataSaver.Instance.SetCurrentLevel(19);
+            
             chapter2.interactable = true;
             chapter2.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
             particleSystem2.gameObject.SetActive(true);

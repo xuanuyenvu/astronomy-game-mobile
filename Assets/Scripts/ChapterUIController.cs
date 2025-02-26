@@ -9,7 +9,10 @@ public class ChapterUIController : MonoBehaviour
     public GameObject stars;
     public GameObject btn1;
     public GameObject btn2;
+    public GameObject btn3;
+    
     public GameObject settingBtn;
+    public GameObject chapter3Noti;
     public GameObject bagBtn;
     
     public GameObject loginButton;
@@ -39,6 +42,7 @@ public class ChapterUIController : MonoBehaviour
         
         btn1.SetActive(false);
         btn2.SetActive(false);
+        btn3.SetActive(false);
         stars.SetActive(false);
         settingBtn.SetActive(false);
         bagBtn.SetActive(false);
@@ -51,6 +55,7 @@ public class ChapterUIController : MonoBehaviour
         
         btn1.SetActive(true);
         btn2.SetActive(true);
+        btn3.SetActive(true);
         stars.SetActive(true);
         settingBtn.SetActive(true);
         bagBtn.SetActive(true);
@@ -90,4 +95,31 @@ public class ChapterUIController : MonoBehaviour
         DataSaver.Instance.sceneName = sceneName;
         TransitionManager.Instance().Transition("planetInfo", transition, 0f);
     }
+    
+    public void OpenChapter3Notification()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        chapter3Noti.SetActive(true);
+        
+        btn1.SetActive(false);
+        btn2.SetActive(false);
+        btn3.SetActive(false);
+        stars.SetActive(false);
+        settingBtn.SetActive(false);
+        bagBtn.SetActive(false);
+    }
+    
+    public void CloseChapter3Notification()
+    {
+        AudioManager.Instance.PlaySFX("Click");
+        chapter3Noti.SetActive(false);
+        
+        btn1.SetActive(true);
+        btn2.SetActive(true);
+        btn3.SetActive(true);
+        stars.SetActive(true);
+        settingBtn.SetActive(true);
+        bagBtn.SetActive(true);
+    }
+    
 }

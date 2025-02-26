@@ -1,90 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using TMPro;
-using EasyTransition;
 
-
-public class LevelSelector2 : MonoBehaviour
+public class LevelSelector2 : BaseLevelSelector
 {
-    public RectTransform contentRectTransform;
-    public TransitionSettings transition;
-    
-    [SerializeField] private int currentLevel = 1; 
-
-    void Start()
+    protected override void Start()
     {
-        InitializeLevelButtons();
+        levelOffset = 19; // Chapter 2 bắt đầu từ Level 19
+        base.Start();
     }
 
-    private void InitializeLevelButtons()
+    protected override int GetChapterIndex()
     {
-        // transform.childCount
-        for (int i = 0; i < transform.childCount; i++)
+        return 2; // Chapter 2
+    }
+
+    protected override string GetSceneName()
+    {
+        return "chapter2";
+    }
+    
+    protected override void ScrollToCurrentLevel()
+    {
+        if ((currentLevel >= 18 && currentLevel <= 22))
         {
-            IButtonHandler child = transform.GetChild(i).GetComponent<IButtonHandler>();
-            
-            child.UpdateState(DataSaver.Instance.userModel.Levels[i+19].State);
-            
-            if (DataSaver.Instance.userModel.Levels[i].Equals(new LevelItem("game", "unlocked")))
-            {
-                currentLevel = child.GetLevel();
-            } else if (DataSaver.Instance.userModel.Levels[i].Equals(new LevelItem("card", "unlocked")))
-            {
-                currentLevel = transform.GetChild(i+1).GetComponent<IButtonHandler>().GetLevel();
-            }
-        }
-
-        ScrollToCurrentLevel();
-    }
-    
-    public void UpdateAfterOpenCard(int cardIndex)
-    {
-        IButtonHandler child = transform.GetChild(cardIndex).GetComponent<IButtonHandler>();
-        child.UpdateState("opened");
-        
-        IButtonHandler nextChild = transform.GetChild(cardIndex + 1).GetComponent<IButtonHandler>();
-        nextChild.UpdateState("unlocked");
-    }
-    
-    // private void OnValidate()
-    // {
-    //     ScrollToCurrentLevel(); // Cập nhật giao diện khi giá trị state thay đổi từ Inspector
-    // }
-
-    private void ScrollToCurrentLevel()
-    {
-        if (currentLevel >= 4 && currentLevel <= transform.childCount - 2)
-        {
-            float offset = 4366 - (550 * (currentLevel - 4));
-            contentRectTransform.localPosition  = new Vector3(offset, 0, 0);
+            float offset = 1881.203f - (350 * (currentLevel - 18));
+            contentRectTransform.localPosition = new Vector3(offset, 0, 0);
         }
         else if (currentLevel > transform.childCount - 2)
         {
-            contentRectTransform.localPosition = new Vector3(-5311.663f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(-178.7757f, 0, 0);
         }
-        else 
+        else
         {
-            contentRectTransform.localPosition = new Vector3(5311.663f, 0, 0);
+            contentRectTransform.localPosition = new Vector3(2296.836f, 0, 0);
         }
-    }
-
-    public void PlayGame(int level)
-    {
-        AudioManager.Instance.PlaySFX("Click");
-        DataSaver.Instance.selectedLevel = level;
-        
-        for (int i = 0; i < transform.childCount; i++)
-        {
-            if (transform.GetChild(i).GetComponent<IButtonHandler>().GetLevel() == level)
-            {
-                DataSaver.Instance.selectedLevelIndex = i;
-            }
-        }
-        
-        // SceneManager.LoadScene("game");
-        DataSaver.Instance.sceneName = "chapter2";
-        TransitionManager.Instance().Transition("game", transition, 0f, true);
     }
 }

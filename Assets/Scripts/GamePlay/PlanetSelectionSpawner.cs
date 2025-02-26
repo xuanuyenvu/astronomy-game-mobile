@@ -71,7 +71,7 @@ public class PlanetSelectionSpawner : IGamePlay
         // Đặt lại giá trị
         cameraShake.IsShake = -1;
         
-        if (healthManager.health == 0 || cardController.GetNumOfCards() == 0)
+        if (healthManager.Health == 0 || cardController.GetNumOfCards() == 0)
         {
             GameOver();
         }
@@ -364,7 +364,7 @@ public class PlanetSelectionSpawner : IGamePlay
         cameraShake.ShakeCamera();
 
         // Mất 1 mạng
-        healthManager.health--;
+        healthManager.ReduceHealth();
         yield return new WaitForSeconds(2f);
         DestroyEffect();
     }
