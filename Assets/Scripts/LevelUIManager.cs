@@ -87,7 +87,7 @@ public class LevelUIManager : MonoBehaviour
             case 24:
                 ShowCard("saturn");
                 break;
-            case 27:
+            case 26:
                 ShowCard("jupiter");
                 break;
         }

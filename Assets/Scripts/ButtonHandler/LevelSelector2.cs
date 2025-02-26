@@ -4,10 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using EasyTransition;
-using Unity.VisualScripting;
 
 
-public class LevelSelector : MonoBehaviour
+public class LevelSelector2 : MonoBehaviour
 {
     public RectTransform contentRectTransform;
     public TransitionSettings transition;
@@ -26,7 +25,7 @@ public class LevelSelector : MonoBehaviour
         {
             IButtonHandler child = transform.GetChild(i).GetComponent<IButtonHandler>();
             
-            child.UpdateState(DataSaver.Instance.userModel.Levels[i].State);
+            child.UpdateState(DataSaver.Instance.userModel.Levels[i+19].State);
             
             if (DataSaver.Instance.userModel.Levels[i].Equals(new LevelItem("game", "unlocked")))
             {
@@ -85,7 +84,7 @@ public class LevelSelector : MonoBehaviour
         }
         
         // SceneManager.LoadScene("game");
-        DataSaver.Instance.sceneName = "chapter1";
+        DataSaver.Instance.sceneName = "chapter2";
         TransitionManager.Instance().Transition("game", transition, 0f, true);
     }
 }

@@ -5208,8 +5208,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -6313,8 +6313,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -6915,8 +6915,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -7295,8 +7295,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -13138,8 +13138,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -13271,8 +13271,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -18715,7 +18715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraShake: {fileID: 1702370248}
-  levelSelector: {fileID: 2029956067}
+  levelSelector: {fileID: 0}
   primaryBg: {fileID: 1059549888}
   newCardBg: {fileID: 1603930343}
   settingBg: {fileID: 4808447385932019887}
@@ -19285,8 +19285,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -20254,8 +20254,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2100052537}
   m_HandleRect: {fileID: 2100052536}
   m_Direction: 0
-  m_Value: -0.0000007637765
-  m_Size: 0.44332117
+  m_Value: -0.0000007889617
+  m_Size: 0.46109146
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -25389,8 +25389,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -25878,8 +25878,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:
@@ -31416,7 +31416,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2029956066}
-  - component: {fileID: 2029956067}
+  - component: {fileID: 2029956068}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -31455,7 +31455,7 @@ RectTransform:
   m_AnchoredPosition: {x: 2296.833, y: 0}
   m_SizeDelta: {x: 4593.662, y: 1020}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2029956067
+--- !u!114 &2029956068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -31464,7 +31464,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2029956065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc4de97b677ea124985295dadc0911a8, type: 3}
+  m_Script: {fileID: 11500000, guid: be40d9be63ac7164293274555d79e1c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   contentRectTransform: {fileID: 2029956066}
@@ -32013,8 +32013,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2029956067}
-        m_TargetAssemblyTypeName: LevelSelector, Assembly-CSharp
+      - m_Target: {fileID: 2029956068}
+        m_TargetAssemblyTypeName: LevelSelector2, Assembly-CSharp
         m_MethodName: PlayGame
         m_Mode: 3
         m_Arguments:

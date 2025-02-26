@@ -18,7 +18,7 @@ public class ChapterMenu : MonoBehaviour
     {
         int star = DataSaver.Instance.userModel.Star;
         
-        if (star >= 10)
+        if (star >= 0)// CẦN CHỈNH 0 --> 10
         {
             chapter2.interactable = true;
             chapter2.GetComponent<Image>().color = new Color32(255, 255, 255, 255);

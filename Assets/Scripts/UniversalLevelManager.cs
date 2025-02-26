@@ -51,16 +51,17 @@ public class UniversalLevelManager : MonoBehaviour
         {
             // phân tích file JSON thành LevelsData object
             LevelsData levelsData = JsonUtility.FromJson<LevelsData>(jsonFile.text);
-
+            
             // gán các thông tin vào biến level
             Debug.Log("selectedLevel = " + _selectedLevel);
             level = levelsData.levels[_selectedLevel - 1];
             Debug.Log("level Data = " + levelsData.levels[_selectedLevel - 1].level);
-            
+            Debug.Log("total time " + level.total_time);
             energyManager.SetUp();
             healthManager.SetUp(level.lives);
             stageManager.Initialize(level.total_stages);
-            if (level.level > 6)
+            // if (level.level > 6)
+            if (level.total_time != "unlimited")
             {
                 timerManager.SetUp(ConvertTimeToSeconds(level.total_time));
             }
@@ -116,6 +117,9 @@ public class UniversalLevelManager : MonoBehaviour
                 break;
             case 7:
                 tutorialManager.StartTutorialLevel7();
+                break;
+            case 15:
+                tutorialManager.StartTutorialLevel15();
                 break;
         }
     }

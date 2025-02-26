@@ -64,7 +64,7 @@ public class DataSaver : MonoBehaviour
         userModel.Levels[10] = new LevelItem("card", "locked");
         userModel.Levels[14] = new LevelItem("card", "locked");
         userModel.Levels[24] = new LevelItem("card", "locked");
-        userModel.Levels[27] = new LevelItem("card", "locked");
+        userModel.Levels[26] = new LevelItem("card", "locked");
 
         // Unlock level đầu tiên
         userModel.Levels[0] = new LevelItem("game", "unlocked");
